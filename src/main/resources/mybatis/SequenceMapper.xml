@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netease.auto.mapper.SequenceMapper">
+
+	<resultMap id="row" type="Row">
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="seed" property="seed" jdbcType="DECIMAL"/>
+		<result column="lastupdate" property="lastupdate" jdbcType="DECIMAL"/>
+	</resultMap>
+	<!-- select -->
+
+
+	<!-- 根据表名选择记录 -->
+	<select id="getByTable" parameterType="String" resultMap="row">
+		select name,seed,lastupdate from sequence where name = #{tableName}
+	</select>
+	
+	<!-- 获取sequence -->
+	<select id="getSequnceByName" resultType="String" parameterType="String">
+	    <![CDATA[
+	    select ${tableName}.nextval from dual
+	    ]]>
+	</select>
+
+	<!-- insert -->
+	<!-- 第一次拿序列,创建序列记录 -->
+	<insert id="create" parameterType="Row">
+		insert into sequence (name,seed,lastUpdate) values (#{name},#{seed},#{lastupdate})
+	</insert>
+
+	<!-- update -->
+	<!-- 序列自增,修改记录 -->
+	<update id="update" parameterType="Row">
+		update sequence set seed=#{seed},lastupdate=#{lastupdate} where name=#{name}
+	</update>
+	<!-- delete -->
+	
+</mapper>

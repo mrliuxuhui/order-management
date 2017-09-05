@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/tx
+       	   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+       <!-- jdbc property placeholder -->
+       <bean id="propertyConfigurer"
+             class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+              <property name="locations">
+                     <list>
+                            <value>classpath:jdbc.properties</value>
+                     </list>
+              </property>
+       </bean>
+
+       <!-- data source -->
+       <!--
+       <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+              <property name="driverClass"><value>${jdbc.driverClassName}</value></property>
+              <property name="jdbcUrl"><value><![CDATA[${jdbc.url}]]></value></property>
+              <property name="user"><value>${jdbc.username}</value></property>
+              <property name="password"><value>${jdbc.password}</value></property>
+              <property name="maxIdleTime"><value>3600</value></property>
+              <property name="preferredTestQuery"><value>${oracle.validationQuery}</value></property>
+              <property name="idleConnectionTestPeriod"><value>1800</value></property>
+              <property name="testConnectionOnCheckout"><value>true</value></property>
+       </bean> -->
+       <bean id="dataSource"
+             class="org.apache.commons.dbcp.BasicDataSource">
+              <property name="driverClassName"><value>${jdbc.driverClassName}</value></property>
+              <property name="url"><value>${jdbc.url}</value></property>
+              <property name="username"><value>${jdbc.username}</value></property>
+              <property name="password"><value>${jdbc.password}</value></property>
+              <property name="initialSize"><value>${jdbc.initialSize}</value></property>
+              <property name="maxActive"><value>${jdbc.maxActive}</value></property>
+              <property name="maxIdle"><value>${jdbc.maxIdle}</value></property>
+              <property name="maxWait"><value>${jdbc.maxWait}</value></property>
+              <property name="poolPreparedStatements"><value>${jdbc.poolPreparedStatements}</value></property>
+              <!-- mysql timeout after 8 hours -->
+              <property name="minEvictableIdleTimeMillis" value="300000" />
+              <property name="timeBetweenEvictionRunsMillis" value="120000" />
+              <property name="validationQuery" value="${jdbc.validationQuery}" />
+              <property name="testWhileIdle" value="true" />
+              <property name="testOnReturn" value="true" />
+              <property name="testOnBorrow" value="true" />
+       </bean>
+
+       <!-- transaction  -->
+       <bean id="transactionManager"
+             class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+              <property name="dataSource" ref="dataSource"/>
+       </bean>
+
+       <aop:aspectj-autoproxy proxy-target-class="true"/>
+       <!-- advice -->
+
+       <tx:advice id="txAdvice" transaction-manager="transactionManager">
+              <tx:attributes>
+                     <tx:method name="add*" propagation="REQUIRED"/>
+                     <tx:method name="save*" propagation="REQUIRED"/>
+                     <tx:method name="update*" propagation="REQUIRED"/>
+                     <tx:method name="insert*" propagation="REQUIRED"/>
+                     <tx:method name="delete*" propagation="REQUIRED"/>
+                     <tx:method name="remove*" propagation="REQUIRED"/>
+                     <tx:method name="query*" propagation="REQUIRED"/>
+              </tx:attributes>
+       </tx:advice>
+
+       <!-- aop config -->
+
+       <aop:config>
+              <aop:pointcut id="serviceMethod" expression="execution(* com.flyingwillow.restaurant.service.*.*(..))"/>
+              <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
+       </aop:config>
+
+</beans>
