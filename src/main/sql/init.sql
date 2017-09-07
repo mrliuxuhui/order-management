@@ -47,6 +47,7 @@ CREATE TABLE menu (
   price FLOAT, -- 单价
   unit  INT, -- 单位
   profile VARCHAR(500), -- 简介
+  categoryId INT,  -- 类别
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
@@ -82,18 +83,35 @@ CREATE TABLE food_supply(
 -- -------------------------
 --  食材
 -- -------------------------
-DROP TABLE IF EXISTS food_material;
-CREATE TABLE food_material(
+DROP TABLE IF EXISTS material;
+CREATE TABLE material(
   id INT PRIMARY KEY AUTO_INCREMENT,
   name  VARCHAR(50),
   img   VARCHAR(300),
   price FLOAT, -- 单价
   unit  INT, -- 单位
   profile VARCHAR(500), -- 简介
+  categoryId INT, -- 类别
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
 );
+
+-- -------------------------
+--  食材用量
+-- -------------------------
+DROP TABLE IF EXISTS food_material;
+CREATE TABLE food_material(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  menuId INT,     -- 菜品
+  materialId INT, -- 食材
+  mount   FLOAT,  -- 用量
+  unit    INT,    --
+  createTime BIGINT,
+  updateTime BIGINT,
+  operator VARCHAR(50)
+);
+
 -- -------------------------
 --  食材种类
 -- -------------------------
@@ -114,9 +132,12 @@ DROP TABLE IF EXISTS provider;
 CREATE TABLE provider(
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100),
-  addr VARCHAR(100),
+  address VARCHAR(100),
   contactor VARCHAR(50),
   tel   VARCHAR(20),
+  cityId INT,
+  regionId INT,
+  provinceId INT,
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
@@ -128,7 +149,7 @@ CREATE TABLE provider(
 DROP TABLE IF EXISTS purchase;
 CREATE TABLE purchase(
   id INT PRIMARY KEY AUTO_INCREMENT,
-  number VARCHAR(50),
+  number VARCHAR(50) UNIQUE,
   title   VARCHAR(100),
   expectDate  DATE, -- 预计采购日期
   operator VARCHAR(50), -- 采购人
@@ -137,6 +158,7 @@ CREATE TABLE purchase(
   status    INT, -- 订单状态  0 录入 1 确认 2 完成
   completeTime BIGINT, -- 完成时间
   completePercent FLOAT, -- 采购完成 百分比
+  createTime BIGINT,
   del       INT     -- 删除标记 1 删除
 );
 
@@ -150,6 +172,7 @@ CREATE TABLE purchase_detail(
   materialId  INT,
   expectMount FLOAT, -- 预计采购量
   actualMount FLOAT, -- 实际采购量
+  providerId  INT,    -- 供应商
   unit  INT,
   price FLOAT,
   totalPrice  FLOAT,
@@ -165,7 +188,7 @@ DROP TABLE IF EXISTS custom_order;
 CREATE TABLE custom_order(
 
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  number VARCHAR(50),
+  number VARCHAR(50) UNIQUE,
   tableNo INT,
   createTime BIGINT, -- 下单时间
   receiveTime BIGINT, -- 订单接收时间

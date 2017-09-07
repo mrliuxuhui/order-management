@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flyingwillow.restaurant.mapper.FoodSupplyMapper">
+
+
+	<!-- select -->
+	<select id="getFoodSupplyList" parameterType="HashMap" resultType="FoodSupply">
+		SELECT * FROM food_supply
+		<where>
+			<if test="null!=id">AND id=#{id}</if>
+			<if test="null!=supplyDate">AND supplyDate=#{supplyDate}</if>
+			<if test="null!=menuId">AND menuId=#{menuId}</if>
+			<if test="null!=operator">AND operator=#{operator}</if>
+
+		</where>
+	</select>
+
+
+	<!-- insert -->
+	<insert id="saveFoodSupply" parameterType="FoodSupply" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO food_supply(menuId, mount, unit, left, supplyDate, createTime, operator)
+		VALUES (#{menuId}, #{mount}, #{unit}, #{left}, #{supplyDate}, UNIX_TIMESTAMP()*1000, #{operator})
+	</insert>
+
+
+	<!-- update -->
+	<update id="updateFoodSupply" parameterType="FoodSupply">
+		UPDATE food_supply
+		<set>
+			<if test="null!=menuId">menuId = #{menuId},</if>
+			<if test="null!=mount">mount = #{mount},</if>
+			<if test="null!=unit">unit = #{unit},</if>
+			<if test="null!=left">left = #{left},</if>
+			<if test="null!=supplyDate">supplyDate = #{supplyDate},</if>
+			<if test="null!=operator">operator = #{operator},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<!-- delete -->
+	<delete id="deleteFoodSupply" parameterType="int">
+		DELETE FROM food_supply
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>

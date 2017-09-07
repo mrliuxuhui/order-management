@@ -186,18 +186,49 @@ public class RedisServiceImpl implements IRedisService {
     }
 
     @Override
-    public Long lpush(String key, String... strings) {
-        return null;
+    public Long lpush(final String key, final String... strings) {
+        return (Long) redisTemplate.execute(new RedisCallback() {
+            @Override
+            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                if(strings==null||strings.length<1){
+                    return null;
+                }
+                RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+                byte[][] values = new byte[strings.length][];
+                for(int i=0;i<strings.length;i++){
+                    values[i] = valueSerializer.serialize(strings[i]);
+                }
+                return redisConnection.lPush(redisTemplate.getKeySerializer().serialize(key),values);
+            }
+        });
     }
 
     @Override
-    public Long rpush(String key, String... strings) {
-        return null;
+    public Long rpush(final String key, final String... strings) {
+        return (Long) redisTemplate.execute(new RedisCallback() {
+            @Override
+            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                if(strings==null||strings.length<1){
+                    return null;
+                }
+                RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+                byte[][] values = new byte[strings.length][];
+                for(int i=0;i<strings.length;i++){
+                    values[i] = valueSerializer.serialize(strings[i]);
+                }
+                return redisConnection.rPush(redisTemplate.getKeySerializer().serialize(key),values);
+            }
+        });
     }
 
     @Override
-    public Long llen(String key) {
-        return null;
+    public Long llen(final String key) {
+        return (Long) redisTemplate.execute(new RedisCallback() {
+            @Override
+            public Object doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                return redisConnection.lLen(redisTemplate.getKeySerializer().serialize(key));
+            }
+        });
     }
 
     @Override

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flyingwillow.restaurant.mapper.CustomOrderMapper">
+
+
+	<!-- select -->
+	<select id="getCustomOrderList" parameterType="HashMap" resultType="CustomOrder">
+		SELECT * FROM custom_order
+		<where>
+			AND del = 0
+			<if test="null!=id">AND id=#{id}</if>
+			<if test="null!=number">AND number=#{number}</if>
+			<if test="null!=tableNo">AND tableNo=#{tableNo}</if>
+			<if test="null!=status">AND status=#{status}</if>
+			<choose>
+				<when test="null!=startTime and null!=endTime">AND createTime BETWEEN #{startTime} AND #{endTime}</when>
+				<when test="null!=startTime">AND createTime >= #{startTime}</when>
+				<when test="null!=endTime">
+					<![CDATA[
+					AND createTime <= #{endTime}
+					]]>
+				</when>
+			</choose>
+		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+
+
+	<!-- insert -->
+	<insert id="saveCustomOrder" parameterType="CustomOrder" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO custom_order(number, tableNo, createTime, receiveTime, receiver, completeTime, completeOperator, totalPrice, actualPrice, checkTime, checkOperator, pushed, rush, del)
+		VALUES (#{number}, #{tableNo}, #{createTime}, #{receiveTime}, #{receiver}, #{completeTime}, #{completeOperator}, #{totalPrice}, #{actualPrice}, #{checkTime}, #{checkOperator}, #{pushed}, #{rush}, 0)
+	</insert>
+
+
+	<!-- update -->
+	<update id="updateCustomOrder" parameterType="CustomOrder">
+		UPDATE custom_order
+		<set>
+			<if test="null!=createTime">createTime = #{createTime},</if>
+			<if test="null!=receiveTime">receiveTime = #{receiveTime},</if>
+			<if test="null!=receiver">receiver = #{receiver},</if>
+			<if test="null!=completeTime">completeTime = #{completeTime},</if>
+			<if test="null!=completeOperator">completeOperator = #{completeOperator},</if>
+			<if test="null!=totalPrice">totalPrice = #{totalPrice},</if>
+			<if test="null!=actualPrice">actualPrice = #{actualPrice},</if>
+			<if test="null!=checkTime">checkTime = #{checkTime},</if>
+			<if test="null!=checkOperator">checkOperator = #{checkOperator},</if>
+			<if test="null!=pushed">pushed = #{pushed},</if>
+			<if test="null!=rush">rush = #{rush},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteCustomOrderByNumber" parameterType="String">
+		UPDATE custom_order
+		SET del = 1
+		WHERE number = #{number}
+	</update>
+
+	<!-- delete -->
+	<delete id="deleteCustomOrder" parameterType="int">
+		DELETE FROM custom_order
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>

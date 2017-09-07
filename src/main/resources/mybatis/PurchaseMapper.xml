@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flyingwillow.restaurant.mapper.PurchaseMapper">
+
+
+	<!-- select -->
+	<select id="getPurchaseList" parameterType="HashMap" resultType="Purchase">
+		SELECT * FROM purchase
+		<where>
+			AND del = 0
+			<if test="null!=id">AND id=#{id}</if>
+			<if test="null!=number">AND number=#{number}</if>
+			<if test="null!=title">AND title=#{title}</if>
+			<if test="null!=status">AND status=#{status}</if>
+			<if test="null!=operator">AND operator=#{operator}</if>
+			<choose>
+				<when test="null!=expectStartTime and null!=expectEndTime">AND expectDate BETWEEN #{expectStartTime} AND #{expectEndTime}</when>
+				<when test="null!=expectStartTime">AND expectDate >= #{expectStartTime}</when>
+				<when test="null!=expectEndTime">
+					<![CDATA[
+					AND expectDate <= #{expectEndTime}
+					]]>
+				</when>
+			</choose>
+			<choose>
+				<when test="null!=completeStartTime and null!=completeEndTime">AND completeTime BETWEEN #{completeStartTime} AND #{completeEndTime}</when>
+				<when test="null!=completeStartTime">AND completeTime >= #{completeStartTime}</when>
+				<when test="null!=completeEndTime">
+					<![CDATA[
+					AND completeTime <= #{completeEndTime}
+					]]>
+				</when>
+			</choose>
+		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+
+
+	<!-- insert -->
+	<insert id="savePurchase" parameterType="Purchase" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO purchase(number, title, expectDate, operator, totalPrice, actualPrice, status, completeTime, completePercent, del, createTime)
+		VALUES (#{number}, #{title}, #{expectDate}, #{operator}, #{totalPrice}, #{actualPrice}, #{status}, #{completeTime}, #{completePercent}, 0, UNIX_TIMESTAMP()*1000)
+	</insert>
+
+
+	<!-- update -->
+	<update id="updatePurchase" parameterType="Purchase">
+		UPDATE purchase
+		<set>
+			<if test="null!=title">title = #{title},</if>
+			<if test="null!=expectDate">expectDate = #{expectDate},</if>
+			<if test="null!=operator">operator = #{operator},</if>
+			<if test="null!=totalPrice">totalPrice = #{totalPrice},</if>
+			<if test="null!=actualPrice">actualPrice = #{actualPrice},</if>
+			<if test="null!=status">status = #{status},</if>
+			<if test="null!=completeTime">completeTime = #{completeTime},</if>
+			<if test="null!=completePercent">completePercent = #{completePercent},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="deletePurchaseByNumber" parameterType="String">
+		UPDATE purchase
+		SET del = 1
+		WHERE number = #{number}
+	</update>
+
+	<!-- delete -->
+	<delete id="deletePurchase" parameterType="int">
+		DELETE FROM purchase
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>
