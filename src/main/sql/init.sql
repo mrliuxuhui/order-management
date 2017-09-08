@@ -1,11 +1,33 @@
+DROP DATABASE IF EXISTS restaurant;
+CREATE DATABASE restaurant;
+USE restaurant;
 -- -------------------------
 --  用户表
 -- -------------------------
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(
+  username VARCHAR(50) PRIMARY KEY ,
+  password VARCHAR(50),
+  name VARCHAR(50),
+  gender  VARCHAR(10),
+  salt  VARCHAR(100),
+  createTime BIGINT,
+  updateTime BIGINT,
+  locked  BOOL,
+  forbidden BOOL,
+  del   INT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- -------------------------
 --  角色表
 -- -------------------------
+DROP TABLE IF EXISTS roles;
+CREATE TABLE roles(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50),
+  createTime BIGINT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 -- -------------------------
@@ -16,10 +38,28 @@
 -- -------------------------
 --  用户-角色表
 -- -------------------------
-
+Drop table  if exists user_roles;
+CREATE TABLE user_roles (
+  create_time BIGINT,
+  usersname VARCHAR(50) NOT NULL,
+  roleId INT(11) NOT NULL,
+  INDEX users_id_index (usersname),
+  INDEX roles_id_index (roleId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  角色-权限表
+-- -------------------------
+DROP TABLE  IF EXISTS roles_permissions;
+CREATE TABLE roles_permissions (
+  create_time BIGINT,
+  roleId INT(11) NOT NULL,
+  permission VARCHAR(300) NOT NULL,
+  INDEX roles_id_index (roleId)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+-- -------------------------
+--  oauth2
 -- -------------------------
 
 
@@ -34,7 +74,7 @@ CREATE TABLE measurement (
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  菜单
@@ -51,7 +91,7 @@ CREATE TABLE menu (
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  菜品种类
@@ -64,7 +104,7 @@ CREATE TABLE food_category(
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- -------------------------
 --  菜品供应量表
 -- -------------------------
@@ -78,7 +118,7 @@ CREATE TABLE food_supply(
   supplyDate  DATE,
   createTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  食材
@@ -95,7 +135,7 @@ CREATE TABLE material(
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  食材用量
@@ -110,7 +150,7 @@ CREATE TABLE food_material(
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  食材种类
@@ -123,7 +163,7 @@ CREATE TABLE material_category(
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  供应商表
@@ -141,7 +181,7 @@ CREATE TABLE provider(
   createTime BIGINT,
   updateTime BIGINT,
   operator VARCHAR(50)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  采购订单
@@ -160,7 +200,7 @@ CREATE TABLE purchase(
   completePercent FLOAT, -- 采购完成 百分比
   createTime BIGINT,
   del       INT     -- 删除标记 1 删除
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  采购详单
@@ -179,7 +219,7 @@ CREATE TABLE purchase_detail(
   actualPrice FLOAT,
   status  INT DEFAULT 0,  -- 是否完成 0 未完成  1 完成
   del   INT DEFAULT 0 --  删除标记
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  顾客订单
@@ -203,7 +243,7 @@ CREATE TABLE custom_order(
   rush    BOOL, -- 是否催单
   del     INT DEFAULT 0
 
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -------------------------
 --  顾客详单
@@ -223,4 +263,4 @@ CREATE TABLE custom_order_detail(
   waiter VARCHAR(50),
   status INT, -- 状态 0 创建， 1 开始处理， 2 完成, 3 上菜
   del INT DEFAULT 0
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
