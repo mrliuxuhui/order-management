@@ -16,5 +16,5 @@ public interface MeasurementMapper {
 
     public void updateMeasurement(Measurement measurement);
 
-    public void deleteMeasurement(Measurement measurement);
+    public void deleteMeasurement(Integer id);
 }

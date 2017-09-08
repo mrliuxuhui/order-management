@@ -17,6 +17,11 @@ public class PurchaseDetail {
     private Integer status;
     private Integer del;
 
+    private Purchase purchase;
+    private Material material;
+    private Measurement measurement;
+    private Provider provider;
+
     public Long getId() {
         return id;
     }
@@ -111,5 +116,37 @@ public class PurchaseDetail {
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public Purchase getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    public Measurement getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(Measurement measurement) {
+        this.measurement = measurement;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }

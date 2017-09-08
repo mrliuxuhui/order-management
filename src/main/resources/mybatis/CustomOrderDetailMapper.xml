@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flyingwillow.restaurant.mapper.CustomOrderDetailMapper">
+
+	<resultMap id="PurchaseDetailMap" type="PurchaseDetail">
+		<id column="id" property="id"/>
+		<result column="orderId" property="orderId"/>
+		<result column="menuId" property="menuId"/>
+		<result column="mount" property="mount"/>
+		<result column="unit" property="unit"/>
+		<result column="needPush" property="needPush"/>
+		<result column="beginTime" property="beginTime"/>
+		<result column="completeTime" property="completeTime"/>
+		<result column="delivered" property="delivered"/>
+		<result column="deliveredTime" property="deliveredTime"/>
+		<result column="waiter" property="waiter"/>
+		<result column="status" property="status"/>
+		<result column="del" property="del"/>
+		<association property="measurement" javaType="Measurement">
+			<id column="unit" property="id"/>
+			<result column="unitCname" property="cname"/>
+			<result column="unitEname" property="ename"/>
+		</association>
+		<association property="purchase" javaType="Purchase">
+			<id column="orderId" property="id"/>
+			<result column="o_number" property="number"/>
+			<result column="o_tableNo" property="tableNo"/>
+		</association>
+		<association property="material" javaType="Material">
+			<id column="menuId" property="id"/>
+			<result column="m_name" property="name"/>
+			<result column="m_img" property="img"/>
+			<result column="m_price" property="price"/>
+		</association>
+	</resultMap>
+
+	<!-- select -->
+	<select id="getCustomOrderDetailList" parameterType="HashMap" resultMap="CustomOrderDetailMap">
+		SELECT t1.*, t2.cname AS unitCname, t2.ename AS unitEname,
+				t3.number AS o_number, t3.tableNo AS o_tableNo,
+				t4.name AS m_name, t4.img AS m_img, t4.price AS m_price,
+		FROM custom_order_detail t1
+		LEFT JOIN measurement t2 ON t2.id = t1.unit
+		LEFT JOIN custom_order t3 ON t3.id = t1.orderId
+		LEFT JOIN menu t4 ON t4.id = t1.menuId
+		<where>
+			AND t1.del = 0
+			<if test="null!=id">AND t1.id=#{id}</if>
+			<if test="null!=orderId">AND t1.orderId=#{orderId}</if>
+			<if test="null!=menuId">AND t1.menuId=#{menuId}</if>
+		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+
+
+	<!-- insert -->
+	<insert id="saveCustomOrderDetail" parameterType="CustomOrderDetail" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO custom_order_detail(orderId, menuId, mount, unit, needPush, beginTime, completeTime, delivered, deliveredTime, waiter, status, del)
+		VALUES (#{orderId}, #{menuId}, #{mount}, #{unit}, #{needPush}, #{beginTime}, #{completeTime}, #{delivered}, #{deliveredTime}, #{waiter}, #{status},0)
+	</insert>
+
+
+	<!-- update -->
+	<update id="updateCustomOrderDetail" parameterType="CustomOrderDetail">
+		UPDATE custom_order_detail
+		<set>
+			<if test="null!=menuId">menuId = #{menuId},</if>
+			<if test="null!=mount">mount = #{mount},</if>
+			<if test="null!=unit">unit = #{unit},</if>
+			<if test="null!=needPush">needPush = #{needPush},</if>
+			<if test="null!=beginTime">beginTime = #{beginTime},</if>
+			<if test="null!=completeTime">completeTime = #{completeTime},</if>
+			<if test="null!=delivered">delivered = #{delivered},</if>
+			<if test="null!=deliveredTime">deliveredTime = #{deliveredTime},</if>
+			<if test="null!=waiter">waiter = #{waiter},</if>
+			<if test="null!=status">status = #{status},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteCustomOrderDetailByOId" parameterType="int">
+		UPDATE custom_order_detail
+		SET del = 1
+		WHERE orderId = #{orderId}
+	</update>
+
+	<!-- delete -->
+	<delete id="deleteCustomOrderDetail" parameterType="int">
+		DELETE FROM custom_order_detail
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>

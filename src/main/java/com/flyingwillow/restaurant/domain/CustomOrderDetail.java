@@ -18,7 +18,12 @@ public class CustomOrderDetail {
     private Boolean delivered;
     private Date deliveredTime;
     private String water;
+    private Integer status;
     private Integer del;
+
+    private CustomOrder order;
+    private Measurement measurement;
+    private Menu menu;
 
     public Long getId() {
         return id;
@@ -114,5 +119,37 @@ public class CustomOrderDetail {
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public CustomOrder getOrder() {
+        return order;
+    }
+
+    public void setOrder(CustomOrder order) {
+        this.order = order;
+    }
+
+    public Measurement getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(Measurement measurement) {
+        this.measurement = measurement;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }

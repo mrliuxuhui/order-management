@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flyingwillow.restaurant.mapper.PurchaseDetailMapper">
+
+	<resultMap id="PurchaseDetailMap" type="PurchaseDetail">
+		<id column="id" property="id"/>
+		<result column="purchaseId" property="purchaseId"/>
+		<result column="materialId" property="materialId"/>
+		<result column="expectMount" property="expectMount"/>
+		<result column="actualMount" property="actualMount"/>
+		<result column="providerId" property="providerId"/>
+		<result column="unit" property="unit"/>
+		<result column="price" property="price"/>
+		<result column="totalPrice" property="totalPrice"/>
+		<result column="actualPrice" property="actualPrice"/>
+		<result column="status" property="status"/>
+		<result column="del" property="del"/>
+		<association property="measurement" javaType="Measurement">
+			<id column="unit" property="id"/>
+			<result column="unitCname" property="cname"/>
+			<result column="unitEname" property="ename"/>
+		</association>
+		<association property="purchase" javaType="Purchase">
+			<id column="purchaseId" property="id"/>
+			<result column="p_number" property="number"/>
+			<result column="p_title" property="title"/>
+		</association>
+		<association property="material" javaType="Material">
+			<id column="materialId" property="id"/>
+			<result column="m_name" property="name"/>
+			<result column="m_img" property="img"/>
+			<result column="m_price" property="price"/>
+		</association>
+		<association property="provider" javaType="Provider">
+			<id column="providerId" property="id"/>
+			<result column="pv_name" property="name"/>
+			<result column="pv_address" property="address"/>
+			<result column="pv_contactor" property="contactor"/>
+			<result column="pv_tel" property="tel"/>
+		</association>
+	</resultMap>
+
+	<!-- select -->
+	<select id="getPurchaseDetailList" parameterType="HashMap" resultMap="PurchaseDetailMap">
+		SELECT t1.*, t2.cname AS unitCname, t2.ename AS unitEname,
+				t3.number AS p_number, t3.title AS p_title,
+				t4.name AS m_name, t4.img AS m_img, t4.price AS m_price,
+				t5.name AS pv_name, t5.address AS pv_address, t5.contactor AS pv_contactor, t5.tel AS pv_tel
+		FROM purchase_detail t1
+		LEFT JOIN measurement t2 ON t2.id = t1.unit
+		LEFT JOIN purchase t3 ON t3.id = t1.purchaseId
+		LEFT JOIN material t4 ON t4.id = t1.materialId
+		LEFT JOIN provider t5 ON t5.id = t1.providerId
+		<where>
+			AND t1.del = 0
+			<if test="null!=id">AND t1.id=#{id}</if>
+			<if test="null!=purchaseId">AND t1.purchaseId=#{purchaseId}</if>
+			<if test="null!=materialId">AND t1.materialId=#{materialId}</if>
+		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+
+
+	<!-- insert -->
+	<insert id="savePurchaseDetail" parameterType="PurchaseDetail" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO purchase_detail(purchaseId, materialId, expectMount, actualMount, providerId, unit, price, totalPrice, actualPrice, status, del)
+		VALUES (#{purchaseId}, #{materialId}, #{expectMount}, #{actualMount}, #{providerId}, #{unit}, #{price}, #{totalPrice}, #{actualPrice}, #{status},0)
+	</insert>
+
+
+	<!-- update -->
+	<update id="updatePurchaseDetail" parameterType="PurchaseDetail">
+		UPDATE purchase_detail
+		<set>
+			<if test="null!=materialId">materialId = #{materialId},</if>
+			<if test="null!=expectMount">expectMount = #{expectMount},</if>
+			<if test="null!=actualMount">actualMount = #{actualMount},</if>
+			<if test="null!=providerId">providerId = #{providerId},</if>
+			<if test="null!=unit">unit = #{unit},</if>
+			<if test="null!=price">price = #{price},</if>
+			<if test="null!=totalPrice">totalPrice = #{totalPrice},</if>
+			<if test="null!=actualPrice">actualPrice = #{actualPrice},</if>
+			<if test="null!=status">status = #{status},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="deletePurchaseDetailByPId" parameterType="int">
+		UPDATE purchase_detail
+		SET del = 1
+		WHERE purchaseId = #{purchaseId}
+	</update>
+
+	<!-- delete -->
+	<delete id="deletePurchaseDetail" parameterType="int">
+		DELETE FROM purchase_detail
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>

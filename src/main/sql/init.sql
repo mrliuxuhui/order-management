@@ -221,5 +221,6 @@ CREATE TABLE custom_order_detail(
   delivered BOOL, -- 是否上菜
   deliveredTime BIGINT, -- 上菜时间
   waiter VARCHAR(50),
+  status INT, -- 状态 0 创建， 1 开始处理， 2 完成, 3 上菜
   del INT DEFAULT 0
 );
