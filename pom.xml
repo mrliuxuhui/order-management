@@ -189,11 +189,6 @@
             <artifactId>commons-dbcp2</artifactId>
             <version>2.1.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc5</artifactId>
-            <version>5</version>
-        </dependency>
 
         <!-- mysql lib -->
         <dependency>
@@ -403,11 +398,11 @@
         </dependency>
 
         <!-- pinyin4j -->
-        <dependency>
+        <!--<dependency>
             <groupId>net.sourceforge</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>2.5.0</version>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 
