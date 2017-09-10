@@ -1,0 +1,25 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div id="Hui-tabNav" class="Hui-tabNav ">
+        <div class="Hui-tabNav-wp">
+            <ul id="min_title_list" class="acrossTab cl" style="padding-left: 6px;">
+                <li class="active">
+                    <span title="首页" data-href="/static/welcom.html">首页</span><em></em>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div id="iframe_box" class="Hui-article" style="overflow-x: hidden">
+
+        <div class="show_iframe">
+            <div style="display: none" class="loading"></div>
+            <iframe scrolling="yes" frameborder="0" src="/static/welcom.html"></iframe>
+        </div>
+
+    </div>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

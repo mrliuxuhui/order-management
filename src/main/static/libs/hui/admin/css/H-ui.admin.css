@@ -15,7 +15,7 @@
 .Hui-header{position:absolute;top:0; right:0; left:0;height:44px;z-index:999; padding:0 15px}
 .Hui-aside{position: absolute;top:44px;bottom:0;left:0;padding-top:10px;width:199px;z-index:99;overflow:auto; background-color:rgba(238,238,238,0.98);_background-color:rgb(238,238,238);border-right: 1px solid #e5e5e5}
 .Hui-article-box{position: absolute;top:44px;right:0;bottom: 0;left:199px; overflow:hidden; z-index:1; background-color:#fff}
-	.Hui-article{position: absolute;top:34px;bottom:0;left:0; right:0;overflow:auto;z-index:1}
+	.Hui-article{position: relative;top:5px;bottom:0;left:0; right:0;overflow:auto;z-index:1}
 .Hui-container{ padding:45px 0 0}
 .Hui-aside,.Hui-article-box,.dislpayArrow{-moz-transition: all 0.2s ease 0s;-webkit-transition: all 0.2s ease 0s;-ms-transition: all 0.2s ease 0s;-o-transition: all 0.2s ease 0s;transition: all 0.2s ease 0s}
 .big-page .Hui-article-box,.big-page .dislpayArrow,.big-page .breadcrumb{left:0px}
@@ -83,7 +83,7 @@
 .Hui-tabNav .acrossTab{ position:absolute; height:26px; line-height:26px; background:none; top:8px; left:0;padding-top:0}
 .Hui-tabNav .acrossTab li{height:26px;line-height:26px;}
 .Hui-tabNav .acrossTab li em{ right:-16px; height: 26px; width: 16px}
-.loading {background:url(../images/loading.gif) no-repeat center; height:100px}
+.loading {height:100px}
 .show_iframe{ position:absolute; top:0; right:0; left:0; bottom:0;}
 .show_iframe iframe {position: absolute;bottom: 0;height: 100%;width: 100%}
 .Hui-tabNav-more {position: absolute;right:0px;width:70px;top:4px;display: none}

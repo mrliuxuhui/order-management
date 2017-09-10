@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
 <!-- Font Awesome -->
 <link rel="stylesheet" href="/static/libs/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/static/libs/hui/Hui-iconfont/1.0.8/iconfont.css">
 <!-- Ionicons -->
 <link rel="stylesheet" href="/static/libs/Ionicons/css/ionicons.min.css">
 <!-- Theme style -->
@@ -21,3 +22,4 @@
 
 <!-- Google Font -->
 <link rel="stylesheet" href="/static/libs/google-font/css.css">
+<link rel="stylesheet" href="/static/libs/hui/admin/css/H-ui.admin.css">

@@ -137,10 +137,11 @@ function creatIframe(href,titleName){
 		$tabNav.css({left:0})
 	}	
 	iframeBox.hide();
-	iframe_box.append('<div class="show_iframe"><div class="loading"></div><iframe frameborder="0" src='+href+'></iframe></div>');
+	//iframe_box.append('<div class="show_iframe"><div class="loading"></div><iframe frameborder="0" src='+href+'></iframe></div>');
+	iframe_box.append('<div class="show_iframe"><i class="fa fa-fw fa-spinner"></i><iframe frameborder="0" src='+href+'></iframe></div>');
 	var showBox=iframe_box.find('.show_iframe:visible');
 	showBox.find('iframe').on("load",function(){
-		showBox.find('.loading').hide();
+		showBox.find('i.fa-spinner').hide();
 	});
 }
 
@@ -258,6 +259,9 @@ $(function(){
 		titCell:'.menu_dropdown dl dt',
 		mainCell:'.menu_dropdown dl dd',
 	});*/
+
+	$("#iframe_box").height($(".content-wrapper").height()-$("#Hui-tabNav").outerHeight()
+			-$(".main-footer").outerHeight()-$(".main-header").outerHeight()-5);
 	
 	/*选项卡导航*/
 	$(".sidebar-menu").on("click"," .treeview a",function(){
