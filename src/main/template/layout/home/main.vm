@@ -18,7 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     #parse("/layout/home/left_menu.vm")
 
-    $screen_content
+    #parse("/layout/home/content.vm")
 
     #parse("/layout/home/footer.vm")
 
