@@ -264,9 +264,25 @@ $(function(){
 			-$(".main-footer").outerHeight()-$(".main-header").outerHeight()-5);
 	
 	/*选项卡导航*/
-	$(".sidebar-menu").on("click"," .treeview a",function(){
+	$("ul.sidebar-menu").on("click","li.treeview a",function(){
 		Hui_admin_tab(this);
+		var treeviewMenu = $(this).next(".treeview-menu");
+		var parentLi     = $(this).parents("li.treeview");
+		var thisLi		 = $(this).parent();
+		if(treeviewMenu&&treeviewMenu.length>0){
+			return;
+		}
+		if(parentLi.hasClass("active")){
+			thisLi.siblings("li").removeClass("active");
+			thisLi.addClass("active");
+		}else{
+			$("ul.sidebar-menu li.active").removeClass("active");
+			thisLi.addClass("active");
+			thisLi.parents("li.treeview").addClass("active");
+		}
+
 	});
+
 	
 	$(document).on("click","#min_title_list li",function(){
 		var bStopIndex=$(this).index();
