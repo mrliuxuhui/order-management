@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flyingwillow.restaurant.mapper.UserMapper">
+
+
+	<!-- select -->
+	<select id="getUserList" parameterType="HashMap" resultType="User">
+		SELECT * FROM users
+		<where>
+			AND del = 0
+			<if test="null!=username">AND username=#{username}</if>
+			<if test="null!=gender">AND gender=#{gender}</if>
+			<if test="null!=locked">AND locked=#{locked}</if>
+			<if test="null!=forbidden">AND forbidden=#{forbidden}</if>
+			<choose>
+				<when test="null!=startTime and null!=endTime">AND updateTime BETWEEN #{startTime} AND #{endTime}</when>
+				<when test="null!=startTime">AND updateTime >= #{startTime}</when>
+				<when test="null!=endTime">
+					<![CDATA[
+					AND updateTime <= #{endTime}
+					]]>
+				</when>
+			</choose>
+		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+
+
+	<!-- insert -->
+	<insert id="saveUser" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO users(username, password, name, gender, salt, locked, forbidden, createTime, updateTime, del)
+		VALUES (#{username}, #{password},#{name},#{gender},#{salt},#{locked},#{forbidden}, UNIX_TIMESTAMP()*1000, UNIX_TIMESTAMP()*1000, 0)
+	</insert>
+
+
+	<!-- update -->
+	<update id="updateUser" parameterType="User">
+		UPDATE users
+		<set>
+			<if test="null!=name">name = #{name},</if>
+			<if test="null!=gender">gender = #{gender},</if>
+			<if test="null!=password">password = #{password},</if>
+			<if test="null!=salt">salt = #{salt},</if>
+			<if test="null!=locked">locked = #{locked},</if>
+			<if test="null!=forbidden">forbidden = #{forbidden},</if>
+			<choose>
+				<when test="null!=updateTime">updateTime=#{updateTime},</when>
+				<otherwise>updateTime = UNIX_TIMESTAMP()*1000</otherwise>
+			</choose>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteUser" parameterType="String">
+		UPDATE users
+		SET del = 1
+		WHERE username = #{username}
+	</update>
+
+	<!-- delete -->
+	
+</mapper>

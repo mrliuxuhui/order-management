@@ -26,7 +26,8 @@ DROP TABLE IF EXISTS roles;
 CREATE TABLE roles(
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(50),
-  createTime BIGINT
+  createTime BIGINT,
+  del INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

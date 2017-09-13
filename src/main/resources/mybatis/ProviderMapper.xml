@@ -24,6 +24,9 @@
 				</when>
 			</choose>
 		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
 	</select>
 
 

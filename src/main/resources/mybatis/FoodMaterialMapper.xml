@@ -15,6 +15,9 @@
 			<if test="null!=operator">AND operator=#{operator}</if>
 
 		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
 	</select>
 
 

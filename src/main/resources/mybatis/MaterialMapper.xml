@@ -27,7 +27,7 @@
 	</resultMap>
 
 	<!-- select -->
-	<select id="getMaterialList" parameterType="HashMap" resultType="MaterialMap">
+	<select id="getMaterialList" parameterType="HashMap" resultMap="MaterialMap">
 		SELECT t1.*, t2.name AS categoryName, t3.cname AS unitCname, t3.ename AS unitEname
 		FROM material t1
 		LEFT JOIN material_category t2 ON t2.id = t1.categoryId
@@ -45,6 +45,9 @@
 				</when>
 			</choose>
 		</where>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
 	</select>
 
 
