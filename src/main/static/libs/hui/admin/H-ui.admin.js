@@ -260,8 +260,10 @@ $(function(){
 		mainCell:'.menu_dropdown dl dd',
 	});*/
 
+	/*$("#iframe_box").height($(".content-wrapper").height()-$("#Hui-tabNav").outerHeight()
+			-$(".main-footer").outerHeight()-$(".main-header").outerHeight()-5);*/
 	$("#iframe_box").height($(".content-wrapper").height()-$("#Hui-tabNav").outerHeight()
-			-$(".main-footer").outerHeight()-$(".main-header").outerHeight()-5);
+			-$(".main-header").outerHeight()-5);
 	
 	/*选项卡导航*/
 	$("ul.sidebar-menu").on("click","li.treeview a",function(){
