@@ -11,6 +11,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+    <!-- bootstrap validator -->
+    <link rel="stylesheet" href="../libs/bootstrapvalidator/css/bootstrapValidator.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../libs/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../libs/hui/Hui-iconfont/1.0.8/iconfont.css">
@@ -62,13 +64,13 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data Tables
-            <small>advanced tables</small>
+            菜单管理
+            <small>添加、删除、更新菜品</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Tables</a></li>
-            <li class="active">Data tables</li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+            <li><a href="#">基本信息管理</a></li>
+            <li class="active">菜单管理</li>
         </ol>
     </section>
 
@@ -77,9 +79,9 @@ desired effect
 
         <div class="box box-primary">
             <div class="box-header">
-                <div class="row pull-left col-lg-offset-0 col-lg-4">
-                    <div class="col-lg-6"><button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#modal-add" ><i class="fa fa-plus-circle"></i> 新增</button></div>
-                    <div class="col-lg-6"><button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modal-delete"><i class="fa fa-minus-circle"></i> 批量删除</button></div>
+                <div class="row pull-left col-lg-offset-0 col-lg-6 col-md-6 col-md-offset-0">
+                    <div class="col-lg-6 col-md-6"><button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#modal-add" ><i class="fa fa-plus-circle"></i> 新增</button></div>
+                    <div class="col-lg-6 col-md-6"><button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modal-del"><i class="fa fa-minus-circle"></i> 批量删除</button></div>
                 </div>
             </div>
             <!-- /.box-header -->
@@ -132,47 +134,92 @@ desired effect
     </section>
     <!-- /.content-wrapper -->
 
-    <div class="modal fade" id="modal-add">
+    <div class="modal fade" id="modal-add" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <form id="data-form" class="form-horizontal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新建菜品</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">菜名</label>
+                            <div class="col-sm-10 "><input type="text" class="form-control" id="name" placeholder="输入菜名" required></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="price" class="col-sm-2 control-label">单价</label>
+                            <div class="col-sm-10 ">
+                            <input type="text" class="form-control" id="price" placeholder="单价（元）" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit" class="col-sm-2 control-label">单位</label>
+                            <div class="col-sm-10 ">
+                            <select class="form-control" id="unit" required>
+                                <option value="">份</option>
+                            </select>
+                            </div>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryId" class="col-sm-2 control-label">所属类别</label>
+                            <div class="col-sm-10 ">
+                            <select class="form-control" id="categoryId" required>
+                                <option value="">凉菜</option>
+                            </select>
+                            </div>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="img" class="col-sm-2 control-label">图片</label>
+                            <div class="col-sm-10 ">
+                            <input type="file" class="form-control" id="img" placeholder="示例图片">
+                            </div>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="profile">简介</label>
+                            <textarea id="profile" class="form-control" rows="3" placeholder="输入100字以内简介..." maxlength="100"></textarea>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+            </form>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-del">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Default Modal</h4>
+                    <h4 class="modal-title">批量删除</h4>
                 </div>
                 <div class="modal-body">
-                    <p>One fine body&hellip;</p>
+                    <p>是否确认全部删除？</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">删除</button>
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-
-        <div class="modal fade" id="modal-delete">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Default Modal</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>One fine body&hellip;</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
     </div>
     <!-- /.modal -->
 
@@ -188,6 +235,7 @@ desired effect
 <!-- DataTables -->
 <script src="../libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../libs/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="../libs/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../libs/dist/js/adminlte.min.js"></script>
 <!-- art Template -->
@@ -211,7 +259,17 @@ desired effect
         //预编译模板
         //var render = template.compile(tpl);
 
-        table = $('#example1').DataTable({
+        $("#data-form").bootstrapValidator({
+            submitHandler: function (valiadtor, loginForm, submitButton) {
+                valiadtor.validate();
+                valiadtor.defaultSubmit();
+            },
+            fields:{
+
+            }
+        });
+
+        var table = $('#example1').DataTable({
             ajax: {
                 url: "/menu"
             },
@@ -240,7 +298,7 @@ desired effect
                         var context =
                         {
                             func: [
-                                {"name": "修改", "fn": "edit(\'" + c.name + "\',\'" + c.position + "\',\'" + c.salary + "\',\'" + c.start_date + "\',\'" + c.office + "\',\'" + c.extn + "\')", "type": "primary"},
+                                {"name": "修改", "fn": "edit(" + c + ")", "type": "primary"},
                                 {"name": "删除", "fn": "del(\'" + c.name + "\')", "type": "danger"}
                             ]
                         };
