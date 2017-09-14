@@ -1,4 +1,4 @@
-package com.flyingwillow.restaurant.mapper;
+package com.flyingwillow.restaurant.service;
 
 import com.flyingwillow.restaurant.domain.Menu;
 
@@ -6,19 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by liuxuhui on 2017/9/7.
+ * Created by 刘旭辉 on 2017/9/14.
  */
-public interface MenuMapper {
-
-    public List<Menu> getMenuList(Map<String, Object> params);
+public interface IMenuService {
+    public List<Menu> getMenuList(Map<String, Object> params, int page, int size);
 
     public Integer getMenuCount(Map<String, Object> params);
 
     public Menu getMenuById(Integer menuId);
 
-    public void saveMenu(Menu measurement);
+    public void saveMenu(Menu menu);
 
-    public void updateMenu(Menu measurement);
+    public void updateMenu(Menu menu);
 
     public void deleteMenu(Integer id);
 

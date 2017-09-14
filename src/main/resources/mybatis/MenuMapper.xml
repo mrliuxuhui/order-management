@@ -36,6 +36,31 @@
 			<if test="null!=id">AND t1.id=#{id}</if>
 			<if test="null!=categoryId">AND t1.categoryId=#{categoryId}</if>
 			<choose>
+				<when test="null!=startTime and null!=endTime">AND t1.updateTime BETWEEN #{startTime} AND #{endTime}</when>
+				<when test="null!=startTime">AND t1.updateTime >= #{startTime}</when>
+				<when test="null!=endTime">
+					<![CDATA[
+					AND t1.updateTime <= #{endTime}
+					]]>
+				</when>
+			</choose>
+		</where>
+		<if test="null!=sortMap">
+			ORDER BY
+			<foreach collection="sortMap" index="key" item="sort" separator=",">
+				${key} ${sort}
+			</foreach>
+		</if>
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+	<select id="getMenuCount" parameterType="HashMap" resultType="int">
+		SELECT COUNT(*)
+		FROM menu
+		<where>
+			<if test="null!=categoryId">AND categoryId=#{categoryId}</if>
+			<choose>
 				<when test="null!=startTime and null!=endTime">AND updateTime BETWEEN #{startTime} AND #{endTime}</when>
 				<when test="null!=startTime">AND updateTime >= #{startTime}</when>
 				<when test="null!=endTime">
@@ -45,9 +70,14 @@
 				</when>
 			</choose>
 		</where>
-		<if test="null!=start and null!=size">
-			LIMIT #{start},#{size}
-		</if>
+	</select>
+
+	<select id="getMenuById" parameterType="int" resultMap="MenuMap">
+		SELECT t1.*, t2.name AS categoryName, t3.cname AS unitCname, t3.ename AS unitEname
+		FROM menu t1
+		LEFT JOIN food_category t2 ON t2.id = t1.categoryId
+		LEFT JOIN measurement t3 ON t3.id = t1.unit
+		WHERE t1.id = #{menuId}
 	</select>
 
 
