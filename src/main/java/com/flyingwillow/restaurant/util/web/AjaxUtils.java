@@ -1,4 +1,4 @@
-package com.flyingwillow.restaurant.util;
+package com.flyingwillow.restaurant.util.web;
 
 import javax.servlet.http.HttpServletRequest;
 

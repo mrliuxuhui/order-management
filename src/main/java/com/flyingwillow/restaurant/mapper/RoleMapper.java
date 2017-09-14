@@ -12,6 +12,8 @@ public interface RoleMapper {
 
     public List<Role> getRoleList(Map<String, Object> params);
 
+    public List<String> getPermissionsByRole(Integer roleId);
+
     public void saveRole(Role role);
 
     public void updateRole(Role role);

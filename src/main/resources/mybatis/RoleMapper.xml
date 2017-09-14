@@ -17,6 +17,11 @@
 		</if>
 	</select>
 
+	<select id="getPermissionsByRole" parameterType="int" resultType="String">
+		SELECT permission FROM roles_permissions
+		WHERE roleId = #{roleId}
+	</select>
+
 
 	<!-- insert -->
 	<insert id="saveRole" parameterType="Role" keyProperty="id" useGeneratedKeys="true">

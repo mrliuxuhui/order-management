@@ -29,6 +29,19 @@
 		</if>
 	</select>
 
+	<select id="getUserByUsername" parameterType="String" resultType="User">
+		SELECT * FROM users
+		WHERE username = #{username}
+	</select>
+
+	<select id="getRolesByUsername" parameterType="String" resultType="Role">
+		SELECT t1.*
+		FROM roles t1
+		LEFT JOIN user_roles t2 ON t1.id = t2.roleId
+		WHERE t1.username = #{username}
+
+	</select>
+
 
 	<!-- insert -->
 	<insert id="saveUser" parameterType="User" keyProperty="id" useGeneratedKeys="true">
