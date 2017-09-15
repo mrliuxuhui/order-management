@@ -37,7 +37,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">登陆系统</p>
 
-        <form action="../../index2.html" method="post" commandName="formDto">
+        <form action="/login" method="post" commandName="formDto">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" placeholder="用户名" name="username">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>

@@ -26,13 +26,21 @@ public class DateBigintHandler implements TypeHandler<Date> {
     @Override
     public Date getResult(ResultSet rs, String columnName) throws SQLException {
         BigDecimal bigDecimal = rs.getBigDecimal(columnName);
-        return new Date(bigDecimal.toBigInteger().longValue());
+        if(null==bigDecimal){
+            return null;
+        }else {
+            return new Date(bigDecimal.toBigInteger().longValue());
+        }
     }
 
     @Override
     public Date getResult(ResultSet rs, int columnIndex) throws SQLException {
         BigDecimal bigDecimal = rs.getBigDecimal(columnIndex);
-        return new Date(bigDecimal.toBigInteger().longValue());
+        if(null==bigDecimal){
+            return null;
+        }else {
+            return new Date(bigDecimal.toBigInteger().longValue());
+        }
     }
 
     @Override

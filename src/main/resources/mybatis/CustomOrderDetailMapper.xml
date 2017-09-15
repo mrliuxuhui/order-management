@@ -4,7 +4,7 @@
     "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.flyingwillow.restaurant.mapper.CustomOrderDetailMapper">
 
-	<resultMap id="PurchaseDetailMap" type="PurchaseDetail">
+	<resultMap id="CustomOrderDetailMap" type="CustomOrderDetail">
 		<id column="id" property="id"/>
 		<result column="orderId" property="orderId"/>
 		<result column="menuId" property="menuId"/>

@@ -17,6 +17,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -68,7 +69,7 @@ public class MyShiroRealm extends AuthorizingRealm implements Realm, Initializin
 
         SimpleAuthenticationInfo info = null;
         if (users != null) {
-            info = new SimpleAuthenticationInfo(username, users.getPassword().toCharArray(), getName());
+            info = new SimpleAuthenticationInfo(username, users.getPassword().toCharArray(), ByteSource.Util.bytes(users.getSalt()), getName());
         }
 
         return info;

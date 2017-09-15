@@ -17,7 +17,8 @@ public class PasswordHelperTest {
     @Test
     public void testCryptPassword() throws Exception {
 
-        String salt = PasswordHelper.randomSalt();
+        //String salt = PasswordHelper.randomSalt();
+        String salt = "63ba6bb5e19948362b0e8389734a1b7e";
         System.out.println("salt:"+salt);
 
         System.out.println();
