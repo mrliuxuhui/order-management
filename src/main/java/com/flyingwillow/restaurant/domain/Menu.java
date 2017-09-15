@@ -19,99 +19,111 @@ public class Menu {
     private Measurement measurement;
     private FoodCategory foodCategory;
 
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Measurement getMeasurement() {
-        return measurement;
-    }
-
-    public void setMeasurement(Measurement measurement) {
-        this.measurement = measurement;
-    }
-
-    public FoodCategory getFoodCategory() {
-        return foodCategory;
-    }
-
-    public void setFoodCategory(FoodCategory foodCategory) {
-        this.foodCategory = foodCategory;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Menu setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Menu setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public Menu setImg(String img) {
         this.img = img;
+        return this;
     }
 
     public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public Menu setPrice(Float price) {
         this.price = price;
+        return this;
     }
 
     public Integer getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public Menu setUnit(Integer unit) {
         this.unit = unit;
+        return this;
     }
 
     public String getProfile() {
         return profile;
     }
 
-    public void setProfile(String profile) {
+    public Menu setProfile(String profile) {
         this.profile = profile;
+        return this;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public Menu setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Menu setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public Menu setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public Menu setOperator(String operator) {
         this.operator = operator;
+        return this;
+    }
+
+    public Measurement getMeasurement() {
+        return measurement;
+    }
+
+    public Menu setMeasurement(Measurement measurement) {
+        this.measurement = measurement;
+        return this;
+    }
+
+    public FoodCategory getFoodCategory() {
+        return foodCategory;
+    }
+
+    public Menu setFoodCategory(FoodCategory foodCategory) {
+        this.foodCategory = foodCategory;
+        return this;
     }
 }

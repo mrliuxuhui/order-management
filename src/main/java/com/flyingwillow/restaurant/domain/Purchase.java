@@ -24,95 +24,107 @@ public class Purchase {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Purchase setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public Purchase setNumber(String number) {
         this.number = number;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Purchase setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public Date getExpectDate() {
         return expectDate;
     }
 
-    public void setExpectDate(Date expectDate) {
+    public Purchase setExpectDate(Date expectDate) {
         this.expectDate = expectDate;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public Purchase setOperator(String operator) {
         this.operator = operator;
+        return this;
     }
 
     public Float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Float totalPrice) {
+    public Purchase setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
+        return this;
     }
 
     public Float getActualPrice() {
         return actualPrice;
     }
 
-    public void setActualPrice(Float actualPrice) {
+    public Purchase setActualPrice(Float actualPrice) {
         this.actualPrice = actualPrice;
+        return this;
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public Purchase setStatus(Integer status) {
         this.status = status;
+        return this;
     }
 
     public Date getCompleteTime() {
         return completeTime;
     }
 
-    public void setCompleteTime(Date completeTime) {
+    public Purchase setCompleteTime(Date completeTime) {
         this.completeTime = completeTime;
+        return this;
     }
 
     public Float getCompletePercent() {
         return completePercent;
     }
 
-    public void setCompletePercent(Float completePercent) {
+    public Purchase setCompletePercent(Float completePercent) {
         this.completePercent = completePercent;
+        return this;
     }
 
     public Integer getDel() {
         return del;
     }
 
-    public void setDel(Integer del) {
+    public Purchase setDel(Integer del) {
         this.del = del;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Purchase setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 }

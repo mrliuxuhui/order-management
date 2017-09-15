@@ -26,119 +26,134 @@ public class CustomOrder {
         return id;
     }
 
-    public void setId(Long id) {
+    public CustomOrder setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public CustomOrder setNumber(String number) {
         this.number = number;
+        return this;
     }
 
     public Integer getTableNo() {
         return tableNo;
     }
 
-    public void setTableNo(Integer tableNo) {
+    public CustomOrder setTableNo(Integer tableNo) {
         this.tableNo = tableNo;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public CustomOrder setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getReceiveTime() {
         return receiveTime;
     }
 
-    public void setReceiveTime(Date receiveTime) {
+    public CustomOrder setReceiveTime(Date receiveTime) {
         this.receiveTime = receiveTime;
+        return this;
     }
 
     public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(String receiver) {
+    public CustomOrder setReceiver(String receiver) {
         this.receiver = receiver;
+        return this;
     }
 
     public Date getCompleteTime() {
         return completeTime;
     }
 
-    public void setCompleteTime(Date completeTime) {
+    public CustomOrder setCompleteTime(Date completeTime) {
         this.completeTime = completeTime;
+        return this;
     }
 
     public String getCompleteOperator() {
         return completeOperator;
     }
 
-    public void setCompleteOperator(String completeOperator) {
+    public CustomOrder setCompleteOperator(String completeOperator) {
         this.completeOperator = completeOperator;
+        return this;
     }
 
     public Float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Float totalPrice) {
+    public CustomOrder setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
+        return this;
     }
 
     public Float getActualPrice() {
         return actualPrice;
     }
 
-    public void setActualPrice(Float actualPrice) {
+    public CustomOrder setActualPrice(Float actualPrice) {
         this.actualPrice = actualPrice;
+        return this;
     }
 
     public Date getCheckTime() {
         return checkTime;
     }
 
-    public void setCheckTime(Date checkTime) {
+    public CustomOrder setCheckTime(Date checkTime) {
         this.checkTime = checkTime;
+        return this;
     }
 
     public String getCheckOperator() {
         return checkOperator;
     }
 
-    public void setCheckOperator(String checkOperator) {
+    public CustomOrder setCheckOperator(String checkOperator) {
         this.checkOperator = checkOperator;
+        return this;
     }
 
     public Boolean getPushed() {
         return pushed;
     }
 
-    public void setPushed(Boolean pushed) {
+    public CustomOrder setPushed(Boolean pushed) {
         this.pushed = pushed;
+        return this;
     }
 
     public Boolean getRush() {
         return rush;
     }
 
-    public void setRush(Boolean rush) {
+    public CustomOrder setRush(Boolean rush) {
         this.rush = rush;
+        return this;
     }
 
     public Integer getDel() {
         return del;
     }
 
-    public void setDel(Integer del) {
+    public CustomOrder setDel(Integer del) {
         this.del = del;
+        return this;
     }
 }

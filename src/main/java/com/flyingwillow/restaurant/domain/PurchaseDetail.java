@@ -26,127 +26,143 @@ public class PurchaseDetail {
         return id;
     }
 
-    public void setId(Long id) {
+    public PurchaseDetail setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public Integer getPurchaseId() {
         return purchaseId;
     }
 
-    public void setPurchaseId(Integer purchaseId) {
+    public PurchaseDetail setPurchaseId(Integer purchaseId) {
         this.purchaseId = purchaseId;
+        return this;
     }
 
     public Integer getMaterialId() {
         return materialId;
     }
 
-    public void setMaterialId(Integer materialId) {
+    public PurchaseDetail setMaterialId(Integer materialId) {
         this.materialId = materialId;
+        return this;
     }
 
     public Float getExpectMount() {
         return expectMount;
     }
 
-    public void setExpectMount(Float expectMount) {
+    public PurchaseDetail setExpectMount(Float expectMount) {
         this.expectMount = expectMount;
+        return this;
     }
 
     public Float getActualMount() {
         return actualMount;
     }
 
-    public void setActualMount(Float actualMount) {
+    public PurchaseDetail setActualMount(Float actualMount) {
         this.actualMount = actualMount;
+        return this;
     }
 
     public Integer getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public PurchaseDetail setUnit(Integer unit) {
         this.unit = unit;
+        return this;
     }
 
     public Integer getProviderId() {
         return providerId;
     }
 
-    public void setProviderId(Integer providerId) {
+    public PurchaseDetail setProviderId(Integer providerId) {
         this.providerId = providerId;
+        return this;
     }
 
     public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public PurchaseDetail setPrice(Float price) {
         this.price = price;
+        return this;
     }
 
     public Float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Float totalPrice) {
+    public PurchaseDetail setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
+        return this;
     }
 
     public Float getActualPrice() {
         return actualPrice;
     }
 
-    public void setActualPrice(Float actualPrice) {
+    public PurchaseDetail setActualPrice(Float actualPrice) {
         this.actualPrice = actualPrice;
+        return this;
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public PurchaseDetail setStatus(Integer status) {
         this.status = status;
+        return this;
     }
 
     public Integer getDel() {
         return del;
     }
 
-    public void setDel(Integer del) {
+    public PurchaseDetail setDel(Integer del) {
         this.del = del;
+        return this;
     }
 
     public Purchase getPurchase() {
         return purchase;
     }
 
-    public void setPurchase(Purchase purchase) {
+    public PurchaseDetail setPurchase(Purchase purchase) {
         this.purchase = purchase;
+        return this;
     }
 
     public Material getMaterial() {
         return material;
     }
 
-    public void setMaterial(Material material) {
+    public PurchaseDetail setMaterial(Material material) {
         this.material = material;
+        return this;
     }
 
     public Measurement getMeasurement() {
         return measurement;
     }
 
-    public void setMeasurement(Measurement measurement) {
+    public PurchaseDetail setMeasurement(Measurement measurement) {
         this.measurement = measurement;
+        return this;
     }
 
     public Provider getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public PurchaseDetail setProvider(Provider provider) {
         this.provider = provider;
+        return this;
     }
 }

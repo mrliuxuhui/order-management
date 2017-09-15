@@ -14,23 +14,26 @@ public class Role {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Role setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Role setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Role setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 }

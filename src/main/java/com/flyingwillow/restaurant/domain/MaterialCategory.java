@@ -18,47 +18,53 @@ public class MaterialCategory {
         return id;
     }
 
-    public void setId(Integer id) {
+    public MaterialCategory setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public MaterialCategory setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getProfile() {
         return profile;
     }
 
-    public void setProfile(String profile) {
+    public MaterialCategory setProfile(String profile) {
         this.profile = profile;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public MaterialCategory setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public MaterialCategory setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public MaterialCategory setOperator(String operator) {
         this.operator = operator;
+        return this;
     }
 }

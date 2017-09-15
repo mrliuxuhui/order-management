@@ -21,63 +21,71 @@ public class FoodMaterial {
         return id;
     }
 
-    public void setId(Integer id) {
+    public FoodMaterial setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public Integer getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Integer menuId) {
+    public FoodMaterial setMenuId(Integer menuId) {
         this.menuId = menuId;
+        return this;
     }
 
     public Integer getMaterialId() {
         return materialId;
     }
 
-    public void setMaterialId(Integer materialId) {
+    public FoodMaterial setMaterialId(Integer materialId) {
         this.materialId = materialId;
+        return this;
     }
 
     public Float getMount() {
         return mount;
     }
 
-    public void setMount(Float mount) {
+    public FoodMaterial setMount(Float mount) {
         this.mount = mount;
+        return this;
     }
 
     public Integer getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public FoodMaterial setUnit(Integer unit) {
         this.unit = unit;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public FoodMaterial setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public FoodMaterial setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public FoodMaterial setOperator(String operator) {
         this.operator = operator;
+        return this;
     }
 }

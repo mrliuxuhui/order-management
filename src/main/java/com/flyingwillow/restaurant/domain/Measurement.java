@@ -18,47 +18,53 @@ public class Measurement {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Measurement setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getCname() {
         return cname;
     }
 
-    public void setCname(String cname) {
+    public Measurement setCname(String cname) {
         this.cname = cname;
+        return this;
     }
 
     public String getEname() {
         return ename;
     }
 
-    public void setEname(String ename) {
+    public Measurement setEname(String ename) {
         this.ename = ename;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Measurement setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public Measurement setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public Measurement setOperator(String operator) {
         this.operator = operator;
+        return this;
     }
 }

@@ -19,99 +19,111 @@ public class Material {
     private MaterialCategory materialCategory;
     private Measurement measurement;
 
-    public Measurement getMeasurement() {
-        return measurement;
-    }
-
-    public void setMeasurement(Measurement measurement) {
-        this.measurement = measurement;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public MaterialCategory getMaterialCategory() {
-        return materialCategory;
-    }
-
-    public void setMaterialCategory(MaterialCategory materialCategory) {
-        this.materialCategory = materialCategory;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Material setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Material setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public Material setImg(String img) {
         this.img = img;
+        return this;
     }
 
     public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public Material setPrice(Float price) {
         this.price = price;
+        return this;
     }
 
     public Integer getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public Material setUnit(Integer unit) {
         this.unit = unit;
+        return this;
     }
 
     public String getProfile() {
         return profile;
     }
 
-    public void setProfile(String profile) {
+    public Material setProfile(String profile) {
         this.profile = profile;
+        return this;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public Material setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Material setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public Material setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public Material setOperator(String operator) {
         this.operator = operator;
+        return this;
+    }
+
+    public MaterialCategory getMaterialCategory() {
+        return materialCategory;
+    }
+
+    public Material setMaterialCategory(MaterialCategory materialCategory) {
+        this.materialCategory = materialCategory;
+        return this;
+    }
+
+    public Measurement getMeasurement() {
+        return measurement;
+    }
+
+    public Material setMeasurement(Measurement measurement) {
+        this.measurement = measurement;
+        return this;
     }
 }

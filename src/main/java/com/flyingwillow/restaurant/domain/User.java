@@ -22,79 +22,89 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
+    public User setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public User setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public User setGender(String gender) {
         this.gender = gender;
+        return this;
     }
 
     public String getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public User setSalt(String salt) {
         this.salt = salt;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public User setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public User setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public Boolean getLocked() {
         return locked;
     }
 
-    public void setLocked(Boolean locked) {
+    public User setLocked(Boolean locked) {
         this.locked = locked;
+        return this;
     }
 
     public Boolean getForbidden() {
         return forbidden;
     }
 
-    public void setForbidden(Boolean forbidden) {
+    public User setForbidden(Boolean forbidden) {
         this.forbidden = forbidden;
+        return this;
     }
 
     public Integer getDel() {
         return del;
     }
 
-    public void setDel(Integer del) {
+    public User setDel(Integer del) {
         this.del = del;
+        return this;
     }
 }

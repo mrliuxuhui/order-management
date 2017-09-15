@@ -17,47 +17,53 @@ public class FoodCategory {
         return id;
     }
 
-    public void setId(Integer id) {
+    public FoodCategory setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public FoodCategory setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getProfile() {
         return profile;
     }
 
-    public void setProfile(String profile) {
+    public FoodCategory setProfile(String profile) {
         this.profile = profile;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public FoodCategory setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public FoodCategory setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public FoodCategory setOperator(String operator) {
         this.operator = operator;
+        return this;
     }
 }

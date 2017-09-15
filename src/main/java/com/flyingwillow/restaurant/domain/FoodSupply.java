@@ -10,7 +10,7 @@ public class FoodSupply {
     private Integer menuId;
     private Integer mount;
     private Integer unit;
-    private Integer left;
+    private Integer remaining;
     private Date supplyDate;
     private Date createTime;
     private String operator;
@@ -19,63 +19,71 @@ public class FoodSupply {
         return id;
     }
 
-    public void setId(Integer id) {
+    public FoodSupply setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public Integer getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Integer menuId) {
+    public FoodSupply setMenuId(Integer menuId) {
         this.menuId = menuId;
+        return this;
     }
 
     public Integer getMount() {
         return mount;
     }
 
-    public void setMount(Integer mount) {
+    public FoodSupply setMount(Integer mount) {
         this.mount = mount;
+        return this;
     }
 
     public Integer getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public FoodSupply setUnit(Integer unit) {
         this.unit = unit;
+        return this;
     }
 
-    public Integer getLeft() {
-        return left;
+    public Integer getRemaining() {
+        return remaining;
     }
 
-    public void setLeft(Integer left) {
-        this.left = left;
+    public FoodSupply setRemaining(Integer remaining) {
+        this.remaining = remaining;
+        return this;
     }
 
     public Date getSupplyDate() {
         return supplyDate;
     }
 
-    public void setSupplyDate(Date supplyDate) {
+    public FoodSupply setSupplyDate(Date supplyDate) {
         this.supplyDate = supplyDate;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public FoodSupply setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public FoodSupply setOperator(String operator) {
         this.operator = operator;
+        return this;
     }
 }

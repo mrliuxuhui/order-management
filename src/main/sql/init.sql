@@ -115,7 +115,7 @@ CREATE TABLE food_supply(
   menuId INT,
   mount  INT,
   unit   INT,
-  left   INT,
+  remaining   INT,
   supplyDate  DATE,
   createTime BIGINT,
   operator VARCHAR(50)

@@ -18,91 +18,102 @@ public class Provider {
     private Date updateTime;
     private String operator;
 
-    public Integer getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(Integer regionId) {
-        this.regionId = regionId;
-    }
-
-    public Integer getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
-    }
-
-    public Integer getProvinceId() {
-        return provinceId;
-    }
-
-    public void setProvinceId(Integer provinceId) {
-        this.provinceId = provinceId;
-    }
-
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public Provider setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Provider setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public Provider setAddress(String address) {
         this.address = address;
+        return this;
     }
 
     public String getContactor() {
         return contactor;
     }
 
-    public void setContactor(String contactor) {
+    public Provider setContactor(String contactor) {
         this.contactor = contactor;
+        return this;
     }
 
     public String getTel() {
         return tel;
     }
 
-    public void setTel(String tel) {
+    public Provider setTel(String tel) {
         this.tel = tel;
+        return this;
+    }
+
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public Provider setRegionId(Integer regionId) {
+        this.regionId = regionId;
+        return this;
+    }
+
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    public Provider setCityId(Integer cityId) {
+        this.cityId = cityId;
+        return this;
+    }
+
+    public Integer getProvinceId() {
+        return provinceId;
+    }
+
+    public Provider setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Provider setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public Provider setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public String getOperator() {
         return operator;
     }
 
-    public void setOperator(String operator) {
+    public Provider setOperator(String operator) {
         this.operator = operator;
+        return this;
     }
 }

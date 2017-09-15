@@ -23,8 +23,8 @@
 
 	<!-- insert -->
 	<insert id="saveFoodSupply" parameterType="FoodSupply" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO food_supply(menuId, mount, unit, left, supplyDate, createTime, operator)
-		VALUES (#{menuId}, #{mount}, #{unit}, #{left}, #{supplyDate}, UNIX_TIMESTAMP()*1000, #{operator})
+		INSERT INTO food_supply(menuId, mount, unit, remaining, supplyDate, createTime, operator)
+		VALUES (#{menuId}, #{mount}, #{unit}, #{remaining}, #{supplyDate}, UNIX_TIMESTAMP()*1000, #{operator})
 	</insert>
 
 
@@ -35,7 +35,7 @@
 			<if test="null!=menuId">menuId = #{menuId},</if>
 			<if test="null!=mount">mount = #{mount},</if>
 			<if test="null!=unit">unit = #{unit},</if>
-			<if test="null!=left">left = #{left},</if>
+			<if test="null!=remaining">remaining = #{remaining},</if>
 			<if test="null!=supplyDate">supplyDate = #{supplyDate},</if>
 			<if test="null!=operator">operator = #{operator},</if>
 		</set>
