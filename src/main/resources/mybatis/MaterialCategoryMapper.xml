@@ -26,6 +26,30 @@
 		</if>
 	</select>
 
+	<select id="getMaterialCategoryCount" parameterType="HashMap" resultType="int">
+		SELECT COUNT(*)
+		FROM material_category
+		<where>
+			<if test="null!=id">AND id=#{id}</if>
+			<if test="null!=operator">AND operator=#{operator}</if>
+			<choose>
+				<when test="null!=startTime and null!=endTime">AND updateTime BETWEEN #{startTime} AND #{endTime}</when>
+				<when test="null!=startTime">AND updateTime >= #{startTime}</when>
+				<when test="null!=endTime">
+					<![CDATA[
+					AND updateTime <= #{endTime}
+					]]>
+				</when>
+			</choose>
+		</where>
+	</select>
+
+	<select id="getMaterialCategoryById" parameterType="int" resultType="MaterialCategory">
+		SELECT *
+		FROM material_category
+		WHERE id = #{categoryId}
+	</select>
+
 
 	<!-- insert -->
 	<insert id="saveMaterialCategory" parameterType="MaterialCategory" keyProperty="id" useGeneratedKeys="true">
@@ -53,6 +77,14 @@
 	<delete id="deleteMaterialCategory" parameterType="int">
 		DELETE FROM material_category
 		WHERE id = #{id}
+	</delete>
+
+	<delete id="deleteMaterialCategoryByIds" parameterType="Map">
+		DELETE FROM material_category
+		WHERE id IN
+		<foreach collection="idList" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
 	</delete>
 	
 </mapper>

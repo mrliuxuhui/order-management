@@ -1,4 +1,4 @@
-package com.flyingwillow.restaurant.mapper;
+package com.flyingwillow.restaurant.service;
 
 import com.flyingwillow.restaurant.domain.MaterialCategory;
 
@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by liuxuhui on 2017/9/7.
+ * Created by 刘旭辉 on 2017/9/14.
  */
-public interface MaterialCategoryMapper {
-
-    public List<MaterialCategory> getMaterialCategoryList(Map<String, Object> params);
+public interface IMaterialCategoryService {
+    public List<MaterialCategory> getMaterialCategoryList(Map<String, Object> params, int page, int size);
 
     public Integer getMaterialCategoryCount(Map<String, Object> params);
 

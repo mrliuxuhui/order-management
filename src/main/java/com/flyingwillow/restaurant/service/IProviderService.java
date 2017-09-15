@@ -1,4 +1,4 @@
-package com.flyingwillow.restaurant.mapper;
+package com.flyingwillow.restaurant.service;
 
 import com.flyingwillow.restaurant.domain.Provider;
 
@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by liuxuhui on 2017/9/7.
+ * Created by 刘旭辉 on 2017/9/14.
  */
-public interface ProviderMapper {
-
-    public List<Provider> getProviderList(Map<String, Object> params);
+public interface IProviderService {
+    public List<Provider> getProviderList(Map<String, Object> params, int page, int size);
 
     public Integer getProviderCount(Map<String, Object> params);
 
