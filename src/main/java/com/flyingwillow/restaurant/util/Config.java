@@ -83,8 +83,13 @@ public class Config {
 	
 	public static String gets(String configKey, String defaultValue) {
         Map row = getInstance().getRow();
-        if(row != null)
-          return (String) row.get(configKey);
+        if(row != null){
+			String value = (String) row.get(configKey);
+			if(StringUtils.isNotBlank(value)){
+				return value;
+			}
+		}
+
         
         return defaultValue;
     }
@@ -99,6 +104,18 @@ public class Config {
 
 		
 		return 0;
+	}
+
+	public static int getInt(String configKey, int defaultValue){
+		Map row = getInstance().getRow();
+		if(row != null){
+			String value = (String) row.get(configKey);
+			if(StringUtils.isNotBlank(value)&&value.matches("\\d+")){
+				return Integer.parseInt(value);
+			}
+
+		}
+		return defaultValue;
 	}
 
     public static String getProjectRootDir(){

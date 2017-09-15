@@ -1,6 +1,6 @@
 package com.flyingwillow.restaurant.httpclient;
 
-import com.netease.auto.spring.SpringUtil;
+import com.flyingwillow.restaurant.spring.SpringUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;

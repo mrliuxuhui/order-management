@@ -46,8 +46,8 @@ public class MyShiroRealm extends AuthorizingRealm implements Realm, Initializin
 
         for (Role role : roles) {
             info.addRole(role.getName());
-            for (String permissions : userService.getPermissionsByRole(role.getId())) {
-                info.addStringPermission(permissions);
+            for (String permission : userService.getPermissionsByRole(role.getId())) {
+                info.addStringPermission(permission);
             }
         }
 

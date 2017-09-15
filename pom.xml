@@ -417,10 +417,10 @@
                 <directory>${basedir}/src/main/template</directory>
                 <targetPath>${basedir}/src/main/web/WEB-INF/template</targetPath>
             </resource>
-            <resource>
+            <!--<resource>
                 <directory>${basedir}/src/main/static</directory>
                 <targetPath>${basedir}/src/main/web/static</targetPath>
-            </resource>
+            </resource>-->
             <resource>
                 <directory>${basedir}/src/main/java</directory>
                 <excludes>
