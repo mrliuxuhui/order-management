@@ -31,16 +31,22 @@
        </bean>-->
 
        <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+              <property name="poolConfig" ref="jedisPoolConfig"/>
               <property name="hostName" value="${redis.host}"/>
               <property name="port" value="${redis.port}"/>
+              <property name="usePool" value="true"/>
               <property name="password" value="h6TKTNccTGqn"/>
               <property name="timeout" value="30000"/>
        </bean>
 
        <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
               <property name="connectionFactory" ref="connectionFactory"/>
-              <property name="keySerializer" value="org.springframework.data.redis.serializer.StringRedisSerializer"/>
-              <property name="valueSerializer" value="com.flyingwillow.restaurant.util.serializer.KryoSerialize"/>
+              <property name="keySerializer">
+                     <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+              </property>
+              <property name="valueSerializer">
+                     <bean class="com.flyingwillow.restaurant.util.serializer.KryoSerializer"/>
+              </property>
        </bean>
 
 </beans>

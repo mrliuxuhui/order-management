@@ -30,7 +30,7 @@
     <!-- xss 过滤 -->
     <filter>
         <filter-name>xssFilter</filter-name>
-        <filter-class>com.netease.auto.filter.XSSFilter</filter-class>
+        <filter-class>com.flyingwillow.restaurant.filter.XSSFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>xssFilter</filter-name>
@@ -63,7 +63,7 @@
 
     <servlet-mapping>
         <servlet-name>springMVC</servlet-name>
-        <url-pattern>*.action</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
 

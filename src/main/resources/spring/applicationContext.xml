@@ -15,6 +15,8 @@
 
 	<import resource="spring_beans.xml"/>
 
+    <import resource="spring_db_mysql.xml"/>
+
     <import resource="spring_mybatis.xml"/>
 
 	<import resource="springContext_thread.xml"/>
