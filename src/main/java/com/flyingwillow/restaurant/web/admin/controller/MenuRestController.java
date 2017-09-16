@@ -1,5 +1,6 @@
 package com.flyingwillow.restaurant.web.admin.controller;
 
+import com.flyingwillow.restaurant.domain.FieldOrder;
 import com.flyingwillow.restaurant.domain.Menu;
 import com.flyingwillow.restaurant.service.IMenuService;
 import com.flyingwillow.restaurant.util.web.Constants;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,12 +47,30 @@ public class MenuRestController {
             total = menuService.getMenuCount(null);
         }else{
 
+            String search = param.getSearch();
+            HashMap<String,Object> query = new HashMap<>();
+            if(StringUtils.isNotBlank(search)){
+                if(search.matches("\\d+")){
+                    query.put("id",Integer.parseInt(search));
+                }else{
+                    query.put("name",search);
+                }
+            }
+
+            List<FieldOrder> orders = param.getOrder();
+            if(null!=orders&&orders.size()>0){
+                query.put("orders",orders);
+            }
+
+            list = menuService.getMenuList(query,param.getStart(),param.getLength());
+            total = menuService.getMenuCount(query);
+
         }
 
         if(null==list){
             return new ResponseEntity<DataTableResponse<Menu>>(HttpStatus.NO_CONTENT);
         }else{
-            DataTableResponse<Menu> response = new DataTableResponse<Menu>(param.getDraw(),total,total,list);
+            DataTableResponse<Menu> response = new DataTableResponse<Menu>(null!=param?param.getDraw():1,total,total,list);
             return new ResponseEntity<DataTableResponse<Menu>>(response,HttpStatus.OK);
         }
     }
@@ -69,7 +89,7 @@ public class MenuRestController {
     }
 
     @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.PUT)
-    public ResponseEntity<Menu> updateMenu(@PathVariable Integer menuId, @RequestBody Menu menu){
+    public ResponseEntity<Menu> updateMenu(@PathVariable Integer menuId, Menu menu){
 
         if(null==menuId){
             return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);
@@ -80,7 +100,7 @@ public class MenuRestController {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.POST)
-    public ResponseEntity<Void> createMenu(@RequestBody Menu menu, UriComponentsBuilder ucBuilder){
+    public ResponseEntity<Void> createMenu(Menu menu, UriComponentsBuilder ucBuilder){
 
         menuService.saveMenu(menu);
 

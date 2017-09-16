@@ -12,8 +12,8 @@
 		<result column="unit" property="unit"/>
 		<result column="profile" property="profile"/>
 		<result column="categoryId" property="categoryId"/>
-		<result column="createTime" property="createTime"/>
-		<result column="updateTime" property="updateTime"/>
+		<result column="createTime" property="createTime" javaType="Date" jdbcType="BIGINT"/>
+		<result column="updateTime" property="updateTime" javaType="Date" jdbcType="BIGINT"/>
 		<result column="operator" property="operator"/>
 		<association property="measurement" javaType="Measurement">
 			<id column="unit" property="id"/>
@@ -34,6 +34,7 @@
 		LEFT JOIN measurement t3 ON t3.id = t1.unit
 		<where>
 			<if test="null!=id">AND t1.id=#{id}</if>
+			<if test="null!=name">AND t1.name=#{name}</if>
 			<if test="null!=categoryId">AND t1.categoryId=#{categoryId}</if>
 			<choose>
 				<when test="null!=startTime and null!=endTime">AND t1.updateTime BETWEEN #{startTime} AND #{endTime}</when>
@@ -45,10 +46,10 @@
 				</when>
 			</choose>
 		</where>
-		<if test="null!=sortMap">
+		<if test="null!=orders">
 			ORDER BY
-			<foreach collection="sortMap" index="key" item="sort" separator=",">
-				${key} ${sort}
+			<foreach collection="orders" item="sort" separator=",">
+				${sort.field} ${sort.dir}
 			</foreach>
 		</if>
 		<if test="null!=start and null!=size">
@@ -100,7 +101,7 @@
 			<if test="null!=categoryId">categoryId = #{categoryId},</if>
 			<if test="null!=operator">operator = #{operator},</if>
 			<choose>
-				<when test="null!=updateTime">updateTime=#{updateTime},</when>
+				<when test="null!=updateTime">updateTime=#{updateTime,javaType=Date,jdbcType=BIGINT},</when>
 				<otherwise>updateTime = UNIX_TIMESTAMP()*1000</otherwise>
 			</choose>
 		</set>

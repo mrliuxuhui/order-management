@@ -45,6 +45,12 @@
 				</when>
 			</choose>
 		</where>
+		<if test="null!=orders">
+			ORDER BY
+			<foreach collection="orders" item="sort" separator=",">
+				${sort.field} ${sort.dir}
+			</foreach>
+		</if>
 		<if test="null!=start and null!=size">
 			LIMIT #{start},#{size}
 		</if>

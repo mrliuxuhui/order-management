@@ -21,13 +21,13 @@ public class FoodCategoryServiceImpl implements IFoodCategoryService{
     private FoodCategoryMapper foodCategoryMapper;
 
     @Override
-    public List<FoodCategory> getFoodCategoryList(Map<String, Object> params, int page, int size) {
-        page = page>0?page:1;
+    public List<FoodCategory> getFoodCategoryList(Map<String, Object> params, int start, int size) {
+        start = start>0?start:1;
         size = size>0?size: Constants.PAGE_LENGTH;
         if(null==params){
             params = new HashMap<String,Object>();
         }
-        params.put("start",(page-1)*size);
+        params.put("start",start);
         params.put("size",size);
         return foodCategoryMapper.getFoodCategoryList(params);
     }

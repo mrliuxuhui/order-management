@@ -1,5 +1,6 @@
 package com.flyingwillow.restaurant.mybatis.handler;
 
+import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
@@ -17,15 +18,16 @@ import java.util.Date;
  */
 @MappedTypes(Date.class)
 @MappedJdbcTypes(JdbcType.BIGINT)
-public class DateBigintHandler implements TypeHandler<Date> {
+public class DateBigintHandler extends BaseTypeHandler<Date> {
+
     @Override
-    public void setParameter(PreparedStatement ps, int i, Date parameter, JdbcType jdbcType) throws SQLException {
-        ps.setBigDecimal(i, BigDecimal.valueOf(parameter.getTime()));
+    public void setNonNullParameter(PreparedStatement preparedStatement, int i, Date date, JdbcType jdbcType) throws SQLException {
+        preparedStatement.setBigDecimal(i, BigDecimal.valueOf(date.getTime()));
     }
 
     @Override
-    public Date getResult(ResultSet rs, String columnName) throws SQLException {
-        BigDecimal bigDecimal = rs.getBigDecimal(columnName);
+    public Date getNullableResult(ResultSet resultSet, String s) throws SQLException {
+        BigDecimal bigDecimal = resultSet.getBigDecimal(s);
         if(null==bigDecimal){
             return null;
         }else {
@@ -34,8 +36,8 @@ public class DateBigintHandler implements TypeHandler<Date> {
     }
 
     @Override
-    public Date getResult(ResultSet rs, int columnIndex) throws SQLException {
-        BigDecimal bigDecimal = rs.getBigDecimal(columnIndex);
+    public Date getNullableResult(ResultSet resultSet, int i) throws SQLException {
+        BigDecimal bigDecimal = resultSet.getBigDecimal(i);
         if(null==bigDecimal){
             return null;
         }else {
@@ -44,7 +46,7 @@ public class DateBigintHandler implements TypeHandler<Date> {
     }
 
     @Override
-    public Date getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return new Date(cs.getLong(columnIndex));
+    public Date getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
+        return new Date(callableStatement.getLong(i));
     }
 }
