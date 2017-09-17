@@ -37,6 +37,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Google Font -->
     <link rel="stylesheet" href="../../libs/google-font/css.css">
     <link rel="stylesheet" href="../../libs/hui/admin/css/H-ui.admin.css">
+    <style type="text/css">
+        table.dataTable tbody tr.selected {
+            background-color: #B0BED9;
+        }
+    </style>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -136,6 +141,7 @@ desired effect
 
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog">
         <div class="modal-dialog">
+
             <form id="data-form" class="form-horizontal" action="/admin/api/menu" method="post" onsubmit="javascript:return false">
             <div class="modal-content">
                 <div class="modal-header">
@@ -145,6 +151,7 @@ desired effect
                 </div>
                 <div class="modal-body">
                     <div class="box-body">
+                        <input type="hidden" id="menuId" value="">
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">菜名</label>
                             <div class="col-sm-10 "><input type="text" class="form-control" name="name" id="name" placeholder="输入菜名" required></div>
@@ -214,7 +221,7 @@ desired effect
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary">删除</button>
+                    <button type="button" id="delBtn" class="btn btn-primary">删除</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -248,7 +255,7 @@ desired effect
      user experience. -->
 <script id="opTemplate" type="text/html">
     {{each func as button}}
-    <button type="button" class="btn btn-{{button.type}} btn-sm" onclick="{{button.fn}}">{{button.name}}</button>
+    <button type="button" class="btn btn-{{button.type}} btn-sm" id="{{button.id}}">{{button.name}}</button>
     {{/each}}
 </script>
 <script type="text/javascript">
@@ -270,9 +277,7 @@ desired effect
 
     //修改
     function edit(id){
-        $("#modal-add").modal({
-            remote:"/admin/api/menu/"+id
-        });
+
     }
 
     //删除
@@ -285,6 +290,22 @@ desired effect
         //modal
         $("#modal-add").on("hidden.bs.modal", function() {
             $(this).removeData("hidden.bs.modal");
+            $("#menuId").val("");
+        });
+
+        $("#modal-add").on("show.bs.modal", function() {
+            var menuId = $(this).find("#menuId").val();
+            var numReg = new RegExp("^\\d+$");
+            if(null!=menuId&&numReg.test(menuId)){
+                $(this).find(".modal-title").text("更新菜品");
+                $("#data-form").attr("action","/admin/api/menu/"+menuId);
+                $("#data-form").attr("method","put");
+
+            }else{
+                $(this).find(".modal-title").text("新建菜品");
+                $("#data-form").attr("action","/admin/api/menu");
+                $("#data-form").attr("method","post");
+            }
         });
 
         //validator
@@ -349,9 +370,81 @@ desired effect
                     }
                 });
             }
-        })
+        });
 
+        //批量删除
+        $("#modal-del").on("show.bs.modal", function() {
+            var selected = table.rows('.selected').data().length;
+            if(null!=selected&&selected>0){
+                $(this).find("div.modal-body > p").text("是否确认全部删除？");
+            }else{
+                $(this).find("div.modal-body > p").text("没有选择要删除的记录！");
+            }
+        });
 
+        $("#delBtn").on("click",function(){
+            var data = table.rows('.selected').data();
+            var menuIds = new Array();
+            $.each(data, function (index, value) {
+                menuIds.push(data.id);
+            });
+
+            $.ajax({
+                url:"/admin/api/menu",
+                type:"delete",
+                dataType:"json",
+                data:menuIds,
+                success:function(result){
+                    table.draw();
+                }
+            });
+        });
+
+        //单行
+        $("#editRowBtn").on("click",function(){
+            var data = table.rows($(this).parent("tr")).data();
+            if(null==data||null==data.id){
+                return;
+            }
+            var id = data.id;
+            $.ajax({
+                url:"/admin/api/menu/"+id,
+                success:function(result){
+                    if(null==result){
+                        return;
+                    }
+                    $('#data-form input[name="name"]').val(result.name);
+                    $('#data-form input[name="price"]').val(result.price);
+                    $('#data-form select[name="unit"] > option[value="'+result.unit+'"]').attr("selected",true);
+                    $('#data-form select[name="categoryId"] > option[value="'+result.categoryId+'"]').attr("selected",true);
+                    $('#data-form text[name="profile"]').text(result.profile);
+
+                    $("#menuId").val(id);
+
+                    $("#modal-add").modal("show");
+                }
+
+            });
+        });
+
+        //del
+        $("#delRowBtn").on("click",function(){
+            var data = table.rows($(this).parent("tr")).data();
+            if(null==data||null==data.id){
+                return;
+            }
+            var id = data.id;
+            $.ajax({
+                type:"delete",
+                url:"/admin/api/menu/"+id,
+                success:function(result){
+                    table.draw();
+                }
+
+            });
+        });
+
+        //table
         var tpl = $("#opTemplate").html();
         //预编译模板
         var render = template.compile(tpl);
@@ -379,7 +472,7 @@ desired effect
                 {"data": "name"},
                 {"data": "img"},
                 {"data": "price"},
-                {"data": "foodCategory.name"},
+                {"data": "categoryId"},
                 {"data": "profile"},
                 {"data": "createTime"},
                 {"data": "updateTime"},
@@ -393,12 +486,12 @@ desired effect
                 },
                 {
                     "targets": 8,
-                    "render": function (a, b, c, d) {
+                    "render": function (data, type, row, meta) {
                         var context =
                         {
                             func: [
-                                {"name": "修改", "fn": "edit(" + c.id + ")", "type": "primary"},
-                                {"name": "删除", "fn": "del(\'" + c.id + "\')", "type": "danger"}
+                                {"name": "修改", "fn": "edit(" + row.id + ")", "type": "primary", "id":"editRowBtn"},
+                                {"name": "删除", "fn": "del(\'" + row.id + "\')", "type": "danger", "id":"delRowBtn"}
                             ]
                         };
                         var html = render(context);
@@ -408,6 +501,11 @@ desired effect
                     "targets":[6,7],
                     "render": function ( data, type, row, meta ) {
                         return format(data);
+                    }
+                },{
+                    "targets":4,
+                    "render":function ( data, type, row, meta ) {
+                        return row.foodCategory?row.foodCategory.name:"";
                     }
                 }
 
@@ -430,6 +528,11 @@ desired effect
             "t" +
             "<'row'<'col-xs-6'i><'col-xs-6'p>>"
 
+        });
+
+        //多选
+        $('#example1 tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
         });
 
         //添加序号

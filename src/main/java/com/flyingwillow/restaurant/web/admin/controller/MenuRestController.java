@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,8 +71,10 @@ public class MenuRestController {
         if(null==list){
             return new ResponseEntity<DataTableResponse<Menu>>(HttpStatus.NO_CONTENT);
         }else{
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             DataTableResponse<Menu> response = new DataTableResponse<Menu>(null!=param?param.getDraw():1,total,total,list);
-            return new ResponseEntity<DataTableResponse<Menu>>(response,HttpStatus.OK);
+            return new ResponseEntity<DataTableResponse<Menu>>(response,headers,HttpStatus.OK);
         }
     }
 
@@ -84,7 +87,9 @@ public class MenuRestController {
 
         Menu menu = menuService.getMenuById(menuId);
 
-        return new ResponseEntity<Menu>(menu,HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return new ResponseEntity<Menu>(menu,headers,HttpStatus.OK);
 
     }
 
@@ -96,7 +101,9 @@ public class MenuRestController {
         }
         menu.setId(menuId);
         menuService.updateMenu(menu);
-        return new ResponseEntity<Menu>(menu,HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return new ResponseEntity<Menu>(menu,headers,HttpStatus.OK);
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.POST)
@@ -106,6 +113,7 @@ public class MenuRestController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/menu/{id}").buildAndExpand(menu.getId()).toUri());
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
