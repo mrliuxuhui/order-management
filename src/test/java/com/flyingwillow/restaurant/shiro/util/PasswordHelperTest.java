@@ -1,9 +1,13 @@
 package com.flyingwillow.restaurant.shiro.util;
 
+import com.alibaba.fastjson.JSON;
+import com.flyingwillow.restaurant.util.serializer.KryoSerializeUtil;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.session.mgt.SimpleSession;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 
@@ -36,5 +40,21 @@ public class PasswordHelperTest {
         AuthenticationInfo info = new SimpleAuthenticationInfo("liuxuhui",encrypt.toCharArray(),
                 ByteSource.Util.bytes(salt),"");
         System.out.println(matcher.doCredentialsMatch(usernamePasswordToken,info));
+    }
+
+    @Test
+    public void testSession(){
+
+        SimpleSession session = new SimpleSession("127.0.0.1");
+        JavaUuidSessionIdGenerator generator = new JavaUuidSessionIdGenerator();
+        session.setId(generator.generateId(session));
+
+        System.out.println(JSON.toJSONString(session));
+
+        byte[] bSession = KryoSerializeUtil.serialize(session);
+        System.out.println(JSON.toJSONString(bSession));
+
+        SimpleSession deSession = KryoSerializeUtil.deserialize(bSession);
+        System.out.println(JSON.toJSONString(deSession));
     }
 }
