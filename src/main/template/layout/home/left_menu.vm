@@ -61,14 +61,14 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">菜单管理</a></li>
-                    <li><a href="#">食材管理</a></li>
-                    <li><a href="#">菜品种类管理</a></li>
-                    <li><a href="#">食材种类管理</a></li>
-                    <li><a href="#">菜品供应量管理</a></li>
-                    <li><a href="#">菜品食材用量管理</a></li>
-                    <li><a href="#">供应商管理</a></li>
-                    <li><a href="#">计量单位管理</a></li>
+                    <li><a data-href="/admin/menu" href="javascript:void(0)" data-title="菜单管理">菜单管理</a></li>
+                    <li><a data-href="/admin/material" href="javascript:void(0)" data-title="食材管理">食材管理</a></li>
+                    <li><a data-href="/admin/foodCategory" href="javascript:void(0)" data-title="食材管理">菜品种类管理</a></li>
+                    <li><a data-href="/admin/materialCategory" href="javascript:void(0)" data-title="食材种类管理">食材种类管理</a></li>
+                    <li><a data-href="/admin/foodSupply" href="javascript:void(0)" data-title="菜品供应量管理">菜品供应量管理</a></li>
+                    <li><a data-href="/admin/foodMaterial" href="javascript:void(0)" data-title="菜品食材用量管理">菜品食材用量管理</a></li>
+                    <li><a data-href="/admin/provider" href="javascript:void(0)" data-title="供应商管理">供应商管理</a></li>
+                    <li><a data-href="/admin/measurement" href="javascript:void(0)" data-title="计量单位管理">计量单位管理</a></li>
                 </ul>
             </li>
             <li class="treeview">

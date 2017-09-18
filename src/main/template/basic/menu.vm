@@ -1,0 +1,155 @@
+#set($needScript=true)
+#set($jspath="basic/menu.js")
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        菜单管理
+        <small>添加、删除、更新菜品</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li><a href="#">基本信息管理</a></li>
+        <li class="active">菜单管理</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="box box-primary">
+        <div class="box-header">
+            <div class="row pull-left col-lg-offset-0 col-lg-6 col-md-6 col-md-offset-0">
+                <div class="col-lg-6 col-md-6"><button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#modal-add" ><i class="fa fa-plus-circle"></i> 新增</button></div>
+                <div class="col-lg-6 col-md-6"><button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modal-del"><i class="fa fa-minus-circle"></i> 批量删除</button></div>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>菜名</th>
+                    <th>图片</th>
+                    <th>单价</th>
+                    <th>分类</th>
+                    <th>简介</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>序号</th>
+                    <th>菜名</th>
+                    <th>图片</th>
+                    <th>单价</th>
+                    <th>分类</th>
+                    <th>简介</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+</section>
+<!-- /.content-wrapper -->
+
+<div class="modal fade" id="modal-add" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+
+        <form id="data-form" class="form-horizontal" action="/admin/api/menu" method="post" onsubmit="javascript:return false">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新建菜品</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <input type="hidden" id="menuId" value="">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">菜名</label>
+                            <div class="col-sm-10 "><input type="text" class="form-control" name="name" id="name" placeholder="输入菜名" required></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="price" class="col-sm-2 control-label">单价</label>
+                            <div class="col-sm-10 ">
+                                <input type="text" class="form-control" name="price" id="price" placeholder="单价（元）" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit" class="col-sm-2 control-label">单位</label>
+                            <div class="col-sm-10 ">
+                                <select class="form-control" id="unit" name="unit" required>
+                                    <option value="1">份</option>
+                                </select>
+                            </div>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryId" class="col-sm-2 control-label">所属类别</label>
+                            <div class="col-sm-10 ">
+                                <select class="form-control" id="categoryId" name="categoryId" required>
+                                    <option value="1">凉菜</option>
+                                </select>
+                            </div>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="img" class="col-sm-2 control-label">图片</label>
+                            <div class="col-sm-10 ">
+                                <input type="file" class="form-control" id="img" placeholder="示例图片">
+                            </div>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="profile">简介</label>
+                            <textarea id="profile" name="profile" class="form-control" rows="3" placeholder="输入100字以内简介..." maxlength="100"></textarea>
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                    <button type="button" id="submitBtn" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-del">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量删除</h4>
+            </div>
+            <div class="modal-body">
+                <p>是否确认全部删除？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button type="button" id="delBtn" class="btn btn-primary">删除</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

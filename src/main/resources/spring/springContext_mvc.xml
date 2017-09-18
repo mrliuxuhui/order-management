@@ -56,7 +56,7 @@
 		  class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
 		<property name="cache" value="false"/>
 		<property name="prefix" value=""/>
-		<property name="layoutUrl" value="/layout/home/main.vm"/>
+		<property name="layoutUrl" value="/layout/iframe/main.vm"/>
 		<property name="suffix" value=".vm"/>
 		<property name="exposeSpringMacroHelpers" value="true" />
 		<property name="exposeRequestAttributes" value="true" />

@@ -15,7 +15,7 @@
     <div id="iframe_box" class="Hui-article" style="overflow-x: hidden">
 
         <div class="show_iframe">
-            <div style="display: none" class="loading"></div>
+            <div style="display: none"><i class="fa fa-fw fa-spinner"></i></div>
             <iframe scrolling="yes" frameborder="0" src="/static/welcom.html"></iframe>
         </div>
 

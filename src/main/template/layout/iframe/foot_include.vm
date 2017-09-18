@@ -1,0 +1,23 @@
+<!-- REQUIRED JS SCRIPTS -->
+
+<!-- jQuery 3 -->
+<script src="/static/libs/jquery/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/static/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/libs/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/libs/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/libs/dist/js/adminlte.min.js"></script>
+<!-- art Template -->
+<script src="/static/libs/arttemplate/template-web.js"></script>
+
+<script src="/static/libs/hui/admin/H-ui.admin.js"></script>
+<script src="/static/libs/jquery-serializejson/jquery.serializejson.min.js"></script>
+<script src="/static/libs/timeformat/timeformat.js"></script>
+
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->

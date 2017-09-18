@@ -17,7 +17,14 @@ public class AdminController {
     public String goPage(@PathVariable String page){
 
         if(StringUtils.isNotBlank(page)){
-            return page;
+            if("index".equals(page)){
+                return "/layout/home/main";
+            }else if("menu".equals(page)){
+                return "/basic/menu";
+            }else{
+                return page;
+            }
+
         }
         return "blank";
     }
