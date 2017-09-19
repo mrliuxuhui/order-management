@@ -2,6 +2,8 @@ package com.flyingwillow.restaurant.util.web;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.oltu.oauth2.common.OAuth;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,5 +59,11 @@ public class WebUtil {
 
     private static boolean isUnAvailableIp(String ip) {
         return (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip));
+    }
+
+    public static HttpHeaders getUTF8Header(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return headers;
     }
 }

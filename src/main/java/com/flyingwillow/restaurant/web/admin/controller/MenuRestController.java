@@ -6,6 +6,7 @@ import com.flyingwillow.restaurant.service.IMenuService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
+import com.flyingwillow.restaurant.web.admin.dto.MenuDTO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -93,12 +94,13 @@ public class MenuRestController {
 
     }
 
-    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.PUT)
-    public ResponseEntity<Menu> updateMenu(@PathVariable Integer menuId, Menu menu){
+    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.PUT, consumes = "multipart/form-data")
+    public ResponseEntity<Menu> updateMenu(@PathVariable Integer menuId, MenuDTO menuDTO){
 
         if(null==menuId){
             return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);
         }
+        Menu menu = menuDTO.toMenu();
         menu.setId(menuId);
         menuService.updateMenu(menu);
         HttpHeaders headers = new HttpHeaders();
@@ -106,9 +108,10 @@ public class MenuRestController {
         return new ResponseEntity<Menu>(menu,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/menu", method = RequestMethod.POST)
-    public ResponseEntity<Void> createMenu(Menu menu, UriComponentsBuilder ucBuilder){
+    @RequestMapping(value = "/menu", method = RequestMethod.POST, consumes = "multipart/form-data")
+    public ResponseEntity<Void> createMenu(MenuDTO menuDTO, UriComponentsBuilder ucBuilder){
 
+        Menu menu = menuDTO.toMenu();
         menuService.saveMenu(menu);
 
         HttpHeaders headers = new HttpHeaders();

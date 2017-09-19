@@ -1,14 +1,18 @@
 package com.flyingwillow.restaurant.web.admin.controller;
 
+import com.flyingwillow.restaurant.domain.FieldOrder;
 import com.flyingwillow.restaurant.domain.Material;
 import com.flyingwillow.restaurant.service.IMaterialService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
+import com.flyingwillow.restaurant.util.web.WebUtil;
+import com.flyingwillow.restaurant.web.admin.dto.MaterialDTO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,13 +51,31 @@ public class MaterialRestController {
             total = materialService.getMaterialCount(null);
         }else{
 
+            String search = param.getSearch();
+            HashMap<String,Object> query = new HashMap<>();
+            if(StringUtils.isNotBlank(search)){
+                if(search.matches("\\d+")){
+                    query.put("id",Integer.parseInt(search));
+                }else{
+                    query.put("name",search);
+                }
+            }
+
+            List<FieldOrder> orders = param.getOrder();
+            if(null!=orders&&orders.size()>0){
+                query.put("orders",orders);
+            }
+
+            list = materialService.getMaterialList(query,param.getStart(),param.getLength());
+            total = materialService.getMaterialCount(query);
+
         }
 
         if(null==list){
             return new ResponseEntity<DataTableResponse<Material>>(HttpStatus.NO_CONTENT);
         }else{
-            DataTableResponse<Material> response = new DataTableResponse<Material>(param.getDraw(),total,total,list);
-            return new ResponseEntity<DataTableResponse<Material>>(response,HttpStatus.OK);
+            DataTableResponse<Material> response = new DataTableResponse<Material>(null!=param?param.getDraw():1,total,total,list);
+            return new ResponseEntity<DataTableResponse<Material>>(response,WebUtil.getUTF8Header(),HttpStatus.OK);
         }
     }
 
@@ -65,24 +88,26 @@ public class MaterialRestController {
 
         Material material = materialService.getMaterialById(materialId);
 
-        return new ResponseEntity<Material>(material,HttpStatus.OK);
+        return new ResponseEntity<Material>(material, WebUtil.getUTF8Header(),HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/material/{materialId}", method = RequestMethod.PUT)
-    public ResponseEntity<Material> updateMaterial(@PathVariable Integer materialId, @RequestBody Material material){
+    @RequestMapping(value = "/material/{materialId}", method = RequestMethod.PUT, consumes = "multipart/form-data")
+    public ResponseEntity<Material> updateMaterial(@PathVariable Integer materialId, MaterialDTO materialDTO){
 
         if(null==materialId){
             return new ResponseEntity<Material>(HttpStatus.BAD_REQUEST);
         }
+        Material material = materialDTO.toMaterial();
         material.setId(materialId);
         materialService.updateMaterial(material);
-        return new ResponseEntity<Material>(material,HttpStatus.OK);
+        return new ResponseEntity<Material>(material,WebUtil.getUTF8Header(),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/material", method = RequestMethod.POST)
-    public ResponseEntity<Void> createMaterial(@RequestBody Material material, UriComponentsBuilder ucBuilder){
+    @RequestMapping(value = "/material", method = RequestMethod.POST, consumes = "multipart/form-data")
+    public ResponseEntity<Void> createMaterial(MaterialDTO materialDTO, UriComponentsBuilder ucBuilder){
 
+        Material material = materialDTO.toMaterial();
         materialService.saveMaterial(material);
 
         HttpHeaders headers = new HttpHeaders();

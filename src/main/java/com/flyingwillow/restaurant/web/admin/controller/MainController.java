@@ -51,7 +51,7 @@ public class MainController {
         List<Role> roles = userService.getRolesByUsername((String) SecurityUtils.getSubject().getPrincipal());
         Session session = SecurityUtils.getSubject().getSession();
         if(null==roles||roles.isEmpty()){
-            session.setAttribute(Constants.CURRENT_USER_ROLE_KEY,"user");
+            session.setAttribute(Constants.USER_CURRENT_ROLE_KEY,"user");
             return new ModelAndView("/layout/home/main");
         }else{
             Map<String,Object> model = new HashMap<>();
@@ -61,17 +61,17 @@ public class MainController {
 
     }
 
-    @RequestMapping(value = "/role/select", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/role/selection", method = RequestMethod.GET)
     public String selectRole(@RequestParam(required = true) String role, @RequestParam(required = false) String client){
 
         role = StringUtils.isBlank(role)?"user":role;
 
         if(SecurityUtils.getSubject().hasRole(role)){
             Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute(Constants.CURRENT_USER_ROLE_KEY,role);
+            session.setAttribute(Constants.USER_CURRENT_ROLE_KEY,role);
         }else{
             Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute(Constants.CURRENT_USER_ROLE_KEY,"user");
+            session.setAttribute(Constants.USER_CURRENT_ROLE_KEY,"user");
         }
 
         return "/layout/home/main";

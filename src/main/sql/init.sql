@@ -10,6 +10,7 @@ CREATE TABLE users(
   password VARCHAR(50),
   name VARCHAR(50),
   gender  VARCHAR(10),
+  img   VARCHAR(256),
   salt  VARCHAR(100),
   createTime BIGINT,
   updateTime BIGINT,

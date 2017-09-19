@@ -11,6 +11,7 @@ public class User {
     private String password;
     private String name;
     private String gender;
+    private String img;
     private String salt;
     private Date createTime;
     private Date updateTime;
@@ -105,6 +106,15 @@ public class User {
 
     public User setDel(Integer del) {
         this.del = del;
+        return this;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public User setImg(String img) {
+        this.img = img;
         return this;
     }
 }

@@ -39,8 +39,8 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">账单列表</a></li>
-                    <li><a href="#">详单查询</a></li>
+                    <li><a data-href="/admin/customorders" href="javascript:void(0)" data-title="账单列表">账单列表</a></li>
+                    <li><a data-href="/admin/orderdetail" href="javascript:void(0)" data-title="详单查询">详单查询</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -78,7 +78,7 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">用户管理</a></li>
+                    <li><a data-href="/admin/users" href="javascript:void(0)" data-title="用户管理">用户管理</a></li>
                     <li><a href="#">角色管理</a></li>
                     <li><a href="#">权限管理</a></li>
                 </ul>
