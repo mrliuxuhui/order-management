@@ -22,5 +22,5 @@ public interface MenuMapper {
 
     public void deleteMenu(Integer id);
 
-    public void deleteMenuByIds(List<Integer> idList);
+    public void deleteMenuByIds(Map<String,Object> param);
 }

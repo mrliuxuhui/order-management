@@ -22,5 +22,5 @@ public interface MaterialCategoryMapper {
 
     public void deleteMaterialCategory(Integer id);
 
-    public void deleteMaterialCategoryByIds(List<Integer> idList);
+    public void deleteMaterialCategoryByIds(Map<String,Object> param);
 }

@@ -15,7 +15,7 @@ public class FileUploadUtil {
 
     public static String saveFile(MultipartFile file) throws IOException {
 
-        if(null==file){
+        if(null==file||file.isEmpty()){
             return null;
         }
 

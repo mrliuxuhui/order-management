@@ -17,7 +17,7 @@ public class WebUtil {
 
     public static void writeJsonResponse(HttpServletResponse response, Integer statusCode, String body){
         try {
-            response.setContentType(OAuth.ContentType.JSON);    //json
+            response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);    //json
             response.setStatus(statusCode);
 
             final PrintWriter out = response.getWriter();

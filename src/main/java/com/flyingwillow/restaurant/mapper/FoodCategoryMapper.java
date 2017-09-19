@@ -22,5 +22,5 @@ public interface FoodCategoryMapper {
 
     public void deleteFoodCategory(Integer id);
 
-    public void deleteFoodCategoryByIds(List<Integer> idList);
+    public void deleteFoodCategoryByIds(Map<String,Object> param);
 }

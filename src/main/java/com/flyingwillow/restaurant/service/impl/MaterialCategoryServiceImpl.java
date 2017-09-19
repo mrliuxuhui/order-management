@@ -60,6 +60,8 @@ public class MaterialCategoryServiceImpl implements IMaterialCategoryService{
 
     @Override
     public void deleteMaterialCategoryByIds(List<Integer> idList) {
-        materialCategoryMapper.deleteMaterialCategoryByIds(idList);
+        Map<String,Object> param = new HashMap<>(1);
+        param.put("idList",idList);
+        materialCategoryMapper.deleteMaterialCategoryByIds(param);
     }
 }

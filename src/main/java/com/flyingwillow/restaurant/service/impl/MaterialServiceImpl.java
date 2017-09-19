@@ -60,6 +60,8 @@ public class MaterialServiceImpl implements IMaterialService{
 
     @Override
     public void deleteMaterialByIds(List<Integer> idList) {
-        materialMapper.deleteMaterialByIds(idList);
+        Map<String,Object> param = new HashMap<>(1);
+        param.put("idList",idList);
+        materialMapper.deleteMaterialByIds(param);
     }
 }

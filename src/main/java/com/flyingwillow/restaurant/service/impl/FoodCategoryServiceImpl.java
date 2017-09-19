@@ -60,6 +60,8 @@ public class FoodCategoryServiceImpl implements IFoodCategoryService{
 
     @Override
     public void deleteFoodCategoryByIds(List<Integer> idList) {
-        foodCategoryMapper.deleteFoodCategoryByIds(idList);
+        Map<String,Object> param = new HashMap<>(1);
+        param.put("idList",idList);
+        foodCategoryMapper.deleteFoodCategoryByIds(param);
     }
 }

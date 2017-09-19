@@ -22,5 +22,5 @@ public interface MeasurementMapper {
 
     public void deleteMeasurement(Integer id);
 
-    public void deleteMeasurementByIds(List<Integer> idList);
+    public void deleteMeasurementByIds(Map<String,Object> param);
 }

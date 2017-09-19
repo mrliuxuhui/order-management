@@ -60,6 +60,8 @@ public class MeasurementServiceImpl implements IMeasurementService{
 
     @Override
     public void deleteMeasurementByIds(List<Integer> idList) {
-        measurementMapper.deleteMeasurementByIds(idList);
+        Map<String,Object> param = new HashMap<>(1);
+        param.put("idList",idList);
+        measurementMapper.deleteMeasurementByIds(param);
     }
 }

@@ -68,7 +68,7 @@ $(function () {
         if(validator.isValid()){
             var action = loginForm.attr("action");
             //var createRex = new RegExp("menu$");
-            var updateRex = new RegExp("menu/\d+$");
+            var updateRex = new RegExp("menu/\\d+$");
             var method = "post";
             if(updateRex.test(action)){
                 method = "put";
@@ -76,7 +76,11 @@ $(function () {
             $.ajax({
                 url:action,
                 type:method,
-                data:loginForm.serialize(),
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: new FormData(loginForm[0]),
                 success:function(result){
                     console.log(result);
                     $("#modal-add").modal("hide");
@@ -103,14 +107,14 @@ $(function () {
         var data = table.rows('.selected').data();
         var menuIds = new Array();
         $.each(data, function (index, value) {
-            menuIds.push(data.id);
+            menuIds.push(value.id);
         });
 
         $.ajax({
             url:"/admin/api/menu",
             type:"delete",
             dataType:"json",
-            data:menuIds,
+            data:JSON.stringify(menuIds),
             success:function(result){
                 table.draw();
             }
@@ -118,8 +122,9 @@ $(function () {
     });
 
     //单行
-    $("#editRowBtn").on("click",function(e){
-        var data = table.rows($(this).parent("tr")).data();
+    $("#example1 tbody").on("click", "#editRowBtn" ,function(e){
+        e.stopPropagation();
+        var data = table.row($(this).parents("tr")).data();
         if(null==data||null==data.id){
             return;
         }
@@ -142,12 +147,13 @@ $(function () {
             }
 
         });
-        e.stopPropagation();
+
     });
 
     //del
-    $("#delRowBtn").on("click",function(e){
-        var data = table.rows($(this).parent("tr")).data();
+    $("#example1 tbody").on("click", "#delRowBtn",function(e){
+        e.stopPropagation();
+        var data = table.row($(this).parents("tr")).data();
         if(null==data||null==data.id){
             return;
         }
@@ -160,7 +166,7 @@ $(function () {
             }
 
         });
-        e.stopPropagation();
+
     });
 
     //table

@@ -22,5 +22,5 @@ public interface MaterialMapper {
 
     public void deleteMaterial(Integer id);
 
-    public void deleteMaterialByIds(List<Integer> idList);
+    public void deleteMaterialByIds(Map<String,Object> param);
 }

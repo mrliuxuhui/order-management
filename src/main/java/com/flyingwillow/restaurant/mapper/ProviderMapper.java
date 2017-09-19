@@ -22,5 +22,5 @@ public interface ProviderMapper {
 
     public void deleteProvider(Integer id);
 
-    public void deleteProviderByIds(List<Integer> idList);
+    public void deleteProviderByIds(Map<String,Object> param);
 }

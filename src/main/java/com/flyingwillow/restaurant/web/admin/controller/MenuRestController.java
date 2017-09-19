@@ -1,11 +1,14 @@
 package com.flyingwillow.restaurant.web.admin.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.flyingwillow.restaurant.domain.FieldOrder;
 import com.flyingwillow.restaurant.domain.Menu;
 import com.flyingwillow.restaurant.service.IMenuService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
+import com.flyingwillow.restaurant.util.web.FileUploadUtil;
 import com.flyingwillow.restaurant.web.admin.dto.MenuDTO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -94,12 +99,14 @@ public class MenuRestController {
 
     }
 
-    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.PUT, consumes = "multipart/form-data")
-    public ResponseEntity<Menu> updateMenu(@PathVariable Integer menuId, MenuDTO menuDTO){
+    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.PUT, consumes = {"multipart/form-data","application/x-www-form-urlencoded"})
+    public ResponseEntity<Menu> updateMenu(@PathVariable Integer menuId, @RequestParam(required = false) MultipartFile img,
+                                           MenuDTO menuDTO) throws IOException {
 
         if(null==menuId){
             return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);
         }
+        menuDTO.setImg(FileUploadUtil.saveFile(img));
         Menu menu = menuDTO.toMenu();
         menu.setId(menuId);
         menuService.updateMenu(menu);
@@ -108,28 +115,29 @@ public class MenuRestController {
         return new ResponseEntity<Menu>(menu,headers,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/menu", method = RequestMethod.POST, consumes = "multipart/form-data")
-    public ResponseEntity<Void> createMenu(MenuDTO menuDTO, UriComponentsBuilder ucBuilder){
+    @RequestMapping(value = "/menu", method = RequestMethod.POST, consumes = {"multipart/form-data","application/x-www-form-urlencoded"}, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<Void> createMenu(MenuDTO menuDTO, @RequestParam(required = false) MultipartFile img) throws IOException {
 
+        menuDTO.setImg(FileUploadUtil.saveFile(img));
         Menu menu = menuDTO.toMenu();
         menuService.saveMenu(menu);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/menu/{id}").buildAndExpand(menu.getId()).toUri());
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/menu", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteMenu(@RequestBody List<Integer> menuIds){
+    @RequestMapping(value = "/menu", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<Void> deleteMenu(@RequestBody String menuIds){
         if(null==menuIds||menuIds.isEmpty()){
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
-        menuService.deleteMenuByIds(menuIds);
+        JSONArray list = JSON.parseArray(menuIds);
+        menuService.deleteMenuByIds(list.toJavaList(Integer.class));
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
     public ResponseEntity<Menu> deleteMenu(@PathVariable Integer menuId){
         if(null==menuId){
             return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);

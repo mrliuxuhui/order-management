@@ -60,6 +60,8 @@ public class MenuServiceImpl implements IMenuService{
 
     @Override
     public void deleteMenuByIds(List<Integer> idList) {
-        menuMapper.deleteMenuByIds(idList);
+        Map<String,Object> param = new HashMap<>(1);
+        param.put("idList",idList);
+        menuMapper.deleteMenuByIds(param);
     }
 }

@@ -16,7 +16,7 @@ public class MaterialDTO {
     private Float price;
     private Integer unit;
     private Integer categoryId;
-    private MultipartFile img;
+    private String img;
     private String profile;
 
     public String getName() {
@@ -64,11 +64,11 @@ public class MaterialDTO {
         return this;
     }
 
-    public MultipartFile getImg() {
+    public String getImg() {
         return img;
     }
 
-    public MaterialDTO setImg(MultipartFile img) {
+    public MaterialDTO setImg(String img) {
         this.img = img;
         return this;
     }
@@ -82,22 +82,9 @@ public class MaterialDTO {
         return this;
     }
 
-    public String getImgPath(){
-        if(null==img){
-            return null;
-        }else{
-            try {
-                return FileUploadUtil.saveFile(img);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
     public Material toMaterial(){
         return new Material().setId(id).setName(this.name).setPrice(this.price)
                 .setUnit(this.unit).setCategoryId(this.categoryId)
-                .setProfile(profile).setImg(getImgPath());
+                .setProfile(profile).setImg(this.img);
     }
 }

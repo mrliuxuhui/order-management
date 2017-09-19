@@ -60,6 +60,8 @@ public class ProviderServiceImpl implements IProviderService{
 
     @Override
     public void deleteProviderByIds(List<Integer> idList) {
-        providerMapper.deleteProviderByIds(idList);
+        Map<String,Object> param = new HashMap<>(1);
+        param.put("idList",idList);
+        providerMapper.deleteProviderByIds(param);
     }
 }
