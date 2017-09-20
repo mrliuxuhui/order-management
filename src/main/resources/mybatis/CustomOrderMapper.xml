@@ -35,7 +35,7 @@
 		</if>
 	</select>
 
-	<select id="getCustomOrderCount" parameterMap="HashMap" resultType="int">
+	<select id="getCustomOrderCount" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*) FROM custom_order
 		<where>
 			AND del = 0
