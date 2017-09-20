@@ -239,6 +239,7 @@ CREATE TABLE custom_order(
   completeOperator VARCHAR(50), -- 完成操作人
   totalPrice FLOAT,
   actualPrice FLOAT,
+  isChecked  BOOL, -- 是否结算
   checkTime BIGINT,   -- 结算时间
   checkOperator VARCHAR(50),
   pushed  BOOL, -- 是否已经推送

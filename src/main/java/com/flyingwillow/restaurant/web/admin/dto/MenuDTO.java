@@ -16,7 +16,7 @@ public class MenuDTO {
     private Float price;
     private Integer unit;
     private Integer categoryId;
-    private String img;
+    private String imgPath;
     private String profile;
 
     public String getName() {
@@ -55,12 +55,12 @@ public class MenuDTO {
         return this;
     }
 
-    public String getImg() {
-        return img;
+    public String getImgPath() {
+        return imgPath;
     }
 
-    public MenuDTO setImg(String img) {
-        this.img = img;
+    public MenuDTO setImgPath(String imgPath) {
+        this.imgPath = imgPath;
         return this;
     }
 
@@ -76,6 +76,6 @@ public class MenuDTO {
     public Menu toMenu(){
         return new Menu().setId(id).setName(this.name).setPrice(this.price)
                 .setUnit(this.unit).setCategoryId(this.categoryId)
-                .setProfile(profile).setImg(this.img);
+                .setProfile(profile).setImg(this.imgPath);
     }
 }

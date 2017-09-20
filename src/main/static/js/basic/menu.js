@@ -80,6 +80,7 @@ $(function () {
                 cache: false,
                 contentType: false,
                 processData: false,
+                dataType:"json",
                 data: new FormData(loginForm[0]),
                 success:function(result){
                     console.log(result);
@@ -130,6 +131,7 @@ $(function () {
         }
         var id = data.id;
         $.ajax({
+            dataType:"json",
             url:"/admin/api/menu/"+id,
             success:function(result){
                 if(null==result){
@@ -160,6 +162,7 @@ $(function () {
         var id = data.id;
         $.ajax({
             type:"delete",
+            dataType:"json",
             url:"/admin/api/menu/"+id,
             success:function(result){
                 table.draw();

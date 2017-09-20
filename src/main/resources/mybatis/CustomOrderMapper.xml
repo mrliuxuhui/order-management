@@ -13,7 +13,7 @@
 			<if test="null!=id">AND id=#{id}</if>
 			<if test="null!=number">AND number=#{number}</if>
 			<if test="null!=tableNo">AND tableNo=#{tableNo}</if>
-			<if test="null!=status">AND status=#{status}</if>
+			<if test="null!=isChecked">AND isChecked=#{isChecked}</if>
 			<choose>
 				<when test="null!=startTime and null!=endTime">AND createTime BETWEEN #{startTime} AND #{endTime}</when>
 				<when test="null!=startTime">AND createTime >= #{startTime}</when>
@@ -24,16 +24,43 @@
 				</when>
 			</choose>
 		</where>
+		<if test="null!=orders">
+			ORDER BY
+			<foreach collection="orders" item="sort" separator=",">
+				${sort.field} ${sort.dir}
+			</foreach>
+		</if>
 		<if test="null!=start and null!=size">
 			LIMIT #{start},#{size}
 		</if>
 	</select>
 
+	<select id="getCustomOrderCount" parameterMap="HashMap" resultType="int">
+		SELECT COUNT(*) FROM custom_order
+		<where>
+			AND del = 0
+			<if test="null!=id">AND id=#{id}</if>
+			<if test="null!=number">AND number=#{number}</if>
+			<if test="null!=tableNo">AND tableNo=#{tableNo}</if>
+			<if test="null!=isChecked">AND isChecked=#{isChecked}</if>
+			<choose>
+				<when test="null!=startTime and null!=endTime">AND createTime BETWEEN #{startTime} AND #{endTime}</when>
+				<when test="null!=startTime">AND createTime >= #{startTime}</when>
+				<when test="null!=endTime">
+					<![CDATA[
+					AND createTime <= #{endTime}
+					]]>
+				</when>
+			</choose>
+		</where>
+
+	</select>
+
 
 	<!-- insert -->
 	<insert id="saveCustomOrder" parameterType="CustomOrder" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO custom_order(number, tableNo, createTime, receiveTime, receiver, completeTime, completeOperator, totalPrice, actualPrice, checkTime, checkOperator, pushed, rush, del)
-		VALUES (#{number}, #{tableNo}, #{createTime}, #{receiveTime}, #{receiver}, #{completeTime}, #{completeOperator}, #{totalPrice}, #{actualPrice}, #{checkTime}, #{checkOperator}, #{pushed}, #{rush}, 0)
+		INSERT INTO custom_order(number, tableNo, createTime, receiveTime, receiver, completeTime, completeOperator, totalPrice, actualPrice, isChecked, checkTime, checkOperator, pushed, rush, del)
+		VALUES (#{number}, #{tableNo}, #{createTime}, #{receiveTime}, #{receiver}, #{completeTime}, #{completeOperator}, #{totalPrice}, #{actualPrice}, #{isChecked}, #{checkTime}, #{checkOperator}, #{pushed}, #{rush}, 0)
 	</insert>
 
 
@@ -48,6 +75,7 @@
 			<if test="null!=completeOperator">completeOperator = #{completeOperator},</if>
 			<if test="null!=totalPrice">totalPrice = #{totalPrice},</if>
 			<if test="null!=actualPrice">actualPrice = #{actualPrice},</if>
+			<if test="null!=isChecked">isChecked = #{isChecked},</if>
 			<if test="null!=checkTime">checkTime = #{checkTime},</if>
 			<if test="null!=checkOperator">checkOperator = #{checkOperator},</if>
 			<if test="null!=pushed">pushed = #{pushed},</if>

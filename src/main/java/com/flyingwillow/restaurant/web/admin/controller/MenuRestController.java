@@ -9,7 +9,9 @@ import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
 import com.flyingwillow.restaurant.util.web.FileUploadUtil;
+import com.flyingwillow.restaurant.util.web.WebUtil;
 import com.flyingwillow.restaurant.web.admin.dto.MenuDTO;
+import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -106,7 +108,7 @@ public class MenuRestController {
         if(null==menuId){
             return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);
         }
-        menuDTO.setImg(FileUploadUtil.saveFile(img));
+        menuDTO.setImgPath(FileUploadUtil.saveFile(img));
         Menu menu = menuDTO.toMenu();
         menu.setId(menuId);
         menuService.updateMenu(menu);
@@ -116,34 +118,32 @@ public class MenuRestController {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.POST, consumes = {"multipart/form-data","application/x-www-form-urlencoded"}, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<Void> createMenu(MenuDTO menuDTO, @RequestParam(required = false) MultipartFile img) throws IOException {
+    public ResponseEntity<JsonResponseStatus> createMenu(@RequestParam(required = false) MultipartFile img, MenuDTO menuDTO) throws IOException {
 
-        menuDTO.setImg(FileUploadUtil.saveFile(img));
+        menuDTO.setImgPath(FileUploadUtil.saveFile(img));
         Menu menu = menuDTO.toMenu();
         menuService.saveMenu(menu);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<Void> deleteMenu(@RequestBody String menuIds){
+    public ResponseEntity<JsonResponseStatus> deleteMenu(@RequestBody String menuIds){
         if(null==menuIds||menuIds.isEmpty()){
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : menuId is empty."),HttpStatus.BAD_REQUEST);
         }
         JSONArray list = JSON.parseArray(menuIds);
         menuService.deleteMenuByIds(list.toJavaList(Integer.class));
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<Menu> deleteMenu(@PathVariable Integer menuId){
+    public ResponseEntity<JsonResponseStatus> deleteMenu(@PathVariable Integer menuId){
         if(null==menuId){
-            return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : menuId is empty."),HttpStatus.BAD_REQUEST);
         }
         menuService.deleteMenu(menuId);
-        return new ResponseEntity<Menu>(HttpStatus.OK);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
 }

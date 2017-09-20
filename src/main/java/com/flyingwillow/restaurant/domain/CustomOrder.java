@@ -16,6 +16,7 @@ public class CustomOrder {
     private String completeOperator;
     private Float totalPrice;
     private Float actualPrice;
+    private Boolean isChecked;
     private Date checkTime;
     private String checkOperator;
     private Boolean pushed;
@@ -154,6 +155,15 @@ public class CustomOrder {
 
     public CustomOrder setDel(Integer del) {
         this.del = del;
+        return this;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public CustomOrder setChecked(Boolean checked) {
+        isChecked = checked;
         return this;
     }
 }
