@@ -1,16 +1,18 @@
 package com.flyingwillow.restaurant.web.admin.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.flyingwillow.restaurant.domain.FieldOrder;
 import com.flyingwillow.restaurant.domain.Provider;
 import com.flyingwillow.restaurant.service.IProviderService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
+import com.flyingwillow.restaurant.util.web.FileUploadUtil;
+import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class ProviderRestController {
     @Autowired
     private IProviderService providerService;
 
-    @RequestMapping(value = "/provider", method = RequestMethod.GET)
+    @RequestMapping(value = "/provider", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<DataTableResponse<Provider>> listProvider(@RequestParam(required = false)String dataTableParam){
 
         DataTableParam param = null;
@@ -67,73 +70,71 @@ public class ProviderRestController {
             total = providerService.getProviderCount(query);
 
         }
+        DataTableResponse<Provider> response = new DataTableResponse<Provider>(null!=param?param.getDraw():1,total,total,list);
 
         if(null==list){
-            return new ResponseEntity<DataTableResponse<Provider>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<DataTableResponse<Provider>>(response,HttpStatus.NO_CONTENT);
         }else{
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-            DataTableResponse<Provider> response = new DataTableResponse<Provider>(null!=param?param.getDraw():1,total,total,list);
-            return new ResponseEntity<DataTableResponse<Provider>>(response,headers,HttpStatus.OK);
+
+            return new ResponseEntity<DataTableResponse<Provider>>(response,HttpStatus.OK);
         }
     }
 
-    @RequestMapping(value = "/provider/{providerId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/provider/{providerId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<Provider> getProvider(@PathVariable Integer providerId){
 
         if(null==providerId){
-            return new ResponseEntity<Provider>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Provider>(new Provider(),HttpStatus.BAD_REQUEST);
         }
 
         Provider provider = providerService.getProviderById(providerId);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<Provider>(provider,headers,HttpStatus.OK);
+        return new ResponseEntity<Provider>(provider,HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/provider/{providerId}", method = RequestMethod.PUT)
-    public ResponseEntity<Provider> updateProvider(@PathVariable Integer providerId, Provider provider){
+    @RequestMapping(value = "/provider/{providerId}", method = RequestMethod.PUT,
+            consumes = {"multipart/form-data","application/x-www-form-urlencoded"},
+            produces = "application/json;charset=UTF-8")
+    public ResponseEntity<Provider> updateProvider(@PathVariable Integer providerId,
+                                                         Provider provider) throws IOException {
 
         if(null==providerId){
-            return new ResponseEntity<Provider>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Provider>(new Provider(),HttpStatus.BAD_REQUEST);
         }
 
         provider.setId(providerId);
         providerService.updateProvider(provider);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<Provider>(provider,headers,HttpStatus.OK);
+        return new ResponseEntity<Provider>(provider,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/provider", method = RequestMethod.POST)
-    public ResponseEntity<Void> createProvider(Provider provider, UriComponentsBuilder ucBuilder){
+    @RequestMapping(value = "/provider", method = RequestMethod.POST,
+            consumes = {"multipart/form-data","application/x-www-form-urlencoded"},
+            produces = "application/json;charset=UTF-8")
+    public ResponseEntity<JsonResponseStatus> createProvider(Provider provider) throws IOException {
 
         providerService.saveProvider(provider);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/provider/{id}").buildAndExpand(provider.getId()).toUri());
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/provider", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteProvider(@RequestBody List<Integer> providerIds){
+    @RequestMapping(value = "/provider", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<JsonResponseStatus> deleteProvider(@RequestBody String providerIds){
         if(null==providerIds||providerIds.isEmpty()){
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : providerId is empty."),HttpStatus.BAD_REQUEST);
         }
-        providerService.deleteProviderByIds(providerIds);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        JSONArray list = JSON.parseArray(providerIds);
+        providerService.deleteProviderByIds(list.toJavaList(Integer.class));
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/provider/{providerId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Provider> deleteProvider(@PathVariable Integer providerId){
+    @RequestMapping(value = "/provider/{providerId}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<JsonResponseStatus> deleteProvider(@PathVariable Integer providerId){
         if(null==providerId){
-            return new ResponseEntity<Provider>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : providerId is empty."),HttpStatus.BAD_REQUEST);
         }
         providerService.deleteProvider(providerId);
-        return new ResponseEntity<Provider>(HttpStatus.OK);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
 }

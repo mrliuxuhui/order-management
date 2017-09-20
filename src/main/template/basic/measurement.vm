@@ -1,15 +1,15 @@
 #set($needScript=true)
-#set($jspath="basic/material.js")
+#set($jspath="basic/measurement.js")
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        食材管理
-        <small>添加、删除、更新食材原料</small>
+        计量单位管理
+        <small>添加、删除、更新计量单位</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
         <li><a href="#">基本信息管理</a></li>
-        <li class="active">食材管理</li>
+        <li class="active">计量单位管理</li>
     </ol>
 </section>
 
@@ -29,11 +29,8 @@
                 <thead>
                 <tr>
                     <th>序号</th>
-                    <th>名称</th>
-                    <th>图片</th>
-                    <th>单价</th>
-                    <th>分类</th>
-                    <th>简介</th>
+                    <th>中文名</th>
+                    <th>英文名</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th>操作</th>
@@ -45,11 +42,8 @@
                 <tfoot>
                 <tr>
                     <th>序号</th>
-                    <th>名称</th>
-                    <th>图片</th>
-                    <th>单价</th>
-                    <th>分类</th>
-                    <th>简介</th>
+                    <th>中文名</th>
+                    <th>英文名</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th>操作</th>
@@ -66,55 +60,23 @@
 <div class="modal fade" id="modal-add" tabindex="-1" role="dialog">
     <div class="modal-dialog">
 
-        <form id="data-form" class="form-horizontal" action="/admin/api/material" method="post" onsubmit="javascript:return false">
+        <form id="data-form" class="form-horizontal" action="/admin/api/measurement" method="post" onsubmit="javascript:return false">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">添加食材</h4>
+                    <h4 class="modal-title">添加计量单位</h4>
                 </div>
                 <div class="modal-body">
                     <div class="box-body">
-                        <input type="hidden" id="materialId" value="">
+                        <input type="hidden" id="measurementId" value="">
                         <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">名称</label>
-                            <div class="col-sm-10 "><input type="text" class="form-control" name="name" id="name" placeholder="输入菜名" required></div>
+                            <label for="name" class="col-sm-2 control-label">中文名称</label>
+                            <div class="col-sm-10 "><input type="text" class="form-control" name="cname" id="cname" placeholder="输入中文名" required></div>
                         </div>
                         <div class="form-group">
-                            <label for="price" class="col-sm-2 control-label">单价</label>
-                            <div class="col-sm-10 ">
-                                <input type="text" class="form-control" name="price" id="price" placeholder="单价（元）" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="unit" class="col-sm-2 control-label">单位</label>
-                            <div class="col-sm-10 ">
-                                <select class="form-control" id="unit" name="unit" required>
-                                    <option value="1">份</option>
-                                </select>
-                            </div>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="categoryId" class="col-sm-2 control-label">所属类别</label>
-                            <div class="col-sm-10 ">
-                                <select class="form-control" id="categoryId" name="categoryId" required>
-                                    <option value="1">凉菜</option>
-                                </select>
-                            </div>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="img" class="col-sm-2 control-label">图片</label>
-                            <div class="col-sm-10 ">
-                                <input type="file" class="form-control" id="img" name="img" placeholder="示例图片">
-                            </div>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="profile">简介</label>
-                            <textarea id="profile" name="profile" class="form-control" rows="3" placeholder="输入100字以内简介..." maxlength="100"></textarea>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                            <label for="name" class="col-sm-2 control-label">英文名称</label>
+                            <div class="col-sm-10 "><input type="text" class="form-control" name="ename" id="ename" placeholder="输入英文文名" required></div>
                         </div>
 
                     </div>

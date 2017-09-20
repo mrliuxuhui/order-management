@@ -11,16 +11,16 @@ $(function () {
     });
 
     $("#modal-add").on("show.bs.modal", function() {
-        var menuId = $(this).find("#menuId").val();
+        var providerId = $(this).find("#providerId").val();
         var numReg = new RegExp("^\\d+$");
-        if(null!=menuId&&numReg.test(menuId)){
-            $(this).find(".modal-title").text("更新菜品");
-            $("#data-form").attr("action","/admin/api/menu/"+menuId);
+        if(null!=providerId&&numReg.test(providerId)){
+            $(this).find(".modal-title").text("更新供应商");
+            $("#data-form").attr("action","/admin/api/provider/"+providerId);
             $("#data-form").attr("method","put");
 
         }else{
-            $(this).find(".modal-title").text("新建菜品");
-            $("#data-form").attr("action","/admin/api/menu");
+            $(this).find(".modal-title").text("添加供应商");
+            $("#data-form").attr("action","/admin/api/provider");
             $("#data-form").attr("method","post");
         }
     });
@@ -42,21 +42,6 @@ $(function () {
                         message:"最大长度不可超过30"
                     }
                 }
-            },
-            price:{
-                validators:{
-                    notEmpty:{
-                        message:"不可为空"
-                    },
-                    numeric:{
-                        message:"只能输入数字",
-                        callback:function(value,validator){
-                            if(value<=0||value>1000){
-                                return false;
-                            }
-                        }
-                    }
-                }
             }
         }
     });
@@ -67,8 +52,8 @@ $(function () {
         validator.validate();
         if(validator.isValid()){
             var action = loginForm.attr("action");
-            //var createRex = new RegExp("menu$");
-            var updateRex = new RegExp("menu/\\d+$");
+            //var createRex = new RegExp("provider$");
+            var updateRex = new RegExp("provider/\\d+$");
             var method = "post";
             if(updateRex.test(action)){
                 method = "put";
@@ -81,7 +66,7 @@ $(function () {
                 contentType: false,
                 processData: false,
                 dataType:"json",
-                data: new FormData(loginForm[0]),
+                data: loginForm.serializeJSON(),
                 success:function(result){
                     console.log(result);
                     $("#modal-add").modal("hide");
@@ -106,16 +91,16 @@ $(function () {
 
     $("#delBtn").on("click",function(){
         var data = table.rows('.selected').data();
-        var menuIds = new Array();
+        var providerIds = new Array();
         $.each(data, function (index, value) {
-            menuIds.push(value.id);
+            providerIds.push(value.id);
         });
 
         $.ajax({
-            url:"/admin/api/menu",
+            url:"/admin/api/provider",
             type:"delete",
             dataType:"json",
-            data:JSON.stringify(menuIds),
+            data:JSON.stringify(providerIds),
             success:function(result){
                 table.draw();
             }
@@ -132,18 +117,15 @@ $(function () {
         var id = data.id;
         $.ajax({
             dataType:"json",
-            url:"/admin/api/menu/"+id,
+            url:"/admin/api/provider/"+id,
             success:function(result){
                 if(null==result){
                     return;
                 }
                 $('#data-form input[name="name"]').val(result.name);
-                $('#data-form input[name="price"]').val(result.price);
-                $('#data-form select[name="unit"] > option[value="'+result.unit+'"]').attr("selected",true);
-                $('#data-form select[name="categoryId"] > option[value="'+result.categoryId+'"]').attr("selected",true);
                 $('#data-form text[name="profile"]').text(result.profile);
 
-                $("#menuId").val(id);
+                $("#providerId").val(id);
 
                 $("#modal-add").modal("show");
             }
@@ -163,7 +145,7 @@ $(function () {
         $.ajax({
             type:"delete",
             dataType:"json",
-            url:"/admin/api/menu/"+id,
+            url:"/admin/api/provider/"+id,
             success:function(result){
                 table.draw();
             }
@@ -181,13 +163,13 @@ $(function () {
 
     var table = $('#example1').DataTable({
         ajax: {
-            url: "/admin/api/menu"
+            url: "/admin/api/provider"
         },
         "order": [[1, 'asc']],// dt默认是第一列升序排列 这里第一列为序号列，所以设置为不排序，并把默认的排序列设置到后面
         "serverSide": true,
         "fnServerData": function(sUrl, aoData, fnCallback){
             $.ajax({
-                url:"/admin/api/menu",
+                url:"/admin/api/provider",
                 dataType:"json",
                 data:{"dataTableParam":JSON.stringify(aoData)},
                 success:function(result){
@@ -200,10 +182,9 @@ $(function () {
         "columns": [
             {"data": null}, //因为要加行号，所以要多一列，不然会把第一列覆盖
             {"data": "name"},
-            {"data": "img"},
-            {"data": "price"},
-            {"data": "categoryId"},
-            {"data": "profile"},
+            {"data": "address"},
+            {"data": "contactor"},
+            {"data": "tel"},
             {"data": "createTime"},
             {"data": "updateTime"},
             {"data": null}
@@ -215,7 +196,7 @@ $(function () {
                 "targets": [0.-1]
             },
             {
-                "targets": 8,
+                "targets": 7,
                 "render": function (data, type, row, meta) {
                     var context =
                     {
@@ -228,21 +209,9 @@ $(function () {
                     return html;
                 }
             },{
-                "targets":[6,7],
+                "targets":[5,6],
                 "render": function ( data, type, row, meta ) {
                     return format(data);
-                }
-            },{
-                "targets":4,
-                "render":function ( data, type, row, meta ) {
-                    return row.foodCategory?row.foodCategory.name:"";
-                }
-            },{
-                "targets":2,
-                "render":function ( data, type, row, meta ) {
-                    if(row&&row.img){
-                        return '<img src="'+row.img+'" class="table-td-img"/>';
-                    };
                 }
             }
 

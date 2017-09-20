@@ -41,7 +41,7 @@ public class MenuRestController {
     @Autowired
     private IMenuService menuService;
 
-    @RequestMapping(value = "/menu", method = RequestMethod.GET)
+    @RequestMapping(value = "/menu", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<DataTableResponse<Menu>> listMenu(@RequestParam(required = false)String dataTableParam){
 
         DataTableParam param = null;
@@ -75,49 +75,48 @@ public class MenuRestController {
             total = menuService.getMenuCount(query);
 
         }
+        DataTableResponse<Menu> response = new DataTableResponse<Menu>(null!=param?param.getDraw():1,total,total,list);
 
         if(null==list){
-            return new ResponseEntity<DataTableResponse<Menu>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<DataTableResponse<Menu>>(response,HttpStatus.NO_CONTENT);
         }else{
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-            DataTableResponse<Menu> response = new DataTableResponse<Menu>(null!=param?param.getDraw():1,total,total,list);
-            return new ResponseEntity<DataTableResponse<Menu>>(response,headers,HttpStatus.OK);
+
+            return new ResponseEntity<DataTableResponse<Menu>>(response,HttpStatus.OK);
         }
     }
 
-    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<Menu> getMenu(@PathVariable Integer menuId){
 
         if(null==menuId){
-            return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Menu>(new Menu(),HttpStatus.BAD_REQUEST);
         }
 
         Menu menu = menuService.getMenuById(menuId);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<Menu>(menu,headers,HttpStatus.OK);
+        return new ResponseEntity<Menu>(menu,HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.PUT, consumes = {"multipart/form-data","application/x-www-form-urlencoded"})
+    @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.PUT,
+            consumes = {"multipart/form-data","application/x-www-form-urlencoded"},
+            produces = "application/json;charset=UTF-8")
     public ResponseEntity<Menu> updateMenu(@PathVariable Integer menuId, @RequestParam(required = false) MultipartFile img,
                                            MenuDTO menuDTO) throws IOException {
 
         if(null==menuId){
-            return new ResponseEntity<Menu>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Menu>(new Menu(),HttpStatus.BAD_REQUEST);
         }
         menuDTO.setImgPath(FileUploadUtil.saveFile(img));
         Menu menu = menuDTO.toMenu();
         menu.setId(menuId);
         menuService.updateMenu(menu);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<Menu>(menu,headers,HttpStatus.OK);
+        return new ResponseEntity<Menu>(menu,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/menu", method = RequestMethod.POST, consumes = {"multipart/form-data","application/x-www-form-urlencoded"}, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/menu", method = RequestMethod.POST,
+            consumes = {"multipart/form-data","application/x-www-form-urlencoded"},
+            produces = "application/json;charset=UTF-8")
     public ResponseEntity<JsonResponseStatus> createMenu(@RequestParam(required = false) MultipartFile img, MenuDTO menuDTO) throws IOException {
 
         menuDTO.setImgPath(FileUploadUtil.saveFile(img));

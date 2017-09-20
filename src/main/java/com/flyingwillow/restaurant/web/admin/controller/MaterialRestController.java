@@ -1,5 +1,7 @@
 package com.flyingwillow.restaurant.web.admin.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.flyingwillow.restaurant.domain.FieldOrder;
 import com.flyingwillow.restaurant.domain.Material;
 import com.flyingwillow.restaurant.service.IMaterialService;
@@ -9,13 +11,13 @@ import com.flyingwillow.restaurant.util.web.DataTableResponse;
 import com.flyingwillow.restaurant.util.web.FileUploadUtil;
 import com.flyingwillow.restaurant.util.web.WebUtil;
 import com.flyingwillow.restaurant.web.admin.dto.MaterialDTO;
+import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,12 +75,13 @@ public class MaterialRestController {
             total = materialService.getMaterialCount(query);
 
         }
+        DataTableResponse<Material> response = new DataTableResponse<Material>(null!=param?param.getDraw():1,total,total,list);
 
         if(null==list){
-            return new ResponseEntity<DataTableResponse<Material>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<DataTableResponse<Material>>(response,HttpStatus.NO_CONTENT);
         }else{
-            DataTableResponse<Material> response = new DataTableResponse<Material>(null!=param?param.getDraw():1,total,total,list);
-            return new ResponseEntity<DataTableResponse<Material>>(response,WebUtil.getUTF8Header(),HttpStatus.OK);
+
+            return new ResponseEntity<DataTableResponse<Material>>(response,HttpStatus.OK);
         }
     }
 
@@ -86,55 +89,60 @@ public class MaterialRestController {
     public ResponseEntity<Material> getMaterial(@PathVariable Integer materialId){
 
         if(null==materialId){
-            return new ResponseEntity<Material>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Material>(new Material(),HttpStatus.BAD_REQUEST);
         }
 
         Material material = materialService.getMaterialById(materialId);
 
-        return new ResponseEntity<Material>(material, WebUtil.getUTF8Header(),HttpStatus.OK);
+        return new ResponseEntity<Material>(material,HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/material/{materialId}", method = RequestMethod.PUT, consumes = "multipart/form-data", produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/material/{materialId}", method = RequestMethod.PUT,
+            consumes = {"multipart/form-data","application/x-www-form-urlencoded"},
+            produces = "application/json;charset=UTF-8")
     public ResponseEntity<Material> updateMaterial(@PathVariable Integer materialId, @RequestParam(required = false) MultipartFile img,
-                                                   MaterialDTO materialDTO) throws IOException {
+                                           MaterialDTO materialDTO) throws IOException {
 
         if(null==materialId){
-            return new ResponseEntity<Material>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Material>(new Material(),HttpStatus.BAD_REQUEST);
         }
-        materialDTO.setImg(FileUploadUtil.saveFile(img));
+        materialDTO.setImgPath(FileUploadUtil.saveFile(img));
         Material material = materialDTO.toMaterial();
         material.setId(materialId);
         materialService.updateMaterial(material);
-        return new ResponseEntity<Material>(material,WebUtil.getUTF8Header(),HttpStatus.OK);
+        return new ResponseEntity<Material>(material,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/material", method = RequestMethod.POST, consumes = "multipart/form-data",produces = "application/json;charset=UTF-8")
-    public ResponseEntity<Void> createMaterial(MaterialDTO materialDTO, @RequestParam(required = false) MultipartFile img) throws IOException {
+    @RequestMapping(value = "/material", method = RequestMethod.POST,
+            consumes = {"multipart/form-data","application/x-www-form-urlencoded"},
+            produces = "application/json;charset=UTF-8")
+    public ResponseEntity<JsonResponseStatus> createMaterial(@RequestParam(required = false) MultipartFile img, MaterialDTO materialDTO) throws IOException {
 
-        materialDTO.setImg(FileUploadUtil.saveFile(img));
+        materialDTO.setImgPath(FileUploadUtil.saveFile(img));
         Material material = materialDTO.toMaterial();
         materialService.saveMaterial(material);
 
-        return new ResponseEntity<Void>(WebUtil.getUTF8Header(), HttpStatus.CREATED);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/material", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<Void> deleteMaterial(@RequestBody List<Integer> materialIds){
+    public ResponseEntity<JsonResponseStatus> deleteMaterial(@RequestBody String materialIds){
         if(null==materialIds||materialIds.isEmpty()){
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : materialId is empty."),HttpStatus.BAD_REQUEST);
         }
-        materialService.deleteMaterialByIds(materialIds);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        JSONArray list = JSON.parseArray(materialIds);
+        materialService.deleteMaterialByIds(list.toJavaList(Integer.class));
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/material/{materialId}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<Material> deleteMaterial(@PathVariable Integer materialId){
+    public ResponseEntity<JsonResponseStatus> deleteMaterial(@PathVariable Integer materialId){
         if(null==materialId){
-            return new ResponseEntity<Material>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : materialId is empty."),HttpStatus.BAD_REQUEST);
         }
         materialService.deleteMaterial(materialId);
-        return new ResponseEntity<Material>(HttpStatus.OK);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
 }

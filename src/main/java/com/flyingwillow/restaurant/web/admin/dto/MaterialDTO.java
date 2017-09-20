@@ -16,7 +16,7 @@ public class MaterialDTO {
     private Float price;
     private Integer unit;
     private Integer categoryId;
-    private String img;
+    private String imgPath;
     private String profile;
 
     public String getName() {
@@ -64,12 +64,12 @@ public class MaterialDTO {
         return this;
     }
 
-    public String getImg() {
-        return img;
+    public String getImgPath() {
+        return imgPath;
     }
 
-    public MaterialDTO setImg(String img) {
-        this.img = img;
+    public MaterialDTO setImgPath(String imgPath) {
+        this.imgPath = imgPath;
         return this;
     }
 
@@ -85,6 +85,6 @@ public class MaterialDTO {
     public Material toMaterial(){
         return new Material().setId(id).setName(this.name).setPrice(this.price)
                 .setUnit(this.unit).setCategoryId(this.categoryId)
-                .setProfile(profile).setImg(this.img);
+                .setProfile(profile).setImg(this.imgPath);
     }
 }

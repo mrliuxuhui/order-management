@@ -1,16 +1,18 @@
 package com.flyingwillow.restaurant.web.admin.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.flyingwillow.restaurant.domain.FieldOrder;
 import com.flyingwillow.restaurant.domain.FoodCategory;
 import com.flyingwillow.restaurant.service.IFoodCategoryService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
+import com.flyingwillow.restaurant.util.web.FileUploadUtil;
+import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class FoodCategoryRestController {
     @Autowired
     private IFoodCategoryService foodCategoryService;
 
-    @RequestMapping(value = "/foodCategory", method = RequestMethod.GET)
+    @RequestMapping(value = "/foodCategory", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<DataTableResponse<FoodCategory>> listFoodCategory(@RequestParam(required = false)String dataTableParam){
 
         DataTableParam param = null;
@@ -67,73 +70,71 @@ public class FoodCategoryRestController {
             total = foodCategoryService.getFoodCategoryCount(query);
 
         }
+        DataTableResponse<FoodCategory> response = new DataTableResponse<FoodCategory>(null!=param?param.getDraw():1,total,total,list);
 
         if(null==list){
-            return new ResponseEntity<DataTableResponse<FoodCategory>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<DataTableResponse<FoodCategory>>(response,HttpStatus.NO_CONTENT);
         }else{
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-            DataTableResponse<FoodCategory> response = new DataTableResponse<FoodCategory>(null!=param?param.getDraw():1,total,total,list);
-            return new ResponseEntity<DataTableResponse<FoodCategory>>(response,headers,HttpStatus.OK);
+
+            return new ResponseEntity<DataTableResponse<FoodCategory>>(response,HttpStatus.OK);
         }
     }
 
-    @RequestMapping(value = "/foodCategory/{foodCategoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/foodCategory/{foodCategoryId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<FoodCategory> getFoodCategory(@PathVariable Integer foodCategoryId){
 
         if(null==foodCategoryId){
-            return new ResponseEntity<FoodCategory>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<FoodCategory>(new FoodCategory(),HttpStatus.BAD_REQUEST);
         }
 
         FoodCategory foodCategory = foodCategoryService.getFoodCategoryById(foodCategoryId);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<FoodCategory>(foodCategory,headers,HttpStatus.OK);
+        return new ResponseEntity<FoodCategory>(foodCategory,HttpStatus.OK);
 
     }
 
-    @RequestMapping(value = "/foodCategory/{foodCategoryId}", method = RequestMethod.PUT)
-    public ResponseEntity<FoodCategory> updateFoodCategory(@PathVariable Integer foodCategoryId, FoodCategory foodCategory){
+    @RequestMapping(value = "/foodCategory/{foodCategoryId}", method = RequestMethod.PUT,
+            consumes = {"multipart/form-data","application/x-www-form-urlencoded"},
+            produces = "application/json;charset=UTF-8")
+    public ResponseEntity<FoodCategory> updateFoodCategory(@PathVariable Integer foodCategoryId,
+                                           FoodCategory foodCategory) throws IOException {
 
         if(null==foodCategoryId){
-            return new ResponseEntity<FoodCategory>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<FoodCategory>(new FoodCategory(),HttpStatus.BAD_REQUEST);
         }
 
         foodCategory.setId(foodCategoryId);
         foodCategoryService.updateFoodCategory(foodCategory);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<FoodCategory>(foodCategory,headers,HttpStatus.OK);
+        return new ResponseEntity<FoodCategory>(foodCategory,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/foodCategory", method = RequestMethod.POST)
-    public ResponseEntity<Void> createFoodCategory(FoodCategory foodCategory, UriComponentsBuilder ucBuilder){
+    @RequestMapping(value = "/foodCategory", method = RequestMethod.POST,
+            consumes = "application/json;charset=UTF-8",
+            produces = "application/json;charset=UTF-8")
+    public ResponseEntity<JsonResponseStatus> createFoodCategory(@RequestBody FoodCategory foodCategory) throws IOException {
 
         foodCategoryService.saveFoodCategory(foodCategory);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/foodCategory/{id}").buildAndExpand(foodCategory.getId()).toUri());
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/foodCategory", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteFoodCategory(@RequestBody List<Integer> foodCategoryIds){
+    @RequestMapping(value = "/foodCategory", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<JsonResponseStatus> deleteFoodCategory(@RequestBody String foodCategoryIds){
         if(null==foodCategoryIds||foodCategoryIds.isEmpty()){
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : foodCategoryId is empty."),HttpStatus.BAD_REQUEST);
         }
-        foodCategoryService.deleteFoodCategoryByIds(foodCategoryIds);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        JSONArray list = JSON.parseArray(foodCategoryIds);
+        foodCategoryService.deleteFoodCategoryByIds(list.toJavaList(Integer.class));
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/foodCategory/{foodCategoryId}", method = RequestMethod.DELETE)
-    public ResponseEntity<FoodCategory> deleteFoodCategory(@PathVariable Integer foodCategoryId){
+    @RequestMapping(value = "/foodCategory/{foodCategoryId}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<JsonResponseStatus> deleteFoodCategory(@PathVariable Integer foodCategoryId){
         if(null==foodCategoryId){
-            return new ResponseEntity<FoodCategory>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"Bad Request : foodCategoryId is empty."),HttpStatus.BAD_REQUEST);
         }
         foodCategoryService.deleteFoodCategory(foodCategoryId);
-        return new ResponseEntity<FoodCategory>(HttpStatus.OK);
+        return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
 }

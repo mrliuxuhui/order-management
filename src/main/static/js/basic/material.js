@@ -11,16 +11,16 @@ $(function () {
     });
 
     $("#modal-add").on("show.bs.modal", function() {
-        var menuId = $(this).find("#menuId").val();
+        var materialId = $(this).find("#materialId").val();
         var numReg = new RegExp("^\\d+$");
-        if(null!=menuId&&numReg.test(menuId)){
-            $(this).find(".modal-title").text("更新菜品");
-            $("#data-form").attr("action","/admin/api/menu/"+menuId);
+        if(null!=materialId&&numReg.test(materialId)){
+            $(this).find(".modal-title").text("更新食材");
+            $("#data-form").attr("action","/admin/api/material/"+materialId);
             $("#data-form").attr("method","put");
 
         }else{
-            $(this).find(".modal-title").text("新建菜品");
-            $("#data-form").attr("action","/admin/api/menu");
+            $(this).find(".modal-title").text("添加食材");
+            $("#data-form").attr("action","/admin/api/material");
             $("#data-form").attr("method","post");
         }
     });
@@ -67,8 +67,8 @@ $(function () {
         validator.validate();
         if(validator.isValid()){
             var action = loginForm.attr("action");
-            //var createRex = new RegExp("menu$");
-            var updateRex = new RegExp("menu/\\d+$");
+            //var createRex = new RegExp("material$");
+            var updateRex = new RegExp("material/\\d+$");
             var method = "post";
             if(updateRex.test(action)){
                 method = "put";
@@ -106,16 +106,16 @@ $(function () {
 
     $("#delBtn").on("click",function(){
         var data = table.rows('.selected').data();
-        var menuIds = new Array();
+        var materialIds = new Array();
         $.each(data, function (index, value) {
-            menuIds.push(value.id);
+            materialIds.push(value.id);
         });
 
         $.ajax({
-            url:"/admin/api/menu",
+            url:"/admin/api/material",
             type:"delete",
             dataType:"json",
-            data:JSON.stringify(menuIds),
+            data:JSON.stringify(materialIds),
             success:function(result){
                 table.draw();
             }
@@ -132,7 +132,7 @@ $(function () {
         var id = data.id;
         $.ajax({
             dataType:"json",
-            url:"/admin/api/menu/"+id,
+            url:"/admin/api/material/"+id,
             success:function(result){
                 if(null==result){
                     return;
@@ -143,7 +143,7 @@ $(function () {
                 $('#data-form select[name="categoryId"] > option[value="'+result.categoryId+'"]').attr("selected",true);
                 $('#data-form text[name="profile"]').text(result.profile);
 
-                $("#menuId").val(id);
+                $("#materialId").val(id);
 
                 $("#modal-add").modal("show");
             }
@@ -163,7 +163,7 @@ $(function () {
         $.ajax({
             type:"delete",
             dataType:"json",
-            url:"/admin/api/menu/"+id,
+            url:"/admin/api/material/"+id,
             success:function(result){
                 table.draw();
             }
@@ -181,13 +181,13 @@ $(function () {
 
     var table = $('#example1').DataTable({
         ajax: {
-            url: "/admin/api/menu"
+            url: "/admin/api/material"
         },
         "order": [[1, 'asc']],// dt默认是第一列升序排列 这里第一列为序号列，所以设置为不排序，并把默认的排序列设置到后面
         "serverSide": true,
         "fnServerData": function(sUrl, aoData, fnCallback){
             $.ajax({
-                url:"/admin/api/menu",
+                url:"/admin/api/material",
                 dataType:"json",
                 data:{"dataTableParam":JSON.stringify(aoData)},
                 success:function(result){
@@ -242,7 +242,9 @@ $(function () {
                 "render":function ( data, type, row, meta ) {
                     if(row&&row.img){
                         return '<img src="'+row.img+'" class="table-td-img"/>';
-                    };
+                    }else {
+                        return '';
+                    }
                 }
             }
 

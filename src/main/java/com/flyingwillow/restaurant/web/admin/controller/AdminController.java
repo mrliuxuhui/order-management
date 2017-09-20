@@ -1,5 +1,6 @@
 package com.flyingwillow.restaurant.web.admin.controller;
 
+import com.flyingwillow.restaurant.util.web.PageModelMapUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +20,10 @@ public class AdminController {
         if(StringUtils.isNotBlank(page)){
             if("index".equals(page)){
                 return "/layout/home/main";
-            }else if("menu".equals(page)){
-                return "/basic/menu";
+            }else if(PageModelMapUtil.getMap().containsKey(page)){
+                return PageModelMapUtil.getMap().get(page);
             }else{
-                return page;
+                return "blank";
             }
 
         }

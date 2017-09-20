@@ -12,15 +12,15 @@
 		<result column="unit" property="unit"/>
 		<result column="profile" property="profile"/>
 		<result column="categoryId" property="categoryId"/>
-		<result column="createTime" property="createTime"/>
-		<result column="updateTime" property="updateTime"/>
+		<result column="createTime" property="createTime" javaType="Date" jdbcType="BIGINT"/>
+		<result column="updateTime" property="updateTime" javaType="Date" jdbcType="BIGINT"/>
 		<result column="operator" property="operator"/>
 		<association property="measurement" javaType="Measurement">
 			<id column="unit" property="id"/>
 			<result column="unitCname" property="cname"/>
 			<result column="unitEname" property="ename"/>
 		</association>
-		<association property="foodCategory" javaType="FoodCategory">
+		<association property="materialCategory" javaType="MaterialCategory">
 			<id column="categoryId" property="id"/>
 			<result column="categoryName" property="name"/>
 		</association>
