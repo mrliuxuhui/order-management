@@ -23,7 +23,7 @@
 			<result column="unitCname" property="cname"/>
 			<result column="unitEname" property="ename"/>
 		</association>
-		<association property="purchase" javaType="Purchase">
+		<association property="order" javaType="customOrder">
 			<id column="orderId" property="id"/>
 			<result column="o_number" property="number"/>
 			<result column="o_tableNo" property="tableNo"/>
@@ -51,9 +51,37 @@
 			<if test="null!=orderId">AND t1.orderId=#{orderId}</if>
 			<if test="null!=menuId">AND t1.menuId=#{menuId}</if>
 		</where>
+		<if test="null!=orders">
+			ORDER BY
+			<foreach collection="orders" item="sort" separator=",">
+				${sort.field} ${sort.dir}
+			</foreach>
+		</if>
 		<if test="null!=start and null!=size">
 			LIMIT #{start},#{size}
 		</if>
+	</select>
+
+	<select id="getCustomOrderDetailCount" parameterType="HashMap" resultType="int">
+		SELECT COUNT(*)
+		FROM custom_order_detail
+		<where>
+			AND del = 0
+			<if test="null!=id">AND id=#{id}</if>
+			<if test="null!=orderId">AND orderId=#{orderId}</if>
+			<if test="null!=menuId">AND menuId=#{menuId}</if>
+		</where>
+	</select>
+
+	<select id="getCustomOrderDetailById" parameterType="int" resultMap="CustomOrderDetailMap">
+		SELECT t1.*, t2.cname AS unitCname, t2.ename AS unitEname,
+		t3.number AS o_number, t3.tableNo AS o_tableNo,
+		t4.name AS m_name, t4.img AS m_img, t4.price AS m_price,
+		FROM custom_order_detail t1
+		LEFT JOIN measurement t2 ON t2.id = t1.unit
+		LEFT JOIN custom_order t3 ON t3.id = t1.orderId
+		LEFT JOIN menu t4 ON t4.id = t1.menuId
+		WHERE t1.id = #{id}
 	</select>
 
 

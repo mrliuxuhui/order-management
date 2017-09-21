@@ -12,11 +12,15 @@ public interface CustomOrderMapper {
 
     public List<CustomOrder> getCustomOrderList(Map<String, Object> params);
 
-    public void saveCustomOrder(CustomOrder detail);
+    public Integer getCustomOrderCount(Map<String, Object> params);
 
-    public void updateCustomOrder(CustomOrder detail);
+    public CustomOrder getCustomOrderById(Map<String,Object> params);
 
-    public void deleteCustomOrderByNumber(String orderId);
+    public void saveCustomOrder(CustomOrder order);
 
-    public void deleteCustomOrder(Integer id);
+    public void updateCustomOrder(CustomOrder order);
+
+    public void deleteCustomOrderByNumber(String number);
+
+    public void deleteCustomOrder(String id);
 }

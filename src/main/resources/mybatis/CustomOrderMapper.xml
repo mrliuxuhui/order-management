@@ -56,6 +56,14 @@
 
 	</select>
 
+	<select id="getCustomOrderById" parameterType="HashMap" resultType="CustomOrder">
+		SELECT * FROM custom_order
+		<where>
+			<if test="null!=id">AND id=#{id}</if>
+			<if test="null!=number">AND number=#{number}</if>
+		</where>
+	</select>
+
 
 	<!-- insert -->
 	<insert id="saveCustomOrder" parameterType="CustomOrder" keyProperty="id" useGeneratedKeys="true">

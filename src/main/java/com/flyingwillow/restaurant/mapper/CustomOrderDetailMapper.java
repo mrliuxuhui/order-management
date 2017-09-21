@@ -12,6 +12,10 @@ public interface CustomOrderDetailMapper {
 
     public List<CustomOrderDetail> getCustomOrderDetailList(Map<String,Object> params);
 
+    public Integer getCustomOrderDetailCount(Map<String,Object> params);
+
+    public CustomOrderDetail getCustomOrderDetailById(Integer id);
+
     public void saveCustomOrderDetail(CustomOrderDetail detail);
 
     public void updateCustomOrderDetail(CustomOrderDetail detail);
