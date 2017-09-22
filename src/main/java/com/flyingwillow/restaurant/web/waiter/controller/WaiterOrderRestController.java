@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/waiter")
-public class OrderRestController {
+public class WaiterOrderRestController {
 
 
     // "/order" create  request body {tableNo:n, details:[]}

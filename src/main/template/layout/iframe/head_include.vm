@@ -6,6 +6,10 @@
 <link rel="stylesheet" href="/static/libs/hui/Hui-iconfont/1.0.8/iconfont.css">
 <!-- DataTables -->
 <link rel="stylesheet" href="/static/libs/datatables.net-bs/css/dataTables.bootstrap.min.css">
+<!-- icheck -->
+<link rel="stylesheet" href="/static/libs/plugins/iCheck/all.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="/static/libs/select2/css/select2.min.css">
 <!-- Ionicons -->
 <link rel="stylesheet" href="/static/libs/Ionicons/css/ionicons.min.css">
 <!-- Theme style -->

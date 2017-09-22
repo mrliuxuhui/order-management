@@ -1,5 +1,5 @@
 #set($needScript=true)
-#set($jspath="basic/menu.js")
+#set($jspath="order/order.js")
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -19,8 +19,10 @@
     <div class="box box-primary">
         <div class="box-header">
             <div class="row pull-left col-lg-offset-0 col-lg-6 col-md-6 col-md-offset-0">
-                <div class="col-lg-6 col-md-6"><button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#modal-add" ><i class="fa fa-plus-circle"></i> 新增</button></div>
-                <div class="col-lg-6 col-md-6"><button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modal-del"><i class="fa fa-minus-circle"></i> 批量删除</button></div>
+                <label>
+                    <input type="checkbox" class="flat-red">
+                    显示所有订单（包含已结算）
+                </label>
             </div>
         </div>
         <!-- /.box-header -->
@@ -32,7 +34,6 @@
                     <th>订单号</th>
                     <th>桌号</th>
                     <th>下单时间</th>
-                    <th>分类</th>
                     <th>总金额</th>
                     <th>后厨是否接单</th>
                     <th>催单</th>
@@ -49,7 +50,6 @@
                     <th>订单号</th>
                     <th>桌号</th>
                     <th>下单时间</th>
-                    <th>分类</th>
                     <th>总金额</th>
                     <th>后厨是否接单</th>
                     <th>催单</th>
@@ -65,69 +65,105 @@
 </section>
 <!-- /.content-wrapper -->
 
-<div class="modal fade" id="modal-add" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal-check" tabindex="-1" role="dialog">
     <div class="modal-dialog">
 
-        <form id="data-form" class="form-horizontal" action="/admin/api/menu" method="post" onsubmit="javascript:return false" enctype="multipart/form-data">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">新建菜品</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="box-body">
-                        <input type="hidden" id="menuId" value="">
-                        <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">菜名</label>
-                            <div class="col-sm-10 "><input type="text" class="form-control" name="name" id="name" placeholder="输入菜名" required></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="price" class="col-sm-2 control-label">单价</label>
-                            <div class="col-sm-10 ">
-                                <input type="text" class="form-control" name="price" id="price" placeholder="单价（元）" required>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">账单结算</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel box box-primary">
+                    <div class="box-header with-border">
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="col-sm-6">订单编号</div>
+                                <div class="col-sm-6" id="order-number">201709210024</div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="unit" class="col-sm-2 control-label">单位</label>
-                            <div class="col-sm-10 ">
-                                <select class="form-control" id="unit" name="unit" required>
-                                    <option value="1">份</option>
-                                </select>
+                            <div class="col-md-6">
+                                <div class="col-sm-6">桌号</div>
+                                <div class="col-sm-6" id="table-number">5</div>
                             </div>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="categoryId" class="col-sm-2 control-label">所属类别</label>
-                            <div class="col-sm-10 ">
-                                <select class="form-control" id="categoryId" name="categoryId" required>
-                                    <option value="1">凉菜</option>
-                                </select>
-                            </div>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="img" class="col-sm-2 control-label">图片</label>
-                            <div class="col-sm-10 ">
-                                <input type="file" class="form-control" id="img" name="img" placeholder="示例图片">
-                            </div>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="profile">简介</label>
-                            <textarea id="profile" name="profile" class="form-control" rows="3" placeholder="输入100字以内简介..." maxlength="100"></textarea>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
                         </div>
 
+                        <br/>
+                        <h6 class="box-title pull-right c">
+                            <a data-toggle="collapse" href="#collapseOne">
+                                显示详单 <i class="fa fa-chevron-down"></i>
+                            </a>
+                        </h6>
                     </div>
-                    <!-- /.box-body -->
+                    <div id="collapseOne" class="panel-collapse collapse">
+                        <div class="box-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>菜名</th>
+                                    <th>点餐量</th>
+                                    <th>上餐量</th>
+                                    <th>单价</th>
+                                    <th>总价</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Update</td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                    <button type="button" id="submitBtn" class="btn btn-primary">保存</button>
-                </div>
+                <!-- /.box-body -->
             </div>
-        </form>
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <div class="col-md-8 col-md-offset-1">
+                        <div class="col-sm-6">总金额(元)</div>
+                        <div class="col-sm-6" id="totalPrice">500.00</div>
+                    </div>
+                </div>
+                <br/>
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-sm-2 control-label">应收</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputEmail1" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="form-group" id="checkOutForm">
+                            <input type="hidden" id="orderId" name="orderId">
+                            <label for="inputEmail2" class="col-sm-2 control-label">实收</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputEmail2" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">找零</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputEmail3" placeholder="0.00">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="submitBtn" class="btn btn-primary">结账</button>
+                </form>
+            </div>
+        </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->

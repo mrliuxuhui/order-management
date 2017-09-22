@@ -58,12 +58,47 @@ public class CustomOrderDetailServiceImpl implements ICustomOrderDetailService{
     }
 
     @Override
+    public List<CustomOrderDetail> getCustomOrderDetailsByOrder(String orderNumber) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("orderNumber",orderNumber);
+        return getCustomOrderDetailList(params,0,1000);
+    }
+
+    @Override
+    public Integer getCustomOrderDetailCountByOrder(String orderNumber) {
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("orderNumber",orderNumber);
+        return getCustomOrderDetailCount(params);
+    }
+
+    @Override
     public void saveCustomOrderDetail(CustomOrderDetail detail) {
         customOrderDetailMapper.saveCustomOrderDetail(detail);
     }
 
     @Override
     public void updateCustomOrderDetail(CustomOrderDetail detail) {
+        customOrderDetailMapper.updateCustomOrderDetail(detail);
+    }
+
+    @Override
+    public void updateCustomOrderDetailMount(Integer detailId, Float mount) {
+        CustomOrderDetail detail = new CustomOrderDetail().setId(detailId.longValue()).setMount(mount);
+        customOrderDetailMapper.updateCustomOrderDetail(detail);
+    }
+
+    @Override
+    public void updateOrderDetailDeliverMount(Integer detailId, Float mount, Float deliverMount) {
+        if(null==mount&&null==deliverMount){
+            return;
+        }
+        CustomOrderDetail detail = new CustomOrderDetail().setId(detailId.longValue());
+        if(null!=mount){
+            detail.setMount(mount);
+        }
+        if(null!=deliverMount){
+            detail.setDeliverMount(deliverMount);
+        }
         customOrderDetailMapper.updateCustomOrderDetail(detail);
     }
 

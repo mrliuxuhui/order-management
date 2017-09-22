@@ -8,6 +8,10 @@
 <script src="/static/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/static/libs/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="/static/libs/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+<!-- iCheck -->
+<script src="/static/libs/plugins/iCheck/icheck.min.js"></script>
+<!-- Select2 -->
+<script src="/static/libs/select2/js/select2.full.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/libs/dist/js/adminlte.min.js"></script>
 <!-- art Template -->

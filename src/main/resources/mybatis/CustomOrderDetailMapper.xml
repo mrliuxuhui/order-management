@@ -49,6 +49,7 @@
 			AND t1.del = 0
 			<if test="null!=id">AND t1.id=#{id}</if>
 			<if test="null!=orderId">AND t1.orderId=#{orderId}</if>
+			<if test="null!=orderNumber">AND t3.number=#{orderNumber}</if>
 			<if test="null!=menuId">AND t1.menuId=#{menuId}</if>
 		</where>
 		<if test="null!=orders">
@@ -64,11 +65,13 @@
 
 	<select id="getCustomOrderDetailCount" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*)
-		FROM custom_order_detail
+		FROM custom_order_detail t1
+		LEFT JOIN custom_order t2 ON t2.id = t1.orderId
 		<where>
 			AND del = 0
 			<if test="null!=id">AND id=#{id}</if>
 			<if test="null!=orderId">AND orderId=#{orderId}</if>
+			<if test="null!=orderNumber">AND t2.number=#{orderNumber}</if>
 			<if test="null!=menuId">AND menuId=#{menuId}</if>
 		</where>
 	</select>
@@ -104,6 +107,7 @@
 			<if test="null!=completeTime">completeTime = #{completeTime},</if>
 			<if test="null!=delivered">delivered = #{delivered},</if>
 			<if test="null!=deliveredTime">deliveredTime = #{deliveredTime},</if>
+			<if test="null!=deliverMount">deliverMount = #{deliverMount},</if>
 			<if test="null!=waiter">waiter = #{waiter},</if>
 			<if test="null!=status">status = #{status},</if>
 		</set>

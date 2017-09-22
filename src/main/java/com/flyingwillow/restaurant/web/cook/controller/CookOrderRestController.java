@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/cook")
-public class OrderRestController {
+public class CookOrderRestController {
 
     // "/order" list
 

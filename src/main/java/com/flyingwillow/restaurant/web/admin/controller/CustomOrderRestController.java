@@ -9,6 +9,7 @@ import com.flyingwillow.restaurant.service.ICustomOrderService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
+import com.flyingwillow.restaurant.web.admin.dto.OrderDetailDTO;
 import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liuxuhui on 2017/9/20.
@@ -62,7 +64,7 @@ public class CustomOrderRestController {
                 if(search.matches("\\d+")){
                     query.put("id",Integer.parseInt(search));
                 }else{
-                    query.put("name",search);
+                    query.put("number",search);
                 }
             }
 
@@ -95,44 +97,75 @@ public class CustomOrderRestController {
 
         List<CustomOrderDetail> detailList = customOrderDetailService.getCustomOrderDetailsByOrder(orderId);
         Integer total = customOrderDetailService.getCustomOrderDetailCountByOrder(orderId);
-
-        return new ResponseEntity<List<CustomOrderDetail>>(detailList,HttpStatus.OK);
+        Map<String,Object> result = new HashMap<>();
+        result.put("total",total);
+        result.put("list",detailList);
+        return new ResponseEntity<Map<String,Object>>(result,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order/{orderNumber}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/order/number/{orderNumber}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity getOrderDetail(@PathVariable String orderNumber){
 
         if(StringUtils.isBlank(orderNumber)){
             return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
         }
 
-
-
-        return new ResponseEntity<List<CustomOrderDetail>>(null,HttpStatus.OK);
+        List<CustomOrderDetail> detailList = customOrderDetailService.getCustomOrderDetailsByOrder(orderNumber);
+        Integer total = customOrderDetailService.getCustomOrderDetailCountByOrder(orderNumber);
+        Map<String,Object> result = new HashMap<>();
+        result.put("total",total);
+        result.put("list",detailList);
+        return new ResponseEntity<Map<String,Object>>(result,HttpStatus.OK);
     }
 
     @RequestMapping(value = "/order/numbers", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity searchOrderNumber(@RequestParam String tableNo){
+    public ResponseEntity searchOrderNumber(@RequestParam Integer tableNo){
+        if(null==tableNo){
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
+        }
 
+        List<Map<String,Object>> numbers = customOrderService.getOrderNumbersByTableNo(tableNo);
+        return new ResponseEntity(numbers,HttpStatus.OK);
     }
 
     @RequestMapping(value = "/order/detail/{detailId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity getOrderDetailById(@PathVariable Integer detailId){
-
+        if(null==detailId){
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
+        }
+        CustomOrderDetail detail = customOrderDetailService.getCustomOrderDetailById(detailId);
+        return new ResponseEntity(detail,HttpStatus.OK);
     }
 
     @RequestMapping(value = "/order/{orderId}/detail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity add2Order(@PathVariable Integer orderId){
-
+    public ResponseEntity add2Order(@PathVariable Integer orderId, @RequestBody OrderDetailDTO orderDetailDTO){
+        if(null==orderId||null==orderDetailDTO){
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
+        }
+        CustomOrderDetail detail = orderDetailDTO.toOderDetail();
+        customOrderDetailService.saveCustomOrderDetail(detail);
+        return new ResponseEntity(detail,HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/order/detail/{detailId}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
-    public ResponseEntity updateDetail(@PathVariable Integer detailId){
+    public ResponseEntity updateDetail(@PathVariable Integer detailId, Float mount){
 
+        if(null==detailId||null==mount){
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
+        }
+
+        customOrderDetailService.updateCustomOrderDetailMount(detailId,mount);
+
+        return new ResponseEntity(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/order/detail/{detailId}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
     public ResponseEntity updateDetail(@PathVariable Integer detailId){
 
+        if(null==detailId){
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
+        }
+        customOrderDetailService.deleteCustomOrderDetail(detailId);
+        return new ResponseEntity(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 }

@@ -18,9 +18,15 @@ public interface ICustomOrderDetailService {
     public List<CustomOrderDetail> getCustomOrderDetailsByOrder(Integer orderId);
     public Integer getCustomOrderDetailCountByOrder(Integer orderId);
 
+    public List<CustomOrderDetail> getCustomOrderDetailsByOrder(String orderNumber);
+    public Integer getCustomOrderDetailCountByOrder(String orderNumber);
+
     public void saveCustomOrderDetail(CustomOrderDetail detail);
 
     public void updateCustomOrderDetail(CustomOrderDetail detail);
+
+    public void updateCustomOrderDetailMount(Integer detailId, Float mount);
+    public void updateOrderDetailDeliverMount(Integer detailId, Float mount, Float deliverMount);
 
     public void deleteCustomOrderDetailByOId(Integer orderId);
 

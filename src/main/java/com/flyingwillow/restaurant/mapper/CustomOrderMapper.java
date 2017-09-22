@@ -16,6 +16,10 @@ public interface CustomOrderMapper {
 
     public CustomOrder getCustomOrderById(Map<String,Object> params);
 
+    public List<Map<String,Object>> getOrderNumbersByTableNo(Integer tableNo);
+
+    public Integer getOrderSerialNumber();
+
     public void saveCustomOrder(CustomOrder order);
 
     public void updateCustomOrder(CustomOrder order);

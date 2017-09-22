@@ -171,7 +171,7 @@ public class DataTableParam {
     }
 
     public int getStart() {
-        return start-1;
+        return start>0?start-1:0;
     }
 
     public void setStart(int start) {

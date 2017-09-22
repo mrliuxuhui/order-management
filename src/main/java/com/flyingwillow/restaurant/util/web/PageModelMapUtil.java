@@ -20,6 +20,8 @@ public class PageModelMapUtil {
         map.put("foodCategory","/basic/foodCategory");
         map.put("measurement","/basic/measurement");
         map.put("provider","/basic/provider");
+        map.put("customorders","/order/order");
+        map.put("orderdetail","/order/detail");
 
         return map;
     }

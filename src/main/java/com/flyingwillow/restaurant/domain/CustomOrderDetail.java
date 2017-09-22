@@ -17,6 +17,7 @@ public class CustomOrderDetail {
     private Date completeTime;
     private Boolean delivered;
     private Date deliveredTime;
+    private Float deliverMount;
     private String water;
     private Integer status;
     private Integer del;
@@ -166,6 +167,15 @@ public class CustomOrderDetail {
 
     public CustomOrderDetail setMenu(Menu menu) {
         this.menu = menu;
+        return this;
+    }
+
+    public Float getDeliverMount() {
+        return deliverMount;
+    }
+
+    public CustomOrderDetail setDeliverMount(Float deliverMount) {
+        this.deliverMount = deliverMount;
         return this;
     }
 }

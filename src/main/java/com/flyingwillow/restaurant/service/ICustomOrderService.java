@@ -17,6 +17,10 @@ public interface ICustomOrderService {
 
     public CustomOrder getCustomOrderById(Integer orderId);
 
+    public List<Map<String,Object>> getOrderNumbersByTableNo(Integer tableNo);
+
+    public Integer getOrderSerialNumber();
+
     public void saveCustomOrder(CustomOrder order);
 
     public void updateCustomOrder(CustomOrder order);

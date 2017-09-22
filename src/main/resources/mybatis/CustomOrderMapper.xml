@@ -64,6 +64,18 @@
 		</where>
 	</select>
 
+	<select id="getOrderNumbersByTableNo" parameterType="int" resultType="HashMap">
+		SELECT number, id
+		FROM custom_order
+		WHERE tableNo = #{tableNo}
+	</select>
+
+	<select id="getOrderSerialNumber" resultType="int">
+		SELECT COUNT(*)
+		FROM custom_order
+		WHERE createTime BETWEEN UNIX_TIMESTAMP(CURDATE())*1000 AND (UNIX_TIMESTAMP(CURDATE())+24*60*60)*1000
+	</select>
+
 
 	<!-- insert -->
 	<insert id="saveCustomOrder" parameterType="CustomOrder" keyProperty="id" useGeneratedKeys="true">

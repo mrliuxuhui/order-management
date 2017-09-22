@@ -4,9 +4,11 @@ import com.flyingwillow.restaurant.domain.CustomOrder;
 import com.flyingwillow.restaurant.mapper.CustomOrderMapper;
 import com.flyingwillow.restaurant.service.ICustomOrderService;
 import com.flyingwillow.restaurant.util.web.Constants;
+import com.flyingwillow.restaurant.util.web.SerialNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +72,20 @@ public class CustomOrderServiceImpl implements ICustomOrderService {
     }
 
     @Override
+    public List<Map<String,Object>> getOrderNumbersByTableNo(Integer tableNo) {
+        return customOrderMapper.getOrderNumbersByTableNo(tableNo);
+    }
+
+    @Override
+    public Integer getOrderSerialNumber() {
+        return customOrderMapper.getOrderSerialNumber();
+    }
+
+    @Override
     public void saveCustomOrder(CustomOrder order) {
+        String number = SerialNumberGenerator.getSerialNumber("ORD",getOrderSerialNumber());
+        order.setNumber(number);
+        order.setCreateTime(new Date());
         customOrderMapper.saveCustomOrder(order);
     }
 

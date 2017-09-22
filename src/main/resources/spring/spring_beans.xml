@@ -13,6 +13,8 @@
        <context:component-scan base-package="com.flyingwillow.restaurant.*">
               <context:exclude-filter type="regex" expression="com.flyingwillow.restaurant.web.admin.controller.*"/>
               <context:exclude-filter type="regex" expression="com.flyingwillow.restaurant.web.order.controller.*"/>
+              <context:exclude-filter type="regex" expression="com.flyingwillow.restaurant.web.cook.controller.*"/>
+              <context:exclude-filter type="regex" expression="com.flyingwillow.restaurant.web.waiter.controller.*"/>
        </context:component-scan>
 
 </beans>
