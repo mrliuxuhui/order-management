@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,7 +86,7 @@ public class CustomOrderRestController {
         }
     }
 
-    @RequestMapping(value = "/order/detail/{orderId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/order/{orderId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity getOrderDetail(@PathVariable Integer orderId){
 
         if(null==orderId){
@@ -98,4 +99,40 @@ public class CustomOrderRestController {
         return new ResponseEntity<List<CustomOrderDetail>>(detailList,HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/order/{orderNumber}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity getOrderDetail(@PathVariable String orderNumber){
+
+        if(StringUtils.isBlank(orderNumber)){
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
+        }
+
+
+
+        return new ResponseEntity<List<CustomOrderDetail>>(null,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/order/numbers", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity searchOrderNumber(@RequestParam String tableNo){
+
+    }
+
+    @RequestMapping(value = "/order/detail/{detailId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity getOrderDetailById(@PathVariable Integer detailId){
+
+    }
+
+    @RequestMapping(value = "/order/{orderId}/detail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity add2Order(@PathVariable Integer orderId){
+
+    }
+
+    @RequestMapping(value = "/order/detail/{detailId}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
+    public ResponseEntity updateDetail(@PathVariable Integer detailId){
+
+    }
+
+    @RequestMapping(value = "/order/detail/{detailId}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    public ResponseEntity updateDetail(@PathVariable Integer detailId){
+
+    }
 }

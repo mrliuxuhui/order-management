@@ -256,12 +256,13 @@ CREATE TABLE custom_order_detail(
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   orderId BIGINT,
   menuId INT,
-  mount  FLOAT,
+  mount  FLOAT, -- 需要数量
   unit   INT,
   needPush  BOOL, -- 是否需要推送
   beginTime BIGINT, -- 开始处理时间
   completeTime  BIGINT, -- 后厨完成时间
-  delivered BOOL, -- 是否上菜
+  delivered BOOL, -- 是否上菜完成
+  deliverMount  FLOAT, -- 已上数量
   deliveredTime BIGINT, -- 上菜时间
   waiter VARCHAR(50),
   status INT, -- 状态 0 创建， 1 开始处理， 2 完成, 3 上菜
