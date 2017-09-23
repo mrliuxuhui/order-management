@@ -136,27 +136,38 @@
                 </div>
                 <br/>
                 <form class="form-horizontal">
+                    <input type="hidden" id="orderId" name="orderId">
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="inputEmail1" class="col-sm-2 control-label">应收</label>
+                            <label for="payment" class="col-sm-2 control-label">支付方式</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputEmail1" placeholder="0.00">
-                            </div>
-                        </div>
-                        <div class="form-group" id="checkOutForm">
-                            <input type="hidden" id="orderId" name="orderId">
-                            <label for="inputEmail2" class="col-sm-2 control-label">实收</label>
-
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputEmail2" placeholder="0.00">
+                                <select class="form-control" id="payment" name="payment" placeholder="先择支付方式..">
+                                    <option value="现金">现金</option>
+                                    <option value="微信">微信</option>
+                                    <option value="支付宝">支付宝</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-2 control-label">找零</label>
+                            <label for="receivables" class="col-sm-2 control-label">应收</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputEmail3" placeholder="0.00">
+                                <input type="text" class="form-control" id="receivables" name="receivables" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="receipts" class="col-sm-2 control-label">实收</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="receipts" name="receipts" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="changes" class="col-sm-2 control-label">找零</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="changes" name="changes" placeholder="0.00">
                             </div>
                         </div>
                     </div>
@@ -191,3 +202,16 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<script id="detail-order-template" type="text/html">
+    {{each list as detail i}}
+    <tr>
+        <td>{{i+1}}</td>
+        <td>{{detail.menu.name}}</td>
+        <td>{{detail.mount | formatNumber : 1}}</td>
+        <td>{{detail.deliverMount | formatNumber : 1}}</td>
+        <td>{{detail.menu.price | formatNumber : 2}}</td>
+        <td>{{detail.priceSum | formatNumber : 2}}</td>
+    </tr>
+    {{/each}}
+</script>

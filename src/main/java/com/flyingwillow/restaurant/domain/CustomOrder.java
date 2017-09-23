@@ -17,6 +17,7 @@ public class CustomOrder {
     private Float totalPrice;
     private Float actualPrice;
     private Boolean isChecked;
+    private String payment;//支付方式
     private Date checkTime;
     private String checkOperator;
     private Boolean pushed;
@@ -164,6 +165,15 @@ public class CustomOrder {
 
     public CustomOrder setChecked(Boolean checked) {
         isChecked = checked;
+        return this;
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public CustomOrder setPayment(String payment) {
+        this.payment = payment;
         return this;
     }
 }

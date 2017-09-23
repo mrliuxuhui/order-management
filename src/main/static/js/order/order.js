@@ -8,6 +8,9 @@ $(function(){
     $('input[type="checkbox"].flat-red').iCheck({
         checkboxClass: 'icheckbox_flat-green'
     });
+    $('input[type="checkbox"].flat-red').on("click",function(){
+        table.ajax.reload();
+    });
     //
     $("#modal-check h6.box-title a").on("click",function(){
         $(this).find("i.fa").toggleClass("fa-chevron-down fa-chevron-up");
@@ -19,19 +22,37 @@ $(function(){
         $("#checkOutForm")[0].reset();
     });
 
+    template.helper("formatNumber",function(value, points){
+        if(value){
+            return value.toFixed(points);
+        }else {
+            return "";
+        }
+
+    });
     var render = template.compile($("#detail-order-template").text());
 
     // 结算
     $("#modal-check button#submitBtn").on("click",function(){
         var form = $("form#checkOutForm");
+        var orderId = $('input[name="orderId"]').val();
         $.ajax({
-            url:"",
+            url:"/admin/api/order/"+orderId+"/checkout",
             type:"POST",
             data:JSON.stringify(form.serializeJSON()),
             success:function(result){
                 $("#modal-check").modal("hide");
             }
         });
+    });
+
+    $('input[name="receivables"], input[name="receipts"]').on("blur",function(){
+        var reb =  $('input[name="receivables"]').val();
+        var rep = $('input[name="receipts"]').val();
+        if(reb&&rep&&rep>reb){
+            var changes = rep-reb;
+            $('input[name="changes"]').val(changes.toFixed(2));
+        }
     });
 
     $("#example1 table tbody").on("click","#btn-check-order",function(){
@@ -51,10 +72,11 @@ $(function(){
                     var total = 0;
                     if(result.list){
                         $.each(result.list,function(index,item){
-                            total += item.totalPrice?item.totalPrice:0;
+                            total += item.priceSum?item.priceSum:0;
                         });
 
                         //应付。
+                        $('input[name="receivables"]').val(total.toFixed(2));
                     }
 
                     $("modal-check").modal("show");
@@ -67,15 +89,15 @@ $(function(){
     // data tables
     var table = $('#example1').DataTable({
         ajax: {
-            url: "http://www.flyingwillow.com/admin/api/order"
+            url: "/admin/api/order"
         },
         "ordering": false,// dt默认是第一列升序排列 这里第一列为序号列，所以设置为不排序，并把默认的排序列设置到后面
         "serverSide": true,
         "fnServerData": function(sUrl, aoData, fnCallback){
             $.ajax({
-                url:"http://www.flyingwillow.com/admin/api/order",
+                url:"/admin/api/order",
                 dataType:"json",
-                data:{"dataTableParam":JSON.stringify(aoData)},
+                data:{"dataTableParam":JSON.stringify(aoData),"showAll":$('.box-header label>input.flat-red[type="checkbox"]').is("checked")},
                 success:function(result){
                     fnCallback(result);
                 }

@@ -5,6 +5,8 @@ import com.flyingwillow.restaurant.mapper.CustomOrderMapper;
 import com.flyingwillow.restaurant.service.ICustomOrderService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.SerialNumberGenerator;
+import com.flyingwillow.restaurant.web.admin.dto.CheckoutDTO;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,5 +99,13 @@ public class CustomOrderServiceImpl implements ICustomOrderService {
     @Override
     public void deleteCustomOrderByNumber(String number) {
         customOrderMapper.deleteCustomOrderByNumber(number);
+    }
+
+    @Override
+    public void checkoutOrder(Integer orderId, CheckoutDTO checkoutDTO) {
+        CustomOrder order = new CustomOrder().setId(orderId.longValue());
+        order.setCheckTime(new Date()).setChecked(true).setCheckOperator((String) SecurityUtils.getSubject().getPrincipal());
+        order.setActualPrice(checkoutDTO.getReceivables()).setPayment(checkoutDTO.getPayment());
+        customOrderMapper.updateCustomOrder(order);
     }
 }

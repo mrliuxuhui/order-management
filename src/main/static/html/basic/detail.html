@@ -71,13 +71,13 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            菜单管理
-            <small>添加、删除、更新菜品</small>
+            详单管理
+            <small>查询详单、更新点餐量、添加菜品</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-            <li><a href="#">基本信息管理</a></li>
-            <li class="active">菜单管理</li>
+            <li><a href="#">结算</a></li>
+            <li class="active">详单管理</li>
         </ol>
     </section>
 
@@ -87,7 +87,7 @@ desired effect
             <div class="col-md-4 col-md-offset-1">
                 <div class="form-group">
                     <label>快速查单</label>
-                    <select class="form-control select2" style="width: 100%;">
+                    <select class="form-control select2">
                         <option selected="selected">Alabama</option>
                         <option>Alaska</option>
                         <option>California</option>
@@ -105,11 +105,11 @@ desired effect
                 <div class="row">
                     <div class="col-md-3">
                         <div class="col-sm-4 text-right"><h5>订单编号</h5></div>
-                        <div class="col-sm-8"><h5>201709210024</h5></div>
+                        <div class="col-sm-8" id="order-number"><h5>201709210024</h5></div>
                     </div>
                     <div class="col-md-3">
                         <div class="col-sm-4 text-right"><h5>桌号</h5></div>
-                        <div class="col-sm-8"><h5>5</h5></div>
+                        <div class="col-sm-8" id="table-number"><h5>5</h5></div>
                     </div>
                 </div>
                 <br/>
@@ -125,10 +125,11 @@ desired effect
                     <tr>
                         <th>序号</th>
                         <th>菜名</th>
-                        <th>数量</th>
+                        <th>点餐量</th>
+                        <th>上餐量</th>
                         <th>单位</th>
                         <th>单价</th>
-                        <th>是否上菜</th>
+                        <th>总价</th>
                         <th>状态</th>
                         <th>操作</th>
                     </tr>
@@ -149,10 +150,11 @@ desired effect
                     <tr>
                         <th>序号</th>
                         <th>菜名</th>
-                        <th>数量</th>
+                        <th>点餐量</th>
+                        <th>上餐量</th>
                         <th>单位</th>
                         <th>单价</th>
-                        <th>是否上菜</th>
+                        <th>总价</th>
                         <th>状态</th>
                         <th>操作</th>
                     </tr>
@@ -168,24 +170,34 @@ desired effect
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog">
         <div class="modal-dialog">
 
-            <form id="data-form" class="form-horizontal" action="/admin/api/menu" method="post" onsubmit="javascript:return false">
+            <form id="data-form" class="form-horizontal" action="/admin/api/order/{orderId}/detail" method="post" onsubmit="javascript:return false">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">新建菜品</h4>
+                    <h4 class="modal-title">添加菜品</h4>
                 </div>
                 <div class="modal-body">
                     <div class="box-body">
-                        <input type="hidden" id="menuId" value="">
+                        <input type="hidden" id="orderId" value="">
                         <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">菜名</label>
-                            <div class="col-sm-10 "><input type="text" class="form-control" name="name" id="name" placeholder="输入菜名" required></div>
+                            <label for="menuId" class="col-sm-2 control-label">菜名</label>
+                            <div class="col-sm-10 ">
+                                <select class="form-control select2" id="menuId" name="menuId" placeholder="请选择菜品">
+                                    <option selected="selected">Alabama</option>
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="price" class="col-sm-2 control-label">单价</label>
+                            <label for="mount" class="col-sm-2 control-label">点餐量</label>
                             <div class="col-sm-10 ">
-                            <input type="text" class="form-control" name="price" id="price" placeholder="单价（元）" required>
+                            <input type="text" class="form-control" name="mount" id="mount" placeholder="点餐量" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -198,25 +210,17 @@ desired effect
                             <!--<p class="help-block">Example block-level help text here.</p>-->
                         </div>
                         <div class="form-group">
-                            <label for="categoryId" class="col-sm-2 control-label">所属类别</label>
+                            <label for="price" class="col-sm-2 control-label">单价</label>
                             <div class="col-sm-10 ">
-                            <select class="form-control" id="categoryId" name="categoryId" required>
-                                <option value="1">凉菜</option>
-                            </select>
+                                <input type="text" class="form-control" id="price" disabled>
                             </div>
                             <!--<p class="help-block">Example block-level help text here.</p>-->
                         </div>
                         <div class="form-group">
-                            <label for="img" class="col-sm-2 control-label">图片</label>
+                            <label for="total" class="col-sm-2 control-label">总价</label>
                             <div class="col-sm-10 ">
-                            <input type="file" class="form-control" id="img" placeholder="示例图片">
+                                <input type="text" class="form-control" id="total" disabled>
                             </div>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="profile">简介</label>
-                            <textarea id="profile" name="profile" class="form-control" rows="3" placeholder="输入100字以内简介..." maxlength="100"></textarea>
-                            <!--<p class="help-block">Example block-level help text here.</p>-->
                         </div>
 
                     </div>
@@ -227,6 +231,67 @@ desired effect
                     <button type="button" id="submitBtn" class="btn btn-primary">保存</button>
                 </div>
             </div>
+            </form>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-update" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+
+            <form id="data-form-update" class="form-horizontal" method="post">
+                <input type="hidden" id="detailId" value="">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">修改点餐量</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="dish" class="col-sm-2 control-label">菜名</label>
+                                <div class="col-sm-10 ">
+                                    <input type="text" class="form-control" id="dish" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mount" class="col-sm-2 control-label">点餐量</label>
+                                <div class="col-sm-10 ">
+                                    <input type="text" class="form-control" name="mount" id="mount" placeholder="点餐量" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="unit" class="col-sm-2 control-label">单位</label>
+                                <div class="col-sm-10 ">
+                                    <input type="text" class="form-control" id="unit" disabled>
+                                </div>
+                                <!--<p class="help-block">Example block-level help text here.</p>-->
+                            </div>
+                            <div class="form-group">
+                                <label for="price" class="col-sm-2 control-label">单价</label>
+                                <div class="col-sm-10 ">
+                                    <input type="text" class="form-control" id="price" disabled>
+                                </div>
+                                <!--<p class="help-block">Example block-level help text here.</p>-->
+                            </div>
+                            <div class="form-group">
+                                <label for="total" class="col-sm-2 control-label">总价</label>
+                                <div class="col-sm-10 ">
+                                    <input type="text" class="form-control" id="total" disabled>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                        <button type="button" id="updateMountBtn" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
             </form>
             <!-- /.modal-content -->
         </div>
@@ -281,6 +346,7 @@ desired effect
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+<script src="../../js/order/detail.js"></script>
 <script id="opTemplate" type="text/html">
     {{each func as button}}
     <button type="button" class="btn btn-{{button.type}} btn-sm" id="{{button.id}}">{{button.name}}</button>

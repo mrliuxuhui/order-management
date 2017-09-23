@@ -96,6 +96,7 @@
 			<if test="null!=totalPrice">totalPrice = #{totalPrice},</if>
 			<if test="null!=actualPrice">actualPrice = #{actualPrice},</if>
 			<if test="null!=isChecked">isChecked = #{isChecked},</if>
+			<if test="null!=payment">payment = #{payment},</if>
 			<if test="null!=checkTime">checkTime = #{checkTime},</if>
 			<if test="null!=checkOperator">checkOperator = #{checkOperator},</if>
 			<if test="null!=pushed">pushed = #{pushed},</if>

@@ -14,7 +14,9 @@
 		<result column="beginTime" property="beginTime"/>
 		<result column="completeTime" property="completeTime"/>
 		<result column="delivered" property="delivered"/>
+		<result column="deliverMount" property="deliverMount"/>
 		<result column="deliveredTime" property="deliveredTime"/>
+		<result column="priceSum" property="priceSum"/>
 		<result column="waiter" property="waiter"/>
 		<result column="status" property="status"/>
 		<result column="del" property="del"/>
@@ -41,6 +43,7 @@
 		SELECT t1.*, t2.cname AS unitCname, t2.ename AS unitEname,
 				t3.number AS o_number, t3.tableNo AS o_tableNo,
 				t4.name AS m_name, t4.img AS m_img, t4.price AS m_price,
+				t1.deliverMount*t4.price AS priceSum
 		FROM custom_order_detail t1
 		LEFT JOIN measurement t2 ON t2.id = t1.unit
 		LEFT JOIN custom_order t3 ON t3.id = t1.orderId

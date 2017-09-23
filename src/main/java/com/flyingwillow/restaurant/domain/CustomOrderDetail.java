@@ -18,6 +18,7 @@ public class CustomOrderDetail {
     private Boolean delivered;
     private Date deliveredTime;
     private Float deliverMount;
+    private Float priceSum;
     private String water;
     private Integer status;
     private Integer del;
@@ -176,6 +177,15 @@ public class CustomOrderDetail {
 
     public CustomOrderDetail setDeliverMount(Float deliverMount) {
         this.deliverMount = deliverMount;
+        return this;
+    }
+
+    public Float getPriceSum() {
+        return priceSum;
+    }
+
+    public CustomOrderDetail setPriceSum(Float priceSum) {
+        this.priceSum = priceSum;
         return this;
     }
 }

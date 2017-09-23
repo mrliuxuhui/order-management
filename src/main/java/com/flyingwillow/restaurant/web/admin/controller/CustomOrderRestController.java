@@ -9,6 +9,7 @@ import com.flyingwillow.restaurant.service.ICustomOrderService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
+import com.flyingwillow.restaurant.web.admin.dto.CheckoutDTO;
 import com.flyingwillow.restaurant.web.admin.dto.OrderDetailDTO;
 import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import org.apache.commons.lang.StringUtils;
@@ -101,6 +102,21 @@ public class CustomOrderRestController {
         result.put("total",total);
         result.put("list",detailList);
         return new ResponseEntity<Map<String,Object>>(result,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/order/{orderId}/checkout", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity checkout(@PathVariable Integer orderId, @RequestBody CheckoutDTO checkoutDTO){
+
+        if(null==orderId||null==checkoutDTO){
+            return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
+        }
+
+        List<CustomOrderDetail> detailList = customOrderDetailService.getCustomOrderDetailsByOrder(orderId);
+        Integer total = customOrderDetailService.getCustomOrderDetailCountByOrder(orderId);
+        Map<String,Object> result = new HashMap<>();
+        result.put("total",total);
+        result.put("list",detailList);
+        return new ResponseEntity(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/order/number/{orderNumber}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
