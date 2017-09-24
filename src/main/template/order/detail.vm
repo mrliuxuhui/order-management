@@ -170,6 +170,8 @@
     <div class="modal-dialog">
 
         <form id="data-form-update" class="form-horizontal" method="post">
+            <input type="hidden" id="detailId">
+            <input type="hidden" id="orderId">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

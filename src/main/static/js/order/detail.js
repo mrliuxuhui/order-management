@@ -115,6 +115,7 @@ $(function(){
         }
     });
     var render = template.compile($("#order-detail-list").text());
+    var detailList;
     //
     $("select.order-search-by-table").on("select2:select",function(){
         var selected = $("select.order-search-by-table").select2("data");
@@ -124,21 +125,28 @@ $(function(){
             $("h4#order-time").text(format(selected.createTime));
             $("h4#total-price").text(selected.totalPrice.toFixed(2));
 
-            $.ajax({
-                url:"/admin/api/order/"+selected.id,
-                type:"get",
-                dataType:"json",
-                success:function(result){
-
-                    if(result&&result.list){
-                        var html = render.render(result.list);
-                        $("#example1 tbody").append(html);
-                    }
-                }
-
-            });
+            reloadTable(selected.id);
         }
     });
+
+    //function reload table
+    function reloadTable(orderId){
+        $.ajax({
+            url:"/admin/api/order/"+orderId,
+            type:"get",
+            dataType:"json",
+            success:function(result){
+
+                if(result&&result.list){
+                    detailList = result;
+                    var html = render.render(result.list);
+                    $("#example1 tbody").children().remove();
+                    $("#example1 tbody").append(html);
+                }
+            }
+
+        });
+    }
 
     // menu select 2
     $("select#menuId").select2({
@@ -161,6 +169,59 @@ $(function(){
         placeholder: '输入菜名..',
         escapeMarkup: function (markup) { return markup; },
         minimumInputLength: 1
+    });
+
+    // 操作
+    $("#exmaple1 table tbody").on("click","button#updateMountBtn",function(){
+        var idx = $("#exmaple1 table tbody").index(this.parents("tr"));
+        if(!detailList||!detailList.list){
+            return;
+        }
+        var detail = detailList.list[idx];
+        //
+        $("#modal-update input#detailId").val(detail.id);
+        $("#modal-update input#orderId").val(detail.orderId);
+        $("#modal-update input#dish").val(detail.menu.name);
+        $("#modal-update input#mount").val(detail.mount);
+        $("#modal-update input#unit").val(detail.measurement.cname);
+        $("#modal-update input#price").val(detail.menu.price);
+        $("#modal-update input#total").val(detail.priceSum);
+
+        $("#modal-update").modal("show");
+
+    });
+
+    $("#modal-update button#updateMountBtn").on("click",function(){
+        $.ajax({
+            url:"/admin/api/order/detail/"+$("#modal-update input#detailId").val(),
+            type:"put",
+            dataType:"json",
+            data:{mount:$("input#mount").val()},
+            success:function(result){
+                $("#modal-update").modal("hide");
+                reloadTable($("input#orderId").val());
+            }
+        });
+    });
+
+
+
+    $("#exmaple1 table tbody").on("click","button#deleteDetailBtn",function(){
+
+        var idx = $("#exmaple1 table tbody").index(this.parents("tr"));
+        if(!detailList||!detailList.list){
+            return;
+        }
+        var detail = detailList.list[idx];
+        //
+        $.ajax({
+            url:"/admin/api/order/detail/"+detail.id,
+            type:"delete",
+            dataType:"json",
+            success:function(result){
+                reloadTable(detail.orderId);
+            }
+        });
     });
 
 });
