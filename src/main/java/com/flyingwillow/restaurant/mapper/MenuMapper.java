@@ -10,6 +10,8 @@ import java.util.Map;
  */
 public interface MenuMapper {
 
+    public List<Menu> searchMenuByKeywords(Map<String, Object> params);
+
     public List<Menu> getMenuList(Map<String, Object> params);
 
     public Integer getMenuCount(Map<String, Object> params);

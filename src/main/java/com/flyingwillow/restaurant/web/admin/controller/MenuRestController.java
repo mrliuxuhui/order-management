@@ -12,6 +12,7 @@ import com.flyingwillow.restaurant.util.web.FileUploadUtil;
 import com.flyingwillow.restaurant.util.web.WebUtil;
 import com.flyingwillow.restaurant.web.admin.dto.MenuDTO;
 import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
+import com.flyingwillow.restaurant.web.admin.vo.MenuVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,6 +85,20 @@ public class MenuRestController {
 
             return new ResponseEntity<DataTableResponse<Menu>>(response,HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(value = "/menu/search", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity searchMenu(@RequestParam(required = false)String q){
+
+        List<MenuVO> list = new ArrayList<>();
+        if(StringUtils.isBlank(q)){
+            return new ResponseEntity(list,HttpStatus.OK);
+        }
+        List<Menu> menus = menuService.searchMenuByKeywords(q,0,20);
+        for(Menu menu : menus){
+            list.add(new MenuVO(menu));
+        }
+        return new ResponseEntity(list,HttpStatus.OK);
     }
 
     @RequestMapping(value = "/menu/{menuId}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")

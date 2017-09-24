@@ -77,5 +77,90 @@ $(function(){
     var render = template.compile($("#detail-order-template").text());
 
     //select2
+    $("select.order-search-by-table").select2({
+        ajax: {
+            url: "/admin/api/order/numbers",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    tableNo: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+        placeholder: '输入桌号查单..',
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1
+    });
+
+    template.helper("formatNumber",function(value, points){
+        if(value){
+            return value.toFixed(points);
+        }else {
+            return "";
+        }
+
+    });
+    template.helper("formatStatus",function(status){
+        if(3 == status){
+            return "已上菜";
+        }else{
+            return "";
+        }
+    });
+    var render = template.compile($("#order-detail-list").text());
+    //
+    $("select.order-search-by-table").on("select2:select",function(){
+        var selected = $("select.order-search-by-table").select2("data");
+        if(selected){
+            $("h4#order-number").text(selected.number);
+            $("h4#table-number").text(selected.tableNo);
+            $("h4#order-time").text(format(selected.createTime));
+            $("h4#total-price").text(selected.totalPrice.toFixed(2));
+
+            $.ajax({
+                url:"/admin/api/order/"+selected.id,
+                type:"get",
+                dataType:"json",
+                success:function(result){
+
+                    if(result&&result.list){
+                        var html = render.render(result.list);
+                        $("#example1 tbody").append(html);
+                    }
+                }
+
+            });
+        }
+    });
+
+    // menu select 2
+    $("select#menuId").select2({
+        ajax: {
+            url: "/admin/api/menu/search",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term,
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        },
+        placeholder: '输入菜名..',
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 1
+    });
 
 });

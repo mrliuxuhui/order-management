@@ -21,6 +21,17 @@ public class MenuServiceImpl implements IMenuService{
     private MenuMapper menuMapper;
 
     @Override
+    public List<Menu> searchMenuByKeywords(String query, int start, int size) {
+        start = start>0?start:0;
+        size = size>0?size: Constants.PAGE_LENGTH;
+        HashMap<String,Object>  params = new HashMap<String,Object>();
+        params.put("query",query);
+        params.put("start",start);
+        params.put("size",size);
+        return menuMapper.searchMenuByKeywords(params);
+    }
+
+    @Override
     public List<Menu> getMenuList(Map<String, Object> params, int start, int size) {
         start = start>0?start:0;
         size = size>0?size: Constants.PAGE_LENGTH;

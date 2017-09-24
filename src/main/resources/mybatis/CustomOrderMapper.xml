@@ -65,7 +65,7 @@
 	</select>
 
 	<select id="getOrderNumbersByTableNo" parameterType="int" resultType="HashMap">
-		SELECT number, id
+		SELECT number, id, createTime, totalPrice, number AS text
 		FROM custom_order
 		WHERE tableNo = #{tableNo}
 	</select>

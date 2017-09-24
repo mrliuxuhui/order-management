@@ -9,6 +9,9 @@ import java.util.Map;
  * Created by 刘旭辉 on 2017/9/14.
  */
 public interface IMenuService {
+
+    public List<Menu> searchMenuByKeywords(String query, int start, int size);
+
     public List<Menu> getMenuList(Map<String, Object> params, int start, int size);
 
     public Integer getMenuCount(Map<String, Object> params);

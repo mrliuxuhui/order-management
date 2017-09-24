@@ -81,6 +81,17 @@
 		WHERE t1.id = #{menuId}
 	</select>
 
+	<select id="searchMenuByKeywords" parameterType="HashMap" resultMap="MenuMap">
+		SELECT t1.*, t2.name AS categoryName, t3.cname AS unitCname, t3.ename AS unitEname
+		FROM menu t1
+		LEFT JOIN food_category t2 ON t2.id = t1.categoryId
+		LEFT JOIN measurement t3 ON t3.id = t1.unit
+		WHERE t1.name LIKE '%'||#{query}||'%'
+		<if test="null!=start and null!=size">
+			LIMIT #{start},#{size}
+		</if>
+	</select>
+
 
 	<!-- insert -->
 	<insert id="saveMenu" parameterType="Menu" keyProperty="id" useGeneratedKeys="true">

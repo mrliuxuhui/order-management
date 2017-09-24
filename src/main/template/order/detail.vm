@@ -19,7 +19,7 @@
         <div class="col-md-4 col-md-offset-1">
             <div class="form-group">
                 <label>快速查单</label>
-                <select class="form-control select2">
+                <select class="form-control select2 order-search-by-table">
                     <option selected="selected">Alabama</option>
                 </select>
             </div>
@@ -30,12 +30,20 @@
         <div class="box-header">
             <div class="row">
                 <div class="col-md-3">
-                    <div class="col-sm-4 text-right"><h5>订单编号</h5></div>
-                    <div class="col-sm-8" id="order-number"><h5>201709210024</h5></div>
+                    <div class="col-sm-4 text-right"><h4>订单编号</h4></div>
+                    <div class="col-sm-8" id="order-number"><h4>201709210024</h4></div>
                 </div>
                 <div class="col-md-3">
-                    <div class="col-sm-4 text-right"><h5>桌号</h5></div>
-                    <div class="col-sm-8" id="table-number"><h5>5</h5></div>
+                    <div class="col-sm-4 text-right"><h4>桌号</h4></div>
+                    <div class="col-sm-8" id="table-number"><h4>5</h4></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="col-sm-4 text-right"><h4>下单时间</h4></div>
+                    <div class="col-sm-8" id="order-time"><h4>201709210024</h4></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="col-sm-4 text-right"><h4>总价</h4></div>
+                    <div class="col-sm-8" id="total-price"><h4>5</h4></div>
                 </div>
             </div>
             <br/>
@@ -239,3 +247,22 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<script type="text/html" id="order-detail-list">
+    {{each list as detail i}}
+    <tr>
+        <td>{{i+1}}</td>
+        <td>{{detail.menu.name}}</td>
+        <td>{{detail.mount | formatNumber : 1}}</td>
+        <td>{{detail.deliverMount | formatNumber : 1}}</td>
+        <td>{{detail.measurement.cname}}</td>
+        <td>{{detail.menu.price | formatNumber : 2}}</td>
+        <td>{{detail.priceSum | formatNumber : 2}}</td>
+        <td>{{detail.priceSum | formatStatus}}</td>
+        <td>
+            <button id="updateMountBtn" class="btn btn-block btn-success">修改数量</button>
+            <button id="deleteDetailBtn" class="btn btn-block btn-danger">删除</button>
+        </td>
+    </tr>
+    {{/each}}
+</script>
