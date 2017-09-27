@@ -50,6 +50,13 @@ public class MenuServiceImpl implements IMenuService{
     }
 
     @Override
+    public List<Menu> getMenuListByCategory(Integer categoryId) {
+        HashMap<String,Object> params = new HashMap<>(1);
+        params.put("categoryId",categoryId);
+        return menuMapper.getMenuList(params);
+    }
+
+    @Override
     public Menu getMenuById(Integer menuId) {
         return menuMapper.getMenuById(menuId);
     }

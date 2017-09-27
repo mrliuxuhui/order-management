@@ -16,6 +16,8 @@ public interface IMenuService {
 
     public Integer getMenuCount(Map<String, Object> params);
 
+    public List<Menu> getMenuListByCategory(Integer categoryId);
+
     public Menu getMenuById(Integer menuId);
 
     public void saveMenu(Menu menu);

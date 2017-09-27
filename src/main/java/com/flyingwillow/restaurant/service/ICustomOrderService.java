@@ -22,6 +22,8 @@ public interface ICustomOrderService {
 
     public Integer getOrderSerialNumber();
 
+    public List<Integer> getOrderedTableNumbers();
+
     public void saveCustomOrder(CustomOrder order);
 
     public void updateCustomOrder(CustomOrder order);
