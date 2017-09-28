@@ -1,6 +1,7 @@
 package com.flyingwillow.restaurant.web.waiter.controller;
 
 import com.flyingwillow.restaurant.domain.CustomOrder;
+import com.flyingwillow.restaurant.domain.CustomOrderDetail;
 import com.flyingwillow.restaurant.domain.FoodCategory;
 import com.flyingwillow.restaurant.domain.Menu;
 import com.flyingwillow.restaurant.service.ICustomOrderDetailService;
@@ -15,6 +16,7 @@ import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import com.flyingwillow.restaurant.web.waiter.dto.DetailDTO;
 import com.flyingwillow.restaurant.web.waiter.dto.OrderDTO;
 import com.flyingwillow.restaurant.web.waiter.vo.MenuGroup;
+import com.flyingwillow.restaurant.web.waiter.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,10 +51,28 @@ public class WaiterOrderRestController {
     private ITxCustomOrderService txCustomOrderService;
 
     // "/order/{orderId}" get
+    @RequestMapping(value = "/order/table/{tableNo}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity getOrderByTableNo(@PathVariable Integer tableNo){
+
+        CustomOrder order = customOrderService.getCustomOrderByTableNo(tableNo);
+        if(null==order){
+            return new ResponseEntity(JsonResponseStatus.buildFailResponse(404,"此桌未点餐"), HttpStatus.BAD_REQUEST);
+        }
+
+        List<CustomOrderDetail> list = customOrderDetailService.getCustomOrderDetailsByOrder(order.getId().intValue());
+
+        OrderVO orderVO = new OrderVO(order,list);
+
+        return new ResponseEntity(orderVO,HttpStatus.OK);
+    }
 
     // "/order" create  request body {tableNo:n, details:[]}
     @RequestMapping(value = "/order", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public ResponseEntity createOrder(@RequestBody OrderDTO orderDTO){
+
+        if(customOrderService.getCustomOrderCountByTableNo(orderDTO.getTableNo())>0){
+            return new ResponseEntity(JsonResponseStatus.buildFailResponse(500,"此桌重复点餐"),HttpStatus.CONFLICT);
+        }
 
         txCustomOrderService.txCreateOrder(orderDTO);
 

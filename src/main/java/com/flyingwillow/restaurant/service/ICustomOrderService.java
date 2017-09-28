@@ -25,6 +25,10 @@ public interface ICustomOrderService {
 
     public List<Integer> getOrderedTableNumbers();
 
+    public CustomOrder getCustomOrderByTableNo(Integer tableNo);
+
+    public Integer getCustomOrderCountByTableNo(Integer tableNo);
+
     public void saveCustomOrder(CustomOrder order);
 
     public CustomOrder saveCustomOrder(Integer tableNo);

@@ -56,6 +56,20 @@
 
 	</select>
 
+	<select id="getCustomOrderByTableNo" parameterType="int" resultType="CustomOrder">
+		SELECT * FROM custom_order
+		WHERE del = 0 AND isChecked = false
+				AND createTime BETWEEN UNIX_TIMESTAMP(CURDATE())*1000 AND (UNIX_TIMESTAMP(CURDATE())+24*60*60)*1000
+				AND tableNo = #{tableNo}
+	</select>
+
+	<select id="getCustomOrderCountByTableNo" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM custom_order
+		WHERE del = 0 AND isChecked = false
+		AND createTime BETWEEN UNIX_TIMESTAMP(CURDATE())*1000 AND (UNIX_TIMESTAMP(CURDATE())+24*60*60)*1000
+		AND tableNo = #{tableNo}
+	</select>
+
 	<select id="getCustomOrderById" parameterType="HashMap" resultType="CustomOrder">
 		SELECT * FROM custom_order
 		<where>

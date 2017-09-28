@@ -23,6 +23,9 @@ public interface CustomOrderMapper {
 
     public List<Integer> getOrderedTableNumbers();
 
+    public List<CustomOrder> getCustomOrderByTableNo(Integer tableNo);
+    public Integer getCustomOrderCountByTableNo(Integer tableNo);
+
     public void saveCustomOrder(CustomOrder order);
 
     public void updateCustomOrder(CustomOrder order);

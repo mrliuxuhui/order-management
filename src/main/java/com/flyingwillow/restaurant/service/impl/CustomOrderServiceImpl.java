@@ -99,6 +99,20 @@ public class CustomOrderServiceImpl implements ICustomOrderService {
     }
 
     @Override
+    public CustomOrder getCustomOrderByTableNo(Integer tableNo) {
+        List<CustomOrder> list = customOrderMapper.getCustomOrderByTableNo(tableNo);
+        if(null!=list&&list.size()>0){
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer getCustomOrderCountByTableNo(Integer tableNo) {
+        return customOrderMapper.getCustomOrderCountByTableNo(tableNo);
+    }
+
+    @Override
     public void saveCustomOrder(CustomOrder order) {
         String number = SerialNumberGenerator.getSerialNumber("ORD",getOrderSerialNumber());
         order.setNumber(number);
