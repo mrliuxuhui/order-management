@@ -16,6 +16,7 @@ import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
 import com.flyingwillow.restaurant.web.waiter.dto.DetailDTO;
 import com.flyingwillow.restaurant.web.waiter.dto.OrderDTO;
 import com.flyingwillow.restaurant.web.waiter.vo.MenuGroup;
+import com.flyingwillow.restaurant.web.waiter.vo.MenuItem;
 import com.flyingwillow.restaurant.web.waiter.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -141,6 +142,28 @@ public class WaiterOrderRestController {
             }
 
             result.put("groups",groups);
+        }
+
+        return new ResponseEntity(result, HttpStatus.OK);
+
+    }
+
+    // get menu list
+    @RequestMapping(value = "/menu/search", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity searchMenus(@RequestParam String name){
+
+        Map<String,Object> result = new HashMap<>(2);
+
+        List<Menu> list = menuService.searchMenuByKeywords(name,0,20);
+
+        if(null==list||list.isEmpty()){
+            return new ResponseEntity(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
+        }else{
+            List<MenuItem> results = new ArrayList<>(list.size());
+            for(Menu menu : list){
+                results.add(new MenuItem(menu));
+            }
+            result.put("list",results);
         }
 
         return new ResponseEntity(result, HttpStatus.OK);
