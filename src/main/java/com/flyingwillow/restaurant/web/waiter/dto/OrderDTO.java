@@ -1,5 +1,8 @@
 package com.flyingwillow.restaurant.web.waiter.dto;
 
+import com.flyingwillow.restaurant.domain.CustomOrder;
+import com.flyingwillow.restaurant.util.web.SerialNumberGenerator;
+
 import java.util.List;
 
 /**
@@ -26,5 +29,9 @@ public class OrderDTO {
     public OrderDTO setDetails(List<DetailDTO> details) {
         this.details = details;
         return this;
+    }
+
+    public CustomOrder toOrder(){
+        return new CustomOrder().setTableNo(this.tableNo);
     }
 }

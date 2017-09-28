@@ -71,6 +71,7 @@
                      <tx:method name="delete*" propagation="REQUIRED"/>
                      <tx:method name="remove*" propagation="REQUIRED"/>
                      <tx:method name="query*" propagation="REQUIRED"/>
+                     <tx:method name="tx*" propagation="REQUIRED"/>
               </tx:attributes>
        </tx:advice>
 

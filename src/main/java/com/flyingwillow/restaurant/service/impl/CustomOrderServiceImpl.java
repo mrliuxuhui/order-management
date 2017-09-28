@@ -1,11 +1,17 @@
 package com.flyingwillow.restaurant.service.impl;
 
 import com.flyingwillow.restaurant.domain.CustomOrder;
+import com.flyingwillow.restaurant.domain.CustomOrderDetail;
+import com.flyingwillow.restaurant.domain.Menu;
 import com.flyingwillow.restaurant.mapper.CustomOrderMapper;
+import com.flyingwillow.restaurant.service.ICustomOrderDetailService;
 import com.flyingwillow.restaurant.service.ICustomOrderService;
+import com.flyingwillow.restaurant.service.IMenuService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.SerialNumberGenerator;
 import com.flyingwillow.restaurant.web.admin.dto.CheckoutDTO;
+import com.flyingwillow.restaurant.web.waiter.dto.DetailDTO;
+import com.flyingwillow.restaurant.web.waiter.dto.OrderDTO;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +29,10 @@ public class CustomOrderServiceImpl implements ICustomOrderService {
 
     @Autowired
     private CustomOrderMapper customOrderMapper;
+    @Autowired
+    private ICustomOrderDetailService customOrderDetailService;
+    @Autowired
+    private IMenuService menuService;
 
     @Override
     public List<CustomOrder> getCustomOrderList(Map<String, Object> params, int start, int size) {
@@ -93,12 +103,35 @@ public class CustomOrderServiceImpl implements ICustomOrderService {
         String number = SerialNumberGenerator.getSerialNumber("ORD",getOrderSerialNumber());
         order.setNumber(number);
         order.setCreateTime(new Date());
+        order.setChecked(false);
+        order.setPushed(false);
         customOrderMapper.saveCustomOrder(order);
+    }
+
+    @Override
+    public CustomOrder saveCustomOrder(Integer tableNo) {
+        CustomOrder order = new CustomOrder().setTableNo(tableNo);
+        saveCustomOrder(order);
+        return order;
     }
 
     @Override
     public void updateCustomOrder(CustomOrder order) {
         customOrderMapper.updateCustomOrder(order);
+    }
+
+    @Override
+    public void updateOrderTotalPrice(Long orderId, Float totalPrice) {
+        CustomOrder customOrder = new CustomOrder().setId(orderId).setTotalPrice(totalPrice);
+        updateCustomOrder(customOrder);
+    }
+
+    @Override
+    public void txIncrementTotalPrice(Long orderId, Float totalPrice) {
+        HashMap<String,Object> params = new HashMap<>(2);
+        params.put("orderId",orderId);
+        params.put("totalPrice",totalPrice);
+        customOrderMapper.updateOrderTotalPrice(params);
     }
 
     @Override

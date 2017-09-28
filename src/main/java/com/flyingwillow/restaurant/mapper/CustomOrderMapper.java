@@ -2,6 +2,7 @@ package com.flyingwillow.restaurant.mapper;
 
 import com.flyingwillow.restaurant.domain.CustomOrder;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ public interface CustomOrderMapper {
     public void saveCustomOrder(CustomOrder order);
 
     public void updateCustomOrder(CustomOrder order);
+
+    public void updateOrderTotalPrice(HashMap<String,Object> params);
 
     public void deleteCustomOrderByNumber(String number);
 

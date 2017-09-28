@@ -6,12 +6,14 @@ import com.flyingwillow.restaurant.domain.FieldOrder;
 import com.flyingwillow.restaurant.domain.Menu;
 import com.flyingwillow.restaurant.service.ICustomOrderDetailService;
 import com.flyingwillow.restaurant.service.ICustomOrderService;
+import com.flyingwillow.restaurant.service.ITxCustomOrderService;
 import com.flyingwillow.restaurant.util.web.Constants;
 import com.flyingwillow.restaurant.util.web.DataTableParam;
 import com.flyingwillow.restaurant.util.web.DataTableResponse;
 import com.flyingwillow.restaurant.web.admin.dto.CheckoutDTO;
 import com.flyingwillow.restaurant.web.admin.dto.OrderDetailDTO;
 import com.flyingwillow.restaurant.web.admin.vo.JsonResponseStatus;
+import com.flyingwillow.restaurant.web.waiter.dto.DetailDTO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +44,8 @@ public class CustomOrderRestController {
     private ICustomOrderDetailService customOrderDetailService;
     @Autowired
     private ICustomOrderService customOrderService;
+    @Autowired
+    private ITxCustomOrderService txCustomOrderService;
 
     @RequestMapping(value = "/order", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<DataTableResponse<CustomOrder>> listOrders(@RequestParam(required = false)String dataTableParam,
@@ -111,11 +115,7 @@ public class CustomOrderRestController {
             return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
         }
 
-        List<CustomOrderDetail> detailList = customOrderDetailService.getCustomOrderDetailsByOrder(orderId);
-        Integer total = customOrderDetailService.getCustomOrderDetailCountByOrder(orderId);
-        Map<String,Object> result = new HashMap<>();
-        result.put("total",total);
-        result.put("list",detailList);
+        txCustomOrderService.checkoutOrder(orderId, checkoutDTO);
         return new ResponseEntity(JsonResponseStatus.buildSuccessResponse(),HttpStatus.OK);
     }
 
@@ -154,13 +154,14 @@ public class CustomOrderRestController {
     }
 
     @RequestMapping(value = "/order/{orderId}/detail", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity add2Order(@PathVariable Integer orderId, @RequestBody OrderDetailDTO orderDetailDTO){
-        if(null==orderId||null==orderDetailDTO){
+    public ResponseEntity add2Order(@PathVariable Integer orderId, @RequestBody DetailDTO detailDTO){
+        if(null==orderId||null==detailDTO){
             return new ResponseEntity<JsonResponseStatus>(JsonResponseStatus.buildFailResponse(400,"缺少必要参数"),HttpStatus.BAD_REQUEST);
         }
-        CustomOrderDetail detail = orderDetailDTO.toOderDetail();
-        customOrderDetailService.saveCustomOrderDetail(detail);
-        return new ResponseEntity(detail,HttpStatus.CREATED);
+
+        txCustomOrderService.saveOrderDetail(orderId, detailDTO);
+
+        return new ResponseEntity(JsonResponseStatus.buildSuccessResponse(),HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/order/detail/{detailId}", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")

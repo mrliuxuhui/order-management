@@ -112,6 +112,12 @@
 		</set>
 		WHERE id = #{id}
 	</update>
+	
+	<update id="updateOrderTotalPrice" parameterType="HashMap">
+		UPDATE custom_order
+		SET totalPrice = IFNULL(totalPrice,0) + #{totalPrice}
+		WHERE id = #{orderId}
+	</update>
 
 	<update id="deleteCustomOrderByNumber" parameterType="String">
 		UPDATE custom_order

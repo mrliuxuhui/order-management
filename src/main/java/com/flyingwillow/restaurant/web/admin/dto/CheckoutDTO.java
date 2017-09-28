@@ -1,5 +1,8 @@
 package com.flyingwillow.restaurant.web.admin.dto;
 
+import com.flyingwillow.restaurant.domain.CustomOrder;
+import org.apache.shiro.SecurityUtils;
+
 /**
  * Created by 刘旭辉 on 2017/9/23.
  */
@@ -53,5 +56,10 @@ public class CheckoutDTO {
     public CheckoutDTO setChanges(Float changes) {
         this.changes = changes;
         return this;
+    }
+
+    public CustomOrder toOrderUpdate(){
+        return new CustomOrder().setId(this.orderId.longValue())
+                .setChecked(true).setPushed(true).setActualPrice(this.receivables);
     }
 }

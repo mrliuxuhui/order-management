@@ -2,6 +2,7 @@ package com.flyingwillow.restaurant.service;
 
 import com.flyingwillow.restaurant.domain.CustomOrder;
 import com.flyingwillow.restaurant.web.admin.dto.CheckoutDTO;
+import com.flyingwillow.restaurant.web.waiter.dto.OrderDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,13 @@ public interface ICustomOrderService {
 
     public void saveCustomOrder(CustomOrder order);
 
+    public CustomOrder saveCustomOrder(Integer tableNo);
+
     public void updateCustomOrder(CustomOrder order);
+
+    public void updateOrderTotalPrice(Long orderId, Float totalPrice);
+
+    public void txIncrementTotalPrice(Long orderId, Float totalPrice);
 
     public void deleteCustomOrderByNumber(String number);
 

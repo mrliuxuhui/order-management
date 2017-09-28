@@ -240,7 +240,7 @@ CREATE TABLE custom_order(
   totalPrice FLOAT,
   actualPrice FLOAT,
   isChecked  BOOL, -- 是否结算
-  payment   VARCHAR(20), --支付方式
+  payment   VARCHAR(20), -- 支付方式
   checkTime BIGINT,   -- 结算时间
   checkOperator VARCHAR(50),
   pushed  BOOL, -- 是否已经推送
