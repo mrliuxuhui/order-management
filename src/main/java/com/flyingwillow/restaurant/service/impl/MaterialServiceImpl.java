@@ -22,7 +22,7 @@ public class MaterialServiceImpl implements IMaterialService{
 
     @Override
     public List<Material> getMaterialList(Map<String, Object> params, int start, int size) {
-        start = start>0?start:1;
+        start = start>0?start:0;
         size = size>0?size: Constants.PAGE_LENGTH;
         if(null==params){
             params = new HashMap<String,Object>();
