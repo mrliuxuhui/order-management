@@ -47,7 +47,7 @@ public class ProviderRestController {
         List<Provider> list = null;
         Integer total = 0;
         if(null==param){
-            list = providerService.getProviderList(null, Constants.PAGE_START,Constants.PAGE_LENGTH);
+            list = providerService.getProviderList(null, (Constants.PAGE_START-1)*Constants.PAGE_LENGTH,Constants.PAGE_LENGTH);
             total = providerService.getProviderCount(null);
         }else{
 

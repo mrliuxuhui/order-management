@@ -47,7 +47,7 @@ public class FoodCategoryRestController {
         List<FoodCategory> list = null;
         Integer total = 0;
         if(null==param){
-            list = foodCategoryService.getFoodCategoryList(null, Constants.PAGE_START,Constants.PAGE_LENGTH);
+            list = foodCategoryService.getFoodCategoryList(null, (Constants.PAGE_START-1)*Constants.PAGE_LENGTH,Constants.PAGE_LENGTH);
             total = foodCategoryService.getFoodCategoryCount(null);
         }else{
 

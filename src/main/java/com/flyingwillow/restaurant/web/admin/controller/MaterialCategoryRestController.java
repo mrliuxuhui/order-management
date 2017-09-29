@@ -47,7 +47,7 @@ public class MaterialCategoryRestController {
         List<MaterialCategory> list = null;
         Integer total = 0;
         if(null==param){
-            list = materialCategoryService.getMaterialCategoryList(null, Constants.PAGE_START,Constants.PAGE_LENGTH);
+            list = materialCategoryService.getMaterialCategoryList(null, (Constants.PAGE_START-1)*Constants.PAGE_LENGTH,Constants.PAGE_LENGTH);
             total = materialCategoryService.getMaterialCategoryCount(null);
         }else{
 

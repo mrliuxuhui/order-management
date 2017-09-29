@@ -47,7 +47,7 @@ public class MeasurementRestController {
         List<Measurement> list = null;
         Integer total = 0;
         if(null==param){
-            list = measurementService.getMeasurementList(null, Constants.PAGE_START,Constants.PAGE_LENGTH);
+            list = measurementService.getMeasurementList(null, (Constants.PAGE_START-1)*Constants.PAGE_LENGTH,Constants.PAGE_LENGTH);
             total = measurementService.getMeasurementCount(null);
         }else{
 

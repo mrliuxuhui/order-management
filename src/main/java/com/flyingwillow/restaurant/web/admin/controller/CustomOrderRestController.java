@@ -59,7 +59,7 @@ public class CustomOrderRestController {
         List<CustomOrder> list = null;
         Integer total = 0;
         if(null==param){
-            list = customOrderService.getCustomOrderList(null, showAll,Constants.PAGE_START,Constants.PAGE_LENGTH);
+            list = customOrderService.getCustomOrderList(null, showAll,(Constants.PAGE_START-1)*Constants.PAGE_LENGTH,Constants.PAGE_LENGTH);
             total = customOrderService.getCustomOrderCount(null,showAll);
         }else{
 

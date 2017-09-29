@@ -52,7 +52,7 @@ public class MaterialRestController {
         List<Material> list = null;
         Integer total = 0;
         if(null==param){
-            list = materialService.getMaterialList(null, Constants.PAGE_START,Constants.PAGE_LENGTH);
+            list = materialService.getMaterialList(null, (Constants.PAGE_START-1)*Constants.PAGE_LENGTH,Constants.PAGE_LENGTH);
             total = materialService.getMaterialCount(null);
         }else{
 
